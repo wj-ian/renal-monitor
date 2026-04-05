@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>王坚 · 肾病监测系统 · 云同步版</title>
+    <title>王坚 · 肾病监测系统</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
         body { background: #f1f5f9; padding: 10px; }
@@ -13,6 +13,7 @@
         @media (min-width: 600px) { .header { flex-direction: row; justify-content: space-between; align-items: center; } }
         .title { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #0f172a, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .badge { background: #dbeafe; color: #1e40af; padding: 4px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; margin-left: 8px; display: inline-block; }
+        .save-indicator { color: #10b981; font-size: 11px; margin-top: 4px; }
         .btn { background: #0f172a; color: white; border: none; padding: 10px 20px; border-radius: 40px; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; }
         @media (min-width: 600px) { .btn { width: auto; } }
         .btn-sm { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 30px; font-size: 13px; cursor: pointer; }
@@ -57,10 +58,7 @@
         .sub-tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: fit-content; margin: 0 0 16px 0; }
         .sub-tab { padding: 6px 16px; border-radius: 30px; font-weight: 600; border: none; background: transparent; cursor: pointer; font-size: 12px; color: #475569; }
         .sub-tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .sync-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-top: 4px; }
-        .sync-status.synced { background: #dcfce7; color: #15803d; }
-        .sync-status.syncing { background: #fef9c3; color: #854d0e; }
-        .sync-status.error { background: #fee2e2; color: #b91c1c; }
+        .import-btn { background: #059669; color: white; border: none; border-radius: 40px; padding: 10px 20px; font-weight: 600; font-size: 14px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -68,12 +66,14 @@
     <div class="header">
         <div>
             <span class="title">王坚 · 肾病监测系统</span>
-            <span class="badge">☁️ 云同步版</span>
-            <div><span class="sync-status syncing" id="syncStatus">⏳ 连接中...</span></div>
+            <span class="badge">💾 本地存储版</span>
+            <div class="save-indicator" id="saveIndicator">💾 已自动保存</div>
         </div>
         <div class="header-buttons">
             <button class="btn" onclick="exportCSV()">📥 导出CSV</button>
             <button class="btn" onclick="exportAllToWord()">📄 导出Word</button>
+            <button class="import-btn" onclick="document.getElementById('importFile').click()">📤 导入CSV</button>
+            <input type="file" id="importFile" accept=".csv" style="display:none" onchange="importCSV(this)">
             <button class="btn" onclick="resetToInitial()" style="background:#64748b;">↺ 重置</button>
         </div>
     </div>
@@ -119,93 +119,10 @@
             <table id="medTable"><thead id="medTableHeader"></thead><tbody id="medTableBody"></tbody></table>
         </div>
     </div>
-    <div class="footer">⚕️ 云同步版 · 数据实时同步到所有设备</div>
+    <div class="footer">⚕️ 数据保存在本地 · 导出CSV可在设备间传输</div>
 </div>
 
 <script>
-    // ===== JSONBin 配置 =====
-    const JSONBIN_API_KEY = '$2a$10$uAnl0IQflPWqT.aShqJ9Tu7jiF6ERwkB.AW3kkR4oa3uE9TPC6Z7S';
-    const JSONBIN_BIN_ID_KEY = 'renal_monitor_bin_id';
-    let binId = localStorage.getItem(JSONBIN_BIN_ID_KEY) || null;
-    let saveTimer = null;
-
-    async function loadFromCloud() {
-        const statusEl = document.getElementById('syncStatus');
-        statusEl.className = 'sync-status syncing';
-        statusEl.textContent = '⏳ 加载中...';
-        try {
-            if (!binId) {
-                // 创建新的 bin
-                const res = await fetch('https://api.jsonbin.io/v3/b', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY,
-                        'X-Bin-Name': 'renal-monitor',
-                        'X-Bin-Private': 'true'
-                    },
-                    body: JSON.stringify({ data, CONFIG_MED })
-                });
-                const json = await res.json();
-                binId = json.metadata.id;
-                localStorage.setItem(JSONBIN_BIN_ID_KEY, binId);
-                statusEl.className = 'sync-status synced';
-                statusEl.textContent = '☁️ 已初始化';
-            } else {
-                // 读取已有数据
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
-                });
-                const json = await res.json();
-                if (json.record) {
-                    if (json.record.data) data = json.record.data;
-                    if (json.record.CONFIG_MED) CONFIG_MED = json.record.CONFIG_MED;
-                }
-                statusEl.className = 'sync-status synced';
-                statusEl.textContent = '☁️ 已同步';
-            }
-            renderTableHeaders();
-            renderTables();
-            renderChartsByType(currentChartType);
-        } catch(e) {
-            statusEl.className = 'sync-status error';
-            statusEl.textContent = '❌ 同步失败';
-            // 离线模式，使用本地数据
-            renderTableHeaders();
-            renderTables();
-            renderChartsByType(currentChartType);
-        }
-    }
-
-    async function saveToCloud() {
-        if (!binId) return;
-        const statusEl = document.getElementById('syncStatus');
-        statusEl.className = 'sync-status syncing';
-        statusEl.textContent = '⏳ 保存中...';
-        try {
-            await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_API_KEY
-                },
-                body: JSON.stringify({ data, CONFIG_MED })
-            });
-            statusEl.className = 'sync-status synced';
-            statusEl.textContent = '☁️ 已同步';
-        } catch(e) {
-            statusEl.className = 'sync-status error';
-            statusEl.textContent = '❌ 保存失败';
-        }
-    }
-
-    function saveData() {
-        // 防抖：2秒后保存，避免频繁请求
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(saveToCloud, 2000);
-    }
-
-    // ===== 指标配置 =====
     const CONFIG_IND = [
         { id:'cre', name:'肌酐', unit:'μmol/L', range:[57,97], color:'#2563eb' },
         { id:'alb', name:'白蛋白', unit:'g/L', range:[40,55], color:'#059669' },
@@ -281,14 +198,70 @@
     let data = JSON.parse(JSON.stringify(INITIAL_DATA));
     const chartCanvases = {};
 
+    function saveData() {
+        try {
+            localStorage.setItem('renal_data', JSON.stringify(data));
+            localStorage.setItem('renal_med', JSON.stringify(CONFIG_MED));
+            const el = document.getElementById('saveIndicator');
+            el.textContent = '💾 已保存';
+            setTimeout(() => el.textContent = '💾 已自动保存', 1500);
+        } catch(e) {}
+    }
+
+    function loadData() {
+        try {
+            const d = localStorage.getItem('renal_data');
+            const m = localStorage.getItem('renal_med');
+            if (d) data = JSON.parse(d);
+            if (m) CONFIG_MED = JSON.parse(m);
+        } catch(e) {}
+    }
+
     window.resetToInitial = () => {
         if (confirm('确定重置为初始数据吗？')) {
             data = JSON.parse(JSON.stringify(INITIAL_DATA));
-            localStorage.removeItem(JSONBIN_BIN_ID_KEY);
-            binId = null;
-            saveToCloud();
-            renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
+            saveData(); renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
         }
+    };
+
+    // CSV导入功能
+    window.importCSV = (input) => {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(l => l.trim());
+                const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
+                const newData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const vals = lines[i].split(',').map(v => v.replace(/"/g,'').trim());
+                    if (!vals[0]) continue;
+                    const row = { date: vals[0], week: vals[1] || '', meds: {} };
+                    CONFIG_IND.forEach((cfg, j) => {
+                        const v = vals[j + 2];
+                        row[cfg.id] = v && v !== '' ? parseFloat(v) : null;
+                    });
+                    const medKeys = Object.keys(CONFIG_MED);
+                    medKeys.forEach((k, j) => {
+                        const v = vals[CONFIG_IND.length + 2 + j];
+                        if (v && v !== '') row.meds[k] = v;
+                    });
+                    newData.push(row);
+                }
+                if (newData.length > 0) {
+                    data = newData;
+                    saveData();
+                    renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
+                    alert(`✅ 成功导入 ${newData.length} 条记录！`);
+                }
+            } catch(e) {
+                alert('导入失败，请检查CSV格式');
+            }
+        };
+        reader.readAsText(file, 'utf-8');
+        input.value = '';
     };
 
     window.switchChartType = type => {
@@ -342,7 +315,7 @@
         const grid=document.getElementById('chartsGrid');
         const card=document.createElement('div');card.className='chart-card';
         const mn=CONFIG_MED[medKey].name, mc=CONFIG_MED[medKey].color;
-        const allRows=data.map((d,i)=>({date:d.date,value:d.meds?.[medKey]||''}));
+        const allRows=data.map(d=>({date:d.date,value:d.meds?.[medKey]||''}));
         const sp=[];let lv=null,lr=null,ld=null;
         allRows.forEach(row=>{const v=row.value;if(v&&v!==''){const m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='停用'){sp.push({date:row.date,value:0,rawValue:'停用',type:'stop'});lv=null;}}});
         const last=allRows[allRows.length-1];
@@ -351,12 +324,12 @@
         const id=`med-chart-${medKey}`;
         card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${mc}"></span>${mn} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${u.length}个点</span></div><div class="ref-range">红色叉=停用·灰色=延续</div></div><button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${u.map(p=>fmt(p.date)).join(' · ')}</div>`;
         grid.appendChild(card);
-        drawMedChart(medKey,mn,mc,u,allRows,id);
+        drawMedChart(mn,mc,u,allRows,id);
     }
 
-    function drawMedChart(medKey,mn,mc,sp,allRows,id) {
+    function drawMedChart(mn,mc,sp,allRows,id) {
         const cv=document.getElementById(id);if(!cv)return;
-        chartCanvases[`med-${medKey}`]=cv;
+        chartCanvases[`med-${id}`]=cv;
         const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
         ctx.clearRect(0,0,W,H);
         const P={l:50,r:20,t:30,b:35};
@@ -375,7 +348,7 @@
     }
 
     window.downloadIndChart=id=>{const c=chartCanvases[`ind-${id}`];if(!c)return;const cfg=CONFIG_IND.find(c=>c.id===id);const a=document.createElement('a');a.download=`王坚_${cfg.name}_趋势图.png`;a.href=c.toDataURL('image/png');a.click();};
-    window.downloadMedChart=k=>{const c=chartCanvases[`med-${k}`];if(!c)return;const a=document.createElement('a');a.download=`王坚_${CONFIG_MED[k].name}_用量趋势.png`;a.href=c.toDataURL('image/png');a.click();};
+    window.downloadMedChart=k=>{const c=chartCanvases[`med-med-chart-${k}`]||chartCanvases[`med-${k}`];if(!c)return;const a=document.createElement('a');a.download=`王坚_${CONFIG_MED[k].name}_趋势.png`;a.href=c.toDataURL('image/png');a.click();};
 
     function renderTableHeaders() {
         const ih=document.getElementById('indTableHeader');
@@ -428,11 +401,11 @@ window.exportCSV=()=>{const h=['日期','周次',...CONFIG_IND.map(i=>`${i.name}
 window.switchTab=tab=>{['chartsPanel','indPanel','medPanel'].forEach((id,i)=>{document.getElementById(id).style.display=(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med')?'block':'none';});document.querySelectorAll('.tab').forEach((btn,i)=>{btn.classList.toggle('active',(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med'));});if(tab==='charts')setTimeout(()=>renderChartsByType(currentChartType),50);};
 window.addEventListener('resize',()=>{if(document.getElementById('chartsPanel').style.display!=='none')renderChartsByType(currentChartType);});
 
-// 启动：先显示本地数据，再从云端加载
+// 启动
+loadData();
 renderTableHeaders();
 renderTables();
 renderChartsByType(currentChartType);
-loadFromCloud();
 ```
 
 </script>
