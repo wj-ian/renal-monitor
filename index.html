@@ -1,393 +1,67 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>王坚 · 肾病监测系统 · 最终版</title>
+    <title>王坚 · 肾病监测系统 · 云同步版</title>
     <style>
-        /* 页面显示样式（保持不变） */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        body {
-            background: #f1f5f9;
-            padding: 10px;
-        }
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        .header {
-            background: white;
-            padding: 12px 16px;
-            border-radius: 24px;
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            border: 1px solid #e2e8f0;
-        }
-        @media (min-width: 600px) {
-            .header {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-        .title {
-            font-size: 18px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0f172a, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .badge {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 4px 10px;
-            border-radius: 40px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-            display: inline-block;
-        }
-        .btn {
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-        }
-        @media (min-width: 600px) {
-            .btn {
-                width: auto;
-            }
-        }
-        .btn-sm {
-            background: #f1f5f9;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .tab-bar {
-            display: flex;
-            gap: 4px;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 40px;
-            width: 100%;
-            margin: 0 0 16px 0;
-        }
-        .tab {
-            flex: 1;
-            padding: 10px 0;
-            border-radius: 40px;
-            font-weight: 700;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 13px;
-            color: #475569;
-            white-space: nowrap;
-            text-align: center;
-        }
-        .tab.active {
-            background: white;
-            color: #2563eb;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        @media (min-width: 1000px) {
-            .charts-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .chart-card {
-            background: white;
-            border-radius: 20px;
-            padding: 16px;
-            border: 1px solid #e2e8f0;
-        }
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .chart-title {
-            font-size: 16px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .color-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        .ref-range {
-            color: #64748b;
-            font-size: 11px;
-        }
-        .chart-container {
-            height: 240px;
-            position: relative;
-            margin-bottom: 8px;
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 5px;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-        canvas {
-            width: 100%;
-            height: 100%;
-            min-width: 400px;
-            display: block;
-        }
-        .date-list {
-            font-size: 10px;
-            color: #2563eb;
-            margin-top: 8px;
-            padding: 6px 10px;
-            background: #f8fafc;
-            border-radius: 16px;
-            max-height: 50px;
-            overflow-y: auto;
-            word-break: break-all;
-        }
-        .table-wrapper {
-            background: white;
-            border-radius: 20px;
-            padding: 16px;
-            border: 1px solid #e2e8f0;
-            overflow-x: auto;
-            min-height: 300px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-            min-width: 1200px;
-        }
-        th {
-            background: #f8fafc;
-            padding: 10px 4px;
-            font-weight: 700;
-            color: #1e293b;
-            border-bottom: 2px solid #cbd5e1;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            vertical-align: middle;
-        }
-        td {
-            padding: 6px 4px;
-            border-bottom: 1px solid #e2e8f0;
-            text-align: center;
-            vertical-align: middle;
-        }
-        input[type="date"] {
-            width: 130px;
-            padding: 4px 8px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-        input[type="text"], input[type="number"] {
-            width: 60px;
-            padding: 4px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 11px;
-        }
-        input[type="text"][placeholder="周次"] {
-            width: 70px;
-        }
-        .med-input {
-            width: 70px;
-            padding: 4px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 11px;
-            background: white;
-        }
-        .med-input:focus {
-            outline: 2px solid #2563eb;
-            border-color: transparent;
-        }
-        .med-input.stopped {
-            background: #fee2e2;
-            color: #b91c1c;
-            text-decoration: line-through;
-        }
-        .out-of-range {
-            background: #fee2e2;
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            color: #94a3b8;
-            padding: 4px 8px;
-        }
-        .download-btn {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 11px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .footer {
-            text-align: center;
-            margin: 20px 0 10px;
-            color: #64748b;
-            font-size: 11px;
-        }
-        .save-indicator {
-            color: #10b981;
-            font-size: 11px;
-            margin-top: 4px;
-        }
-        .header-buttons {
-            display: flex;
-            gap: 8px;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-        @media (min-width: 600px) {
-            .header-buttons {
-                width: auto;
-                flex-wrap: nowrap;
-            }
-        }
-        .header-buttons .btn {
-            flex: 1;
-            white-space: nowrap;
-        }
-        .insert-btn, .insert-col-btn {
-            background: #e0f2fe;
-            color: #0369a1;
-            border: none;
-            border-radius: 20px;
-            padding: 2px 8px;
-            font-size: 10px;
-            cursor: pointer;
-            margin-left: 4px;
-            white-space: nowrap;
-        }
-        .insert-btn:hover, .insert-col-btn:hover {
-            background: #bae6fd;
-        }
-        .insert-col-btn {
-            background: #cffafe;
-            color: #0891b2;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 4px;
-            justify-content: center;
-            align-items: center;
-            white-space: nowrap;
-        }
-        th:first-child, td:first-child {
-            min-width: 140px;
-        }
-        th:nth-child(2), td:nth-child(2) {
-            min-width: 80px;
-        }
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .table-header-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .word-download-btn {
-            background: #c2410c;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 6px 12px;
-            font-size: 12px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .word-download-btn:hover {
-            background: #9a3412;
-        }
-        .col-actions {
-            display: flex;
-            gap: 4px;
-            justify-content: center;
-            align-items: center;
-        }
-        .col-header-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .sub-tab-bar {
-            display: flex;
-            gap: 4px;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 40px;
-            width: fit-content;
-            margin: 0 0 16px 0;
-        }
-        .sub-tab {
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-weight: 600;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 12px;
-            color: #475569;
-        }
-        .sub-tab.active {
-            background: white;
-            color: #2563eb;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: #f1f5f9; padding: 10px; }
+        .container { max-width: 100%; margin: 0 auto; }
+        .header { background: white; padding: 12px 16px; border-radius: 24px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; border: 1px solid #e2e8f0; }
+        @media (min-width: 600px) { .header { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .title { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #0f172a, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .badge { background: #dbeafe; color: #1e40af; padding: 4px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; margin-left: 8px; display: inline-block; }
+        .btn { background: #0f172a; color: white; border: none; padding: 10px 20px; border-radius: 40px; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; }
+        @media (min-width: 600px) { .btn { width: auto; } }
+        .btn-sm { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 30px; font-size: 13px; cursor: pointer; }
+        .tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: 100%; margin: 0 0 16px 0; }
+        .tab { flex: 1; padding: 10px 0; border-radius: 40px; font-weight: 700; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #475569; white-space: nowrap; text-align: center; }
+        .tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .charts-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
+        @media (min-width: 1000px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
+        .chart-card { background: white; border-radius: 20px; padding: 16px; border: 1px solid #e2e8f0; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .chart-title { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .color-dot { width: 10px; height: 10px; border-radius: 10px; display: inline-block; }
+        .ref-range { color: #64748b; font-size: 11px; }
+        .chart-container { height: 220px; position: relative; margin-bottom: 8px; background: #ffffff; border-radius: 12px; padding: 5px; overflow-x: auto; overflow-y: hidden; }
+        canvas { width: 100%; height: 100%; min-width: 400px; display: block; }
+        .date-list { font-size: 10px; color: #2563eb; margin-top: 8px; padding: 6px 10px; background: #f8fafc; border-radius: 16px; max-height: 50px; overflow-y: auto; word-break: break-all; }
+        .table-wrapper { background: white; border-radius: 20px; padding: 16px; border: 1px solid #e2e8f0; overflow-x: auto; min-height: 300px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 1200px; }
+        th { background: #f8fafc; padding: 10px 4px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #cbd5e1; text-align: center; position: sticky; top: 0; vertical-align: middle; }
+        td { padding: 6px 4px; border-bottom: 1px solid #e2e8f0; text-align: center; vertical-align: middle; }
+        input[type="date"] { width: 130px; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; }
+        input[type="text"], input[type="number"] { width: 60px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center; font-size: 11px; }
+        input[type="text"][placeholder="周次"] { width: 70px; }
+        .med-input { width: 70px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center; font-size: 11px; background: white; }
+        .med-input.stopped { background: #fee2e2; color: #b91c1c; text-decoration: line-through; }
+        .delete-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #94a3b8; padding: 4px 8px; }
+        .download-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 20px; padding: 5px 12px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .footer { text-align: center; margin: 20px 0 10px; color: #64748b; font-size: 11px; }
+        .save-indicator { font-size: 11px; margin-top: 4px; }
+        .header-buttons { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
+        @media (min-width: 600px) { .header-buttons { width: auto; flex-wrap: nowrap; } }
+        .header-buttons .btn { flex: 1; white-space: nowrap; }
+        .insert-btn, .insert-col-btn { background: #e0f2fe; color: #0369a1; border: none; border-radius: 20px; padding: 2px 8px; font-size: 10px; cursor: pointer; margin-left: 4px; white-space: nowrap; }
+        .insert-col-btn { background: #cffafe; color: #0891b2; }
+        .action-buttons { display: flex; gap: 4px; justify-content: center; align-items: center; white-space: nowrap; }
+        th:first-child, td:first-child { min-width: 140px; }
+        th:nth-child(2), td:nth-child(2) { min-width: 80px; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .table-header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .word-download-btn { background: #c2410c; color: white; border: none; border-radius: 20px; padding: 6px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .col-actions { display: flex; gap: 4px; justify-content: center; align-items: center; }
+        .col-header-content { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .sub-tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: fit-content; margin: 0 0 16px 0; }
+        .sub-tab { padding: 6px 16px; border-radius: 30px; font-weight: 600; border: none; background: transparent; cursor: pointer; font-size: 12px; color: #475569; }
+        .sub-tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .sync-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-top: 4px; }
+        .sync-status.synced { background: #dcfce7; color: #15803d; }
+        .sync-status.syncing { background: #fef9c3; color: #854d0e; }
+        .sync-status.error { background: #fee2e2; color: #b91c1c; }
     </style>
 </head>
 <body>
@@ -395,74 +69,162 @@
     <div class="header">
         <div>
             <span class="title">王坚 · 肾病监测系统</span>
-            <span class="badge">最终版 · 表格分离 · Word分页优化</span>
-            <div class="save-indicator" id="saveIndicator">💾 已自动保存</div>
+            <span class="badge">☁️ 云同步版</span>
+            <div>
+                <span class="sync-status syncing" id="syncStatus">⏳ 连接中...</span>
+            </div>
         </div>
         <div class="header-buttons">
             <button class="btn" onclick="exportCSV()">📥 导出CSV</button>
-            <button class="btn" onclick="exportAllToWord()">📄 导出全部Word</button>
+            <button class="btn" onclick="exportAllToWord()">📄 导出Word</button>
             <button class="btn" onclick="resetToInitial()" style="background: #64748b;">↺ 重置</button>
         </div>
     </div>
 
-    <div class="tab-bar">
-        <button class="tab active" onclick="switchTab('charts')">📈 趋势图谱</button>
-        <button class="tab" onclick="switchTab('ind')">📋 指标表</button>
-        <button class="tab" onclick="switchTab('med')">💊 用药表</button>
-    </div>
-
-    <div id="chartsPanel">
-        <div class="sub-tab-bar" style="margin-bottom: 16px;">
-            <button class="sub-tab active" onclick="switchChartType('ind')">📊 指标趋势</button>
-            <button class="sub-tab" onclick="switchChartType('med')">💊 药物趋势</button>
-        </div>
-        <div class="charts-grid" id="chartsGrid"></div>
-    </div>
-
-    <div id="indPanel" style="display: none;">
-        <div class="table-wrapper">
-            <div class="table-header">
-                <div class="table-header-left">
-                    <h3 style="font-weight: 800; font-size: 16px;">指标记录矩阵</h3>
-                    <button class="word-download-btn" onclick="exportIndToWord()">📄 下载指标表Word</button>
-                </div>
-                <div>
-                    <button class="btn-sm" onclick="addNewIndCol()">➕ 新增指标列</button>
-                    <button class="btn-sm" onclick="addNewRowAtEnd()" style="margin-left: 8px;">➕ 在末尾新增行</button>
-                </div>
-            </div>
-            <table id="indTable">
-                <thead id="indTableHeader"></thead>
-                <tbody id="indTableBody"></tbody>
-             </table>
-        </div>
-    </div>
-
-    <div id="medPanel" style="display: none;">
-        <div class="table-wrapper">
-            <div class="table-header">
-                <div class="table-header-left">
-                    <h3 style="font-weight: 800; font-size: 16px;">药物剂量矩阵 (可编辑)</h3>
-                    <button class="word-download-btn" onclick="exportMedToWord()">📄 下载用药表Word</button>
-                </div>
-                <div>
-                    <button class="btn-sm" onclick="addNewMedCol()">➕ 新增药物列</button>
-                    <button class="btn-sm" onclick="addMedRowAtEnd()" style="margin-left: 8px;">➕ 在末尾新增行</button>
-                </div>
-            </div>
-            <table id="medTable">
-                <thead id="medTableHeader"></thead>
-                <tbody id="medTableBody"></tbody>
-             </table>
-        </div>
-    </div>
-
-    <div class="footer">⚕️ 下载图片为2倍高清 · 日期倾斜45度防重叠 · Word导出自动分页，表格紧凑</div>
+```
+<div class="tab-bar">
+    <button class="tab active" onclick="switchTab('charts')">📈 趋势图谱</button>
+    <button class="tab" onclick="switchTab('ind')">📋 指标表</button>
+    <button class="tab" onclick="switchTab('med')">💊 用药表</button>
 </div>
 
+<div id="chartsPanel">
+    <div class="sub-tab-bar">
+        <button class="sub-tab active" onclick="switchChartType('ind')">📊 指标趋势</button>
+        <button class="sub-tab" onclick="switchChartType('med')">💊 药物趋势</button>
+    </div>
+    <div class="charts-grid" id="chartsGrid"></div>
+</div>
+
+<div id="indPanel" style="display: none;">
+    <div class="table-wrapper">
+        <div class="table-header">
+            <div class="table-header-left">
+                <h3 style="font-weight: 800; font-size: 16px;">指标记录矩阵</h3>
+                <button class="word-download-btn" onclick="exportIndToWord()">📄 下载指标表Word</button>
+            </div>
+            <div>
+                <button class="btn-sm" onclick="addNewIndCol()">➕ 新增指标列</button>
+                <button class="btn-sm" onclick="addNewRowAtEnd()" style="margin-left: 8px;">➕ 在末尾新增行</button>
+            </div>
+        </div>
+        <table id="indTable">
+            <thead id="indTableHeader"></thead>
+            <tbody id="indTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="medPanel" style="display: none;">
+    <div class="table-wrapper">
+        <div class="table-header">
+            <div class="table-header-left">
+                <h3 style="font-weight: 800; font-size: 16px;">药物剂量矩阵</h3>
+                <button class="word-download-btn" onclick="exportMedToWord()">📄 下载用药表Word</button>
+            </div>
+            <div>
+                <button class="btn-sm" onclick="addNewMedCol()">➕ 新增药物列</button>
+                <button class="btn-sm" onclick="addMedRowAtEnd()" style="margin-left: 8px;">➕ 在末尾新增行</button>
+            </div>
+        </div>
+        <table id="medTable">
+            <thead id="medTableHeader"></thead>
+            <tbody id="medTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="footer">⚕️ 云同步版 · 数据实时同步到所有设备</div>
+```
+
+</div>
+
+<!-- Firebase SDK -->
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDmfqE29qZFB9g126tWxomltJHEZhoEBDI",
+        authDomain: "renal-monitor-bee0f.firebaseapp.com",
+        projectId: "renal-monitor-bee0f",
+        storageBucket: "renal-monitor-bee0f.firebasestorage.app",
+        messagingSenderId: "827066206331",
+        appId: "1:827066206331:web:062a352a8fb567f9c8bade"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const docRef = doc(db, "renal", "wangjian");
+
+    window._db = db;
+    window._docRef = docRef;
+    window._setDoc = setDoc;
+    window._onSnapshot = onSnapshot;
+
+    // 监听云端数据变化，实时同步
+    onSnapshot(docRef, (snapshot) => {
+        const statusEl = document.getElementById('syncStatus');
+        if (snapshot.exists()) {
+            const cloudData = snapshot.data();
+            if (cloudData.data) {
+                data = cloudData.data;
+            }
+            if (cloudData.CONFIG_MED) {
+                CONFIG_MED = cloudData.CONFIG_MED;
+            }
+            if (cloudData.CONFIG_IND) {
+                // 恢复CONFIG_IND（只恢复可序列化部分）
+                CONFIG_IND.forEach((cfg, i) => {
+                    if (cloudData.CONFIG_IND[i]) {
+                        Object.assign(cfg, cloudData.CONFIG_IND[i]);
+                    }
+                });
+            }
+            renderTableHeaders();
+            renderTables();
+            renderChartsByType(currentChartType);
+            statusEl.className = 'sync-status synced';
+            statusEl.textContent = '☁️ 已同步';
+        } else {
+            // 云端没有数据，上传初始数据
+            saveToCloud();
+            statusEl.className = 'sync-status synced';
+            statusEl.textContent = '☁️ 初始化完成';
+        }
+    }, (error) => {
+        const statusEl = document.getElementById('syncStatus');
+        statusEl.className = 'sync-status error';
+        statusEl.textContent = '❌ 同步失败';
+        console.error(error);
+    });
+
+    window.saveToCloud = async function() {
+        const statusEl = document.getElementById('syncStatus');
+        statusEl.className = 'sync-status syncing';
+        statusEl.textContent = '⏳ 同步中...';
+        try {
+            await setDoc(docRef, {
+                data: data,
+                CONFIG_MED: CONFIG_MED,
+                CONFIG_IND: CONFIG_IND.map(c => ({
+                    id: c.id, name: c.name, unit: c.unit,
+                    range: c.range, color: c.color
+                })),
+                updatedAt: new Date().toISOString()
+            });
+            statusEl.className = 'sync-status synced';
+            statusEl.textContent = '☁️ 已同步';
+        } catch(e) {
+            statusEl.className = 'sync-status error';
+            statusEl.textContent = '❌ 同步失败';
+        }
+    };
+</script>
+
 <script>
-    // ---------- 指标配置 ----------
-    const DEFAULT_CONFIG_IND = [
+    const CONFIG_IND = [
         { id: 'cre', name: '肌酐', unit: 'μmol/L', range: [57, 97], color: '#2563eb' },
         { id: 'alb', name: '白蛋白', unit: 'g/L', range: [40, 55], color: '#059669' },
         { id: 'pro', name: '24H尿蛋白', unit: 'mg/24h', range: [0, 120], color: '#d97706' },
@@ -475,8 +237,7 @@
         { id: 'bcl', name: 'B细胞 (%)', unit: '%', range: [5.38, 18.23], color: '#0284c7' }
     ];
 
-    let CONFIG_IND = JSON.parse(JSON.stringify(DEFAULT_CONFIG_IND));
-    let CONFIG_MED = JSON.parse(JSON.stringify({
+    let CONFIG_MED = {
         methyl: { name: '醋酸甲泼尼松', color: '#dc2626' },
         ritu: { name: '利妥昔抗体', color: '#7c3aed' },
         fine: { name: '菲奈利酮', color: '#059669' },
@@ -485,13 +246,10 @@
         ezet: { name: '依折麦布', color: '#0891b2' },
         indo: { name: '吲哚布芬', color: '#b45309' },
         nadro: { name: '辅助那曲', color: '#be185d' }
-    }));
+    };
 
     let currentChartType = 'ind';
-    let data = [];
-    const chartCanvases = {};
 
-    // 初始数据
     const INITIAL_DATA = [
         { date: '2025-11-30', week: '', cre: 83.8, alb: 23.6, pro: null, pla: null, dim: null, ldl: 5.20, cho: 9.55, tg: 5.57, igg: null, bcl: null, meds: {} },
         { date: '2025-12-01', week: '', cre: null, alb: null, pro: 8084.1, pla: 213.62, dim: 933, ldl: null, cho: null, tg: null, igg: 5.6, bcl: null, meds: { ator: '20mg' } },
@@ -513,147 +271,137 @@
         { date: '2026-02-26', week: '第8周', cre: 88.5, alb: 31.5, pro: 4291, pla: null, dim: 8, ldl: 2.73, cho: 5.59, tg: 3.07, igg: 7.5, bcl: null, meds: { methyl: '10mg', ator: '停用' } },
     ];
 
-    // 持久化
-    function saveData() {
-        localStorage.setItem('renal_monitor_data', JSON.stringify(data));
-        localStorage.setItem('renal_monitor_ind_config', JSON.stringify(CONFIG_IND));
-        localStorage.setItem('renal_monitor_med_config', JSON.stringify(CONFIG_MED));
-        document.getElementById('saveIndicator').style.opacity = '1';
-        setTimeout(() => document.getElementById('saveIndicator').style.opacity = '0.7', 500);
-    }
+    let data = JSON.parse(JSON.stringify(INITIAL_DATA));
+    const chartCanvases = {};
 
-    function loadAllData() {
-        const savedInd = localStorage.getItem('renal_monitor_ind_config');
-        if (savedInd) { try { CONFIG_IND = JSON.parse(savedInd); } catch(e) {} }
-        const savedMed = localStorage.getItem('renal_monitor_med_config');
-        if (savedMed) { try { CONFIG_MED = JSON.parse(savedMed); } catch(e) {} }
-        const savedData = localStorage.getItem('renal_monitor_data');
-        if (savedData) { try { data = JSON.parse(savedData); } catch(e) { data = JSON.parse(JSON.stringify(INITIAL_DATA)); } }
-        else { data = JSON.parse(JSON.stringify(INITIAL_DATA)); }
-        CONFIG_IND.forEach(cfg => { data.forEach(row => { if (row[cfg.id] === undefined) row[cfg.id] = null; }); });
-        Object.keys(CONFIG_MED).forEach(medKey => { data.forEach(row => { if (!row.meds) row.meds = {}; if (row.meds[medKey] === undefined) row.meds[medKey] = ''; }); });
+    function saveData() {
+        if (window.saveToCloud) {
+            window.saveToCloud();
+        }
     }
 
     window.resetToInitial = () => {
-        if (confirm('确定重置为初始数据吗？')) {
-            CONFIG_IND = JSON.parse(JSON.stringify(DEFAULT_CONFIG_IND));
-            CONFIG_MED = JSON.parse(JSON.stringify({
-                methyl: { name: '醋酸甲泼尼松', color: '#dc2626' }, ritu: { name: '利妥昔抗体', color: '#7c3aed' },
-                fine: { name: '菲奈利酮', color: '#059669' }, losar: { name: '氯沙坦/利伐', color: '#2563eb' },
-                ator: { name: '阿托伐他汀', color: '#d97706' }, ezet: { name: '依折麦布', color: '#0891b2' },
-                indo: { name: '吲哚布芬', color: '#b45309' }, nadro: { name: '辅助那曲', color: '#be185d' }
-            }));
+        if (confirm('确定重置为初始数据吗？云端数据也会被重置！')) {
             data = JSON.parse(JSON.stringify(INITIAL_DATA));
+            CONFIG_MED = {
+                methyl: { name: '醋酸甲泼尼松', color: '#dc2626' },
+                ritu: { name: '利妥昔抗体', color: '#7c3aed' },
+                fine: { name: '菲奈利酮', color: '#059669' },
+                losar: { name: '氯沙坦/利伐', color: '#2563eb' },
+                ator: { name: '阿托伐他汀', color: '#d97706' },
+                ezet: { name: '依折麦布', color: '#0891b2' },
+                indo: { name: '吲哚布芬', color: '#b45309' },
+                nadro: { name: '辅助那曲', color: '#be185d' }
+            };
             saveData();
-            renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
+            renderTableHeaders();
+            renderTables();
+            renderChartsByType(currentChartType);
         }
     };
 
-    function showSaved() {
-        const indicator = document.getElementById('saveIndicator');
-        indicator.innerText = '💾 已保存'; indicator.style.color = '#10b981';
-        setTimeout(() => indicator.innerText = '💾 数据自动保存', 2000);
-    }
-
-    function init() { loadAllData(); renderTableHeaders(); renderTables(); renderChartsByType(currentChartType); }
-
     window.switchChartType = (type) => {
         currentChartType = type;
-        document.querySelectorAll('.sub-tab').forEach((btn, i) => btn.classList.toggle('active', (i===0 && type==='ind') || (i===1 && type==='med')));
+        document.querySelectorAll('.sub-tab').forEach((btn, i) => {
+            btn.classList.toggle('active', (i === 0 && type === 'ind') || (i === 1 && type === 'med'));
+        });
         renderChartsByType(type);
     };
 
     function renderChartsByType(type) {
-        const grid = document.getElementById('chartsGrid'); if (!grid) return;
+        const grid = document.getElementById('chartsGrid');
+        if (!grid) return;
         grid.innerHTML = '';
-        if (type === 'ind') CONFIG_IND.forEach(cfg => renderIndChart(cfg));
-        else Object.keys(CONFIG_MED).forEach(medKey => renderMedChart(medKey));
+        if (type === 'ind') { CONFIG_IND.forEach(cfg => renderIndChart(cfg)); }
+        else { Object.keys(CONFIG_MED).forEach(medKey => renderMedChart(medKey)); }
     }
 
-    function formatDateMMDD(dateStr) { return dateStr ? dateStr.split('-').slice(1).join('-') : ''; }
-
-    function drawRotatedLabel(ctx, text, x, y, angleDeg = -45) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(angleDeg * Math.PI / 180);
-        ctx.fillText(text, 0, 0);
-        ctx.restore();
+    function formatDateMMDD(dateStr) {
+        if (!dateStr) return '';
+        const parts = dateStr.split('-');
+        return parts.length >= 3 ? `${parts[1]}-${parts[2]}` : dateStr;
     }
 
-    // ========== 指标图表 ==========
     function renderIndChart(cfg) {
         const grid = document.getElementById('chartsGrid');
-        const card = document.createElement('div'); card.className = 'chart-card';
-        const validPoints = data.filter(d => d[cfg.id] !== null && d[cfg.id] !== undefined).map(d => ({ date: d.date, value: d[cfg.id] }));
+        const card = document.createElement('div');
+        card.className = 'chart-card';
+        const validPoints = [];
+        data.forEach((d, idx) => {
+            if (d[cfg.id] !== null && d[cfg.id] !== undefined) {
+                validPoints.push({ date: d.date, value: d[cfg.id], index: idx });
+            }
+        });
         const validDates = validPoints.map(p => formatDateMMDD(p.date));
         const canvasId = `chart-${cfg.id}`;
         card.innerHTML = `
             <div class="chart-header">
-                <div><div class="chart-title"><span class="color-dot" style="background:${cfg.color}"></span>${cfg.name} (${cfg.unit})<span style="font-size:10px; color:#2563eb; margin-left:4px;">${validPoints.length}个点</span></div>
-                <div class="ref-range">参考: ${cfg.range[0]}-${cfg.range[1]}</div></div>
-                <button class="download-btn" onclick="downloadIndChart('${cfg.id}')">⬇️ 高清下载</button>
+                <div>
+                    <div class="chart-title"><span class="color-dot" style="background:${cfg.color}"></span>${cfg.name} (${cfg.unit})<span style="font-size:10px;color:#2563eb;margin-left:4px;">${validPoints.length}个点</span></div>
+                    <div class="ref-range">参考: ${cfg.range[0]}-${cfg.range[1]}</div>
+                </div>
+                <button class="download-btn" onclick="downloadIndChart('${cfg.id}')">⬇️ 下载</button>
             </div>
-            <div class="chart-container"><canvas id="${canvasId}" width="600" height="240"></canvas></div>
+            <div class="chart-container"><canvas id="${canvasId}" width="600" height="220"></canvas></div>
             <div class="date-list"><strong>日期:</strong> ${validDates.join(' · ')}</div>`;
         grid.appendChild(card);
         drawIndChart(cfg, validPoints, canvasId);
     }
 
     function drawIndChart(cfg, points, canvasId) {
-        const canvas = document.getElementById(canvasId); if (!canvas) return;
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
         chartCanvases[`ind-${cfg.id}`] = canvas;
         const ctx = canvas.getContext('2d');
         const width = canvas.width, height = canvas.height;
         ctx.clearRect(0, 0, width, height);
-        const padding = { left: 50, right: 20, top: 30, bottom: 55 };
-        if (points.length === 0) { ctx.fillStyle = '#64748b'; ctx.font = '14px system-ui'; ctx.fillText('暂无数据', width/2, height/2); return; }
+        const padding = { left: 50, right: 20, top: 30, bottom: 35 };
+        if (points.length === 0) { ctx.fillStyle='#64748b'; ctx.font='14px system-ui'; ctx.textAlign='center'; ctx.fillText('暂无数据', width/2, height/2); return; }
         const allValues = points.map(p => p.value);
-        const minVal = Math.min(...allValues, cfg.range[0]), maxVal = Math.max(...allValues, cfg.range[1]);
+        const minVal = Math.min(...allValues, cfg.range[0]);
+        const maxVal = Math.max(...allValues, cfg.range[1]);
         const yMin = Math.floor(minVal * 0.9), yMax = Math.ceil(maxVal * 1.1);
         ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
-        ctx.fillStyle = '#0f172a'; ctx.font = 'bold 14px system-ui'; ctx.fillText(`${cfg.name} 趋势`, padding.left, 22);
+        ctx.fillStyle = '#0f172a'; ctx.font = 'bold 14px system-ui'; ctx.textAlign = 'left'; ctx.fillText(`${cfg.name} 趋势`, padding.left, 22);
         const lowerY = height - padding.bottom - ((cfg.range[0] - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
         const upperY = height - padding.bottom - ((cfg.range[1] - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
         ctx.fillStyle = cfg.color + '20'; ctx.fillRect(padding.left, upperY, width - padding.left - padding.right, lowerY - upperY);
         ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
         for (let i = 0; i <= 4; i++) {
-            const val = yMin + (i/4)*(yMax - yMin);
-            const y = height - padding.bottom - ((val - yMin)/(yMax - yMin)) * (height - padding.top - padding.bottom);
+            const val = yMin + (i / 4) * (yMax - yMin);
+            const y = height - padding.bottom - ((val - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
             ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(width - padding.right, y); ctx.stroke();
-            ctx.fillStyle = '#64748b'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'; ctx.fillText(val.toFixed(0), padding.left-5, y+3);
+            ctx.fillStyle = '#64748b'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'; ctx.fillText(val.toFixed(0), padding.left - 5, y + 3);
         }
-        points.forEach((p,i) => {
-            const x = padding.left + (i / (points.length-1)) * (width - padding.left - padding.right);
+        points.forEach((p, i) => {
+            const x = padding.left + (i / (points.length - 1)) * (width - padding.left - padding.right);
             ctx.beginPath(); ctx.moveTo(x, height - padding.bottom); ctx.lineTo(x, height - padding.bottom + 4); ctx.strokeStyle = '#cbd5e1'; ctx.stroke();
-            ctx.font = 'bold 8px system-ui';
-            ctx.textAlign = 'center';
-            drawRotatedLabel(ctx, formatDateMMDD(p.date), x, height - padding.bottom + 12, -45);
+            ctx.fillStyle = '#0f172a'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center'; ctx.fillText(formatDateMMDD(p.date), x, height - padding.bottom + 14);
         });
         ctx.beginPath(); ctx.moveTo(padding.left, height - padding.bottom); ctx.lineTo(width - padding.right, height - padding.bottom); ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; ctx.stroke();
         ctx.beginPath(); ctx.moveTo(padding.left, padding.top); ctx.lineTo(padding.left, height - padding.bottom); ctx.stroke();
         if (points.length > 0) {
             ctx.beginPath(); ctx.strokeStyle = cfg.color; ctx.lineWidth = 2.5;
-            points.forEach((p,i) => {
-                const x = padding.left + (i / (points.length-1)) * (width - padding.left - padding.right);
-                const y = height - padding.bottom - ((p.value - yMin)/(yMax - yMin)) * (height - padding.top - padding.bottom);
-                if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+            points.forEach((p, i) => {
+                const x = padding.left + (i / (points.length - 1)) * (width - padding.left - padding.right);
+                const y = height - padding.bottom - ((p.value - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
             });
             ctx.stroke();
-            points.forEach((p,i) => {
-                const x = padding.left + (i / (points.length-1)) * (width - padding.left - padding.right);
-                const y = height - padding.bottom - ((p.value - yMin)/(yMax - yMin)) * (height - padding.top - padding.bottom);
+            points.forEach((p, i) => {
+                const x = padding.left + (i / (points.length - 1)) * (width - padding.left - padding.right);
+                const y = height - padding.bottom - ((p.value - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
                 ctx.shadowColor = cfg.color; ctx.shadowBlur = 6;
-                ctx.beginPath(); ctx.arc(x, y, 4, 0, 2*Math.PI); ctx.fillStyle = cfg.color; ctx.fill();
+                ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.fillStyle = cfg.color; ctx.fill();
                 ctx.shadowBlur = 0; ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
             });
         }
-        ctx.fillStyle = '#64748b'; ctx.font = '8px system-ui'; ctx.fillText('下限', padding.left+3, lowerY-3); ctx.fillText('上限', padding.left+3, upperY-3);
     }
 
-    // ========== 药物图表 ==========
     function renderMedChart(medKey) {
         const grid = document.getElementById('chartsGrid');
-        const card = document.createElement('div'); card.className = 'chart-card';
+        const card = document.createElement('div');
+        card.className = 'chart-card';
         const medName = CONFIG_MED[medKey].name, medColor = CONFIG_MED[medKey].color;
         const allRows = data.map((d, idx) => ({ date: d.date, index: idx, value: d.meds?.[medKey] || '' }));
         const showPoints = [];
@@ -662,618 +410,167 @@
             const row = allRows[i], val = row.value;
             if (val && val !== '') {
                 const numMatch = val.match(/\d+(\.\d+)?/);
-                if (numMatch) {
-                    showPoints.push({ date: row.date, value: parseFloat(numMatch[0]), rawValue: val, index: i, type: 'value' });
-                    lastValue = parseFloat(numMatch[0]); lastRaw = val; lastValueDate = row.date;
-                } else if (val === '停用') {
-                    showPoints.push({ date: row.date, value: 0, rawValue: '停用', index: i, type: 'stop' });
-                    lastValue = null; lastRaw = null; lastValueDate = null;
-                }
+                if (numMatch) { showPoints.push({ date: row.date, value: parseFloat(numMatch[0]), rawValue: val, index: i, type: 'value' }); lastValue = parseFloat(numMatch[0]); lastRaw = val; lastValueDate = row.date; }
+                else if (val === '停用') { showPoints.push({ date: row.date, value: 0, rawValue: '停用', index: i, type: 'stop' }); lastValue = null; lastRaw = null; lastValueDate = null; }
             }
         }
-        const lastRow = allRows[allRows.length-1];
+        const lastRow = allRows[allRows.length - 1];
         if (lastValue !== null && lastValueDate !== null && lastRow.value !== '停用') {
-            showPoints.push({ date: lastRow.date, value: lastValue, rawValue: lastValueDate === lastRow.date ? lastRaw : '↳ '+lastRaw, index: allRows.length-1, type: lastValueDate === lastRow.date ? 'value' : 'extension' });
+            showPoints.push({ date: lastRow.date, value: lastValue, rawValue: lastValueDate === lastRow.date ? lastRaw : '↳ ' + lastRaw, index: allRows.length - 1, type: lastValueDate === lastRow.date ? 'value' : 'extension' });
         }
-        const uniquePoints = [];
-        const seen = new Set();
-        for (let i = showPoints.length-1; i>=0; i--) { if (!seen.has(showPoints[i].date)) { uniquePoints.unshift(showPoints[i]); seen.add(showPoints[i].date); } }
-        const showDates = uniquePoints.map(p => formatDateMMDD(p.date));
+        const uniquePoints = [], seenDates = new Set();
+        for (let i = showPoints.length - 1; i >= 0; i--) {
+            const p = showPoints[i];
+            if (!seenDates.has(p.date)) { uniquePoints.unshift(p); seenDates.add(p.date); }
+        }
         const canvasId = `med-chart-${medKey}`;
         card.innerHTML = `
             <div class="chart-header">
-                <div><div class="chart-title"><span class="color-dot" style="background:${medColor}"></span>${medName} 用量趋势<span style="font-size:10px; color:#2563eb; margin-left:4px;">${uniquePoints.length}个点</span></div>
-                <div class="ref-range">红色叉=停用 · 灰色点=延续</div></div>
-                <button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 高清下载</button>
+                <div>
+                    <div class="chart-title"><span class="color-dot" style="background:${medColor}"></span>${medName} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${uniquePoints.length}个点</span></div>
+                    <div class="ref-range">红色叉=停用 · 灰色点=延续</div>
+                </div>
+                <button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button>
             </div>
-            <div class="chart-container"><canvas id="${canvasId}" width="600" height="240"></canvas></div>
-            <div class="date-list"><strong>显示日期:</strong> ${showDates.join(' · ')}</div>`;
+            <div class="chart-container"><canvas id="${canvasId}" width="600" height="220"></canvas></div>
+            <div class="date-list"><strong>显示日期:</strong> ${uniquePoints.map(p => formatDateMMDD(p.date)).join(' · ')}</div>`;
         grid.appendChild(card);
         drawMedChart(medKey, medName, medColor, uniquePoints, allRows, canvasId);
     }
 
     function drawMedChart(medKey, medName, medColor, showPoints, allRows, canvasId) {
-        const canvas = document.getElementById(canvasId); if (!canvas) return;
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
         chartCanvases[`med-${medKey}`] = canvas;
         const ctx = canvas.getContext('2d');
         const width = canvas.width, height = canvas.height;
-        ctx.clearRect(0,0,width,height);
-        const padding = { left: 50, right: 20, top: 30, bottom: 55 };
-        if (showPoints.length===0) { ctx.fillStyle='#64748b'; ctx.font='14px system-ui'; ctx.fillText('暂无数据',width/2,height/2); return; }
-        const numericPoints = showPoints.filter(p => p.type !== 'stop' || p.type === 'stop');
-        const allValues = numericPoints.map(p=>p.value);
-        const minVal = Math.min(...allValues), maxVal = Math.max(...allValues);
-        const yMin = Math.max(0, Math.floor(minVal*0.8)), yMax = Math.ceil(maxVal*1.2);
-        ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,width,height);
-        ctx.fillStyle='#0f172a'; ctx.font='bold 14px system-ui'; ctx.fillText(`${medName} 用量趋势`, padding.left, 22);
-        ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=0.5;
-        for (let i=0;i<=4;i++) {
-            const val = yMin + (i/4)*(yMax-yMin);
-            const y = height - padding.bottom - ((val-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-            ctx.beginPath(); ctx.moveTo(padding.left,y); ctx.lineTo(width-padding.right,y); ctx.stroke();
-            ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(val.toFixed(0), padding.left-5, y+3);
+        ctx.clearRect(0, 0, width, height);
+        const padding = { left: 50, right: 20, top: 30, bottom: 35 };
+        if (showPoints.length === 0) { ctx.fillStyle='#64748b'; ctx.font='14px system-ui'; ctx.textAlign='center'; ctx.fillText('暂无数据', width/2, height/2); return; }
+        const allValues = showPoints.map(p => p.value);
+        const yMin = Math.max(0, Math.floor(Math.min(...allValues) * 0.8)), yMax = Math.ceil(Math.max(...allValues) * 1.2);
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = '#0f172a'; ctx.font = 'bold 14px system-ui'; ctx.textAlign = 'left'; ctx.fillText(`${medName} 用量趋势`, padding.left, 22);
+        ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
+        for (let i = 0; i <= 4; i++) {
+            const val = yMin + (i / 4) * (yMax - yMin);
+            const y = height - padding.bottom - ((val - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
+            ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(width - padding.right, y); ctx.stroke();
+            ctx.fillStyle = '#64748b'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'; ctx.fillText(val.toFixed(0), padding.left - 5, y + 3);
         }
         const xPositions = {};
-        allRows.forEach((row,i) => { xPositions[row.date] = padding.left + (i/(allRows.length-1))*(width-padding.left-padding.right); });
+        allRows.forEach((row, i) => { xPositions[row.date] = padding.left + (i / (allRows.length - 1)) * (width - padding.left - padding.right); });
         showPoints.forEach(p => {
             const x = xPositions[p.date];
-            ctx.beginPath(); ctx.moveTo(x, height-padding.bottom); ctx.lineTo(x, height-padding.bottom+4); ctx.strokeStyle='#cbd5e1'; ctx.stroke();
-            ctx.font = 'bold 8px system-ui';
-            ctx.textAlign = 'center';
-            drawRotatedLabel(ctx, formatDateMMDD(p.date), x, height-padding.bottom + 12, -45);
+            ctx.beginPath(); ctx.moveTo(x, height - padding.bottom); ctx.lineTo(x, height - padding.bottom + 4); ctx.strokeStyle = '#cbd5e1'; ctx.stroke();
+            ctx.fillStyle = '#0f172a'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center'; ctx.fillText(formatDateMMDD(p.date), x, height - padding.bottom + 14);
         });
-        ctx.beginPath(); ctx.moveTo(padding.left, height-padding.bottom); ctx.lineTo(width-padding.right, height-padding.bottom); ctx.strokeStyle='#0f172a'; ctx.lineWidth=1; ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(padding.left, padding.top); ctx.lineTo(padding.left, height-padding.bottom); ctx.stroke();
-        if (showPoints.length>1) {
-            for (let i=0;i<showPoints.length-1;i++) {
-                const p1=showPoints[i], p2=showPoints[i+1];
-                const x1=xPositions[p1.date], y1=height-padding.bottom-((p1.value-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-                const x2=xPositions[p2.date], y2=height-padding.bottom-((p2.value-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
+        ctx.beginPath(); ctx.moveTo(padding.left, height - padding.bottom); ctx.lineTo(width - padding.right, height - padding.bottom); ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(padding.left, padding.top); ctx.lineTo(padding.left, height - padding.bottom); ctx.stroke();
+        if (showPoints.length > 1) {
+            for (let i = 0; i < showPoints.length - 1; i++) {
+                const p1 = showPoints[i], p2 = showPoints[i + 1];
+                const x1 = xPositions[p1.date], y1 = height - padding.bottom - ((p1.value - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
+                const x2 = xPositions[p2.date], y2 = height - padding.bottom - ((p2.value - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
                 ctx.beginPath();
-                if (p1.type==='stop' || p2.type==='stop') { ctx.setLineDash([5,3]); ctx.strokeStyle=medColor; ctx.lineWidth=2; }
-                else { ctx.setLineDash([]); ctx.strokeStyle=medColor; ctx.lineWidth=2.5; }
-                ctx.moveTo(x1,y1); ctx.lineTo(x2,y1); ctx.lineTo(x2,y2);
-                ctx.stroke();
+                if (p1.type === 'stop' || p2.type === 'stop') { ctx.setLineDash([5, 3]); ctx.lineWidth = 2; } else { ctx.setLineDash([]); ctx.lineWidth = 2.5; }
+                ctx.strokeStyle = medColor; ctx.moveTo(x1, y1); ctx.lineTo(x2, y1); ctx.lineTo(x2, y2); ctx.stroke();
             }
             ctx.setLineDash([]);
         }
         showPoints.forEach(p => {
-            const x=xPositions[p.date], y=height-padding.bottom-((p.value-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-            if (p.type==='stop') {
-                ctx.fillStyle='#b91c1c'; ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fill();
-                ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
-                ctx.beginPath(); ctx.strokeStyle='white'; ctx.lineWidth=1.5;
-                ctx.moveTo(x-3,y-3); ctx.lineTo(x+3,y+3); ctx.moveTo(x+3,y-3); ctx.lineTo(x-3,y+3); ctx.stroke();
-            } else if (p.type==='extension') {
-                ctx.fillStyle='#94a3b8'; ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fill();
-                ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
+            const x = xPositions[p.date], y = height - padding.bottom - ((p.value - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
+            if (p.type === 'stop') {
+                ctx.fillStyle = '#b91c1c'; ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.fill();
+                ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
+                ctx.beginPath(); ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.moveTo(x-3,y-3); ctx.lineTo(x+3,y+3); ctx.moveTo(x+3,y-3); ctx.lineTo(x-3,y+3); ctx.stroke();
+            } else if (p.type === 'extension') {
+                ctx.fillStyle = '#94a3b8'; ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
             } else {
-                ctx.shadowColor=medColor; ctx.shadowBlur=6;
-                ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fillStyle=medColor; ctx.fill();
-                ctx.shadowBlur=0; ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
+                ctx.shadowColor = medColor; ctx.shadowBlur = 6; ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.fillStyle = medColor; ctx.fill(); ctx.shadowBlur = 0; ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
             }
-            ctx.fillStyle = p.type==='extension' ? '#64748b' : (p.type==='stop' ? '#b91c1c' : '#1e293b');
-            ctx.font = p.type==='extension' ? '7px system-ui' : 'bold 7px system-ui';
-            ctx.fillText(p.rawValue, x, y-12);
+            ctx.fillStyle = p.type === 'extension' ? '#64748b' : (p.type === 'stop' ? '#b91c1c' : '#1e293b');
+            ctx.font = p.type === 'extension' ? '7px system-ui' : 'bold 7px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.rawValue, x, y - 12);
         });
     }
 
-    // ========== 高清下载 ==========
-    function downloadHighRes(cfg, isInd, points, allRows, medKey) {
-        const scale = 2;
-        const origWidth = 600, origHeight = 240;
-        const newCanvas = document.createElement('canvas');
-        newCanvas.width = origWidth * scale;
-        newCanvas.height = origHeight * scale;
-        const ctx = newCanvas.getContext('2d');
-        ctx.scale(scale, scale);
-        const width = origWidth, height = origHeight;
-        const padding = { left: 50, right: 20, top: 30, bottom: 55 };
-        if (isInd) {
-            if (points.length === 0) {
-                ctx.fillStyle = '#64748b'; ctx.font = '14px system-ui'; ctx.fillText('暂无数据', width/2, height/2);
-                return newCanvas;
-            }
-            const allValues = points.map(p => p.value);
-            const minVal = Math.min(...allValues, cfg.range[0]), maxVal = Math.max(...allValues, cfg.range[1]);
-            const yMin = Math.floor(minVal * 0.9), yMax = Math.ceil(maxVal * 1.1);
-            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = '#0f172a'; ctx.font = 'bold 14px system-ui'; ctx.fillText(`${cfg.name} 趋势`, padding.left, 22);
-            const lowerY = height - padding.bottom - ((cfg.range[0] - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
-            const upperY = height - padding.bottom - ((cfg.range[1] - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom);
-            ctx.fillStyle = cfg.color + '20'; ctx.fillRect(padding.left, upperY, width - padding.left - padding.right, lowerY - upperY);
-            ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
-            for (let i = 0; i <= 4; i++) {
-                const val = yMin + (i/4)*(yMax - yMin);
-                const y = height - padding.bottom - ((val - yMin)/(yMax - yMin)) * (height - padding.top - padding.bottom);
-                ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(width - padding.right, y); ctx.stroke();
-                ctx.fillStyle = '#64748b'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'; ctx.fillText(val.toFixed(0), padding.left-5, y+3);
-            }
-            points.forEach((p,i) => {
-                const x = padding.left + (i / (points.length-1)) * (width - padding.left - padding.right);
-                ctx.beginPath(); ctx.moveTo(x, height - padding.bottom); ctx.lineTo(x, height - padding.bottom + 4); ctx.strokeStyle = '#cbd5e1'; ctx.stroke();
-                ctx.font = 'bold 8px system-ui';
-                ctx.textAlign = 'center';
-                drawRotatedLabel(ctx, formatDateMMDD(p.date), x, height - padding.bottom + 12, -45);
-            });
-            ctx.beginPath(); ctx.moveTo(padding.left, height - padding.bottom); ctx.lineTo(width - padding.right, height - padding.bottom); ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(padding.left, padding.top); ctx.lineTo(padding.left, height - padding.bottom); ctx.stroke();
-            if (points.length > 0) {
-                ctx.beginPath(); ctx.strokeStyle = cfg.color; ctx.lineWidth = 2.5;
-                points.forEach((p,i) => {
-                    const x = padding.left + (i / (points.length-1)) * (width - padding.left - padding.right);
-                    const y = height - padding.bottom - ((p.value - yMin)/(yMax - yMin)) * (height - padding.top - padding.bottom);
-                    if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-                });
-                ctx.stroke();
-                points.forEach((p,i) => {
-                    const x = padding.left + (i / (points.length-1)) * (width - padding.left - padding.right);
-                    const y = height - padding.bottom - ((p.value - yMin)/(yMax - yMin)) * (height - padding.top - padding.bottom);
-                    ctx.shadowColor = cfg.color; ctx.shadowBlur = 6;
-                    ctx.beginPath(); ctx.arc(x, y, 4, 0, 2*Math.PI); ctx.fillStyle = cfg.color; ctx.fill();
-                    ctx.shadowBlur = 0; ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
-                });
-            }
-            ctx.fillStyle = '#64748b'; ctx.font = '8px system-ui'; ctx.fillText('下限', padding.left+3, lowerY-3); ctx.fillText('上限', padding.left+3, upperY-3);
-        } else {
-            if (points.length === 0) {
-                ctx.fillStyle = '#64748b'; ctx.font = '14px system-ui'; ctx.fillText('暂无数据', width/2, height/2);
-                return newCanvas;
-            }
-            const numericPoints = points.filter(p => p.type !== 'stop' || p.type === 'stop');
-            const allValues = numericPoints.map(p=>p.value);
-            const minVal = Math.min(...allValues), maxVal = Math.max(...allValues);
-            const yMin = Math.max(0, Math.floor(minVal*0.8)), yMax = Math.ceil(maxVal*1.2);
-            ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,width,height);
-            ctx.fillStyle='#0f172a'; ctx.font='bold 14px system-ui'; ctx.fillText(`${CONFIG_MED[medKey].name} 用量趋势`, padding.left, 22);
-            ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=0.5;
-            for (let i=0;i<=4;i++) {
-                const val = yMin + (i/4)*(yMax-yMin);
-                const y = height - padding.bottom - ((val-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-                ctx.beginPath(); ctx.moveTo(padding.left,y); ctx.lineTo(width-padding.right,y); ctx.stroke();
-                ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(val.toFixed(0), padding.left-5, y+3);
-            }
-            const xPositions = {};
-            allRows.forEach((row,i) => { xPositions[row.date] = padding.left + (i/(allRows.length-1))*(width-padding.left-padding.right); });
-            points.forEach(p => {
-                const x = xPositions[p.date];
-                ctx.beginPath(); ctx.moveTo(x, height-padding.bottom); ctx.lineTo(x, height-padding.bottom+4); ctx.strokeStyle='#cbd5e1'; ctx.stroke();
-                ctx.font = 'bold 8px system-ui';
-                ctx.textAlign = 'center';
-                drawRotatedLabel(ctx, formatDateMMDD(p.date), x, height-padding.bottom + 12, -45);
-            });
-            ctx.beginPath(); ctx.moveTo(padding.left, height-padding.bottom); ctx.lineTo(width-padding.right, height-padding.bottom); ctx.strokeStyle='#0f172a'; ctx.lineWidth=1; ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(padding.left, padding.top); ctx.lineTo(padding.left, height-padding.bottom); ctx.stroke();
-            if (points.length>1) {
-                for (let i=0;i<points.length-1;i++) {
-                    const p1=points[i], p2=points[i+1];
-                    const x1=xPositions[p1.date], y1=height-padding.bottom-((p1.value-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-                    const x2=xPositions[p2.date], y2=height-padding.bottom-((p2.value-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-                    ctx.beginPath();
-                    if (p1.type==='stop' || p2.type==='stop') { ctx.setLineDash([5,3]); ctx.strokeStyle=CONFIG_MED[medKey].color; ctx.lineWidth=2; }
-                    else { ctx.setLineDash([]); ctx.strokeStyle=CONFIG_MED[medKey].color; ctx.lineWidth=2.5; }
-                    ctx.moveTo(x1,y1); ctx.lineTo(x2,y1); ctx.lineTo(x2,y2);
-                    ctx.stroke();
-                }
-                ctx.setLineDash([]);
-            }
-            points.forEach(p => {
-                const x=xPositions[p.date], y=height-padding.bottom-((p.value-yMin)/(yMax-yMin))*(height-padding.top-padding.bottom);
-                if (p.type==='stop') {
-                    ctx.fillStyle='#b91c1c'; ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fill();
-                    ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
-                    ctx.beginPath(); ctx.strokeStyle='white'; ctx.lineWidth=1.5;
-                    ctx.moveTo(x-3,y-3); ctx.lineTo(x+3,y+3); ctx.moveTo(x+3,y-3); ctx.lineTo(x-3,y+3); ctx.stroke();
-                } else if (p.type==='extension') {
-                    ctx.fillStyle='#94a3b8'; ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fill();
-                    ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
-                } else {
-                    ctx.shadowColor=CONFIG_MED[medKey].color; ctx.shadowBlur=6;
-                    ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fillStyle=CONFIG_MED[medKey].color; ctx.fill();
-                    ctx.shadowBlur=0; ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
-                }
-                ctx.fillStyle = p.type==='extension' ? '#64748b' : (p.type==='stop' ? '#b91c1c' : '#1e293b');
-                ctx.font = p.type==='extension' ? '7px system-ui' : 'bold 7px system-ui';
-                ctx.fillText(p.rawValue, x, y-12);
-            });
-        }
-        return newCanvas;
-    }
+    window.downloadIndChart = (indId) => { const canvas = chartCanvases[`ind-${indId}`]; if (!canvas) return; const cfg = CONFIG_IND.find(c => c.id === indId); const link = document.createElement('a'); link.download = `王坚_${cfg.name}_趋势图.png`; link.href = canvas.toDataURL('image/png'); link.click(); };
+    window.downloadMedChart = (medKey) => { const canvas = chartCanvases[`med-${medKey}`]; if (!canvas) return; const link = document.createElement('a'); link.download = `王坚_${CONFIG_MED[medKey].name}_用量趋势.png`; link.href = canvas.toDataURL('image/png'); link.click(); };
 
-    window.downloadIndChart = (indId) => {
-        const cfg = CONFIG_IND.find(c => c.id === indId);
-        const points = data.filter(d => d[cfg.id] !== null && d[cfg.id] !== undefined).map(d => ({ date: d.date, value: d[cfg.id] }));
-        const highResCanvas = downloadHighRes(cfg, true, points, null, null);
-        const link = document.createElement('a');
-        link.download = `王坚_${cfg.name}_趋势图.png`;
-        link.href = highResCanvas.toDataURL('image/png');
-        link.click();
-    };
-
-    window.downloadMedChart = (medKey) => {
-        const allRows = data.map((d, idx) => ({ date: d.date, index: idx, value: d.meds?.[medKey] || '' }));
-        const showPoints = [];
-        let lastValue = null, lastRaw = null, lastValueDate = null;
-        for (let i = 0; i < allRows.length; i++) {
-            const row = allRows[i], val = row.value;
-            if (val && val !== '') {
-                const numMatch = val.match(/\d+(\.\d+)?/);
-                if (numMatch) {
-                    showPoints.push({ date: row.date, value: parseFloat(numMatch[0]), rawValue: val, index: i, type: 'value' });
-                    lastValue = parseFloat(numMatch[0]); lastRaw = val; lastValueDate = row.date;
-                } else if (val === '停用') {
-                    showPoints.push({ date: row.date, value: 0, rawValue: '停用', index: i, type: 'stop' });
-                    lastValue = null; lastRaw = null; lastValueDate = null;
-                }
-            }
-        }
-        const lastRow = allRows[allRows.length-1];
-        if (lastValue !== null && lastValueDate !== null && lastRow.value !== '停用') {
-            showPoints.push({ date: lastRow.date, value: lastValue, rawValue: lastValueDate === lastRow.date ? lastRaw : '↳ '+lastRaw, index: allRows.length-1, type: lastValueDate === lastRow.date ? 'value' : 'extension' });
-        }
-        const uniquePoints = [];
-        const seen = new Set();
-        for (let i = showPoints.length-1; i>=0; i--) { if (!seen.has(showPoints[i].date)) { uniquePoints.unshift(showPoints[i]); seen.add(showPoints[i].date); } }
-        const highResCanvas = downloadHighRes(null, false, uniquePoints, allRows, medKey);
-        const link = document.createElement('a');
-        link.download = `王坚_${CONFIG_MED[medKey].name}_用量趋势.png`;
-        link.href = highResCanvas.toDataURL('image/png');
-        link.click();
-    };
-
-    // ========== 表格操作 ==========
     function renderTableHeaders() {
         const indHeader = document.getElementById('indTableHeader');
         if (indHeader) {
             let html = '<th>日期</th><th>周次</th>';
-            CONFIG_IND.forEach((cfg, idx) => {
-                html += `<th><div class="col-header-content"><div>${cfg.name}<br><small>${cfg.unit}</small></div><div class="col-actions"><button class="insert-col-btn" onclick="insertIndColBefore(${idx})">➕插入</button><button class="delete-btn" onclick="deleteIndCol(${idx})">🗑️</button></div></div></th>`;
-            });
-            html += '<th>操作</th>';
-            indHeader.innerHTML = html;
+            CONFIG_IND.forEach((cfg, idx) => { html += `<th><div class="col-header-content"><div>${cfg.name}<br><small>${cfg.unit}</small></div><div class="col-actions"><button class="insert-col-btn" onclick="insertIndColBefore(${idx})">➕插入</button><button class="delete-btn" onclick="deleteIndCol(${idx})">🗑️</button></div></div></th>`; });
+            html += '<th>操作</th>'; indHeader.innerHTML = html;
         }
         const medHeader = document.getElementById('medTableHeader');
         if (medHeader) {
             let html = '<th>日期</th><th>周次</th>';
-            const medKeys = Object.keys(CONFIG_MED);
-            medKeys.forEach((key, idx) => {
-                html += `<th><div class="col-header-content"><div>${CONFIG_MED[key].name}</div><div class="col-actions"><button class="insert-col-btn" onclick="insertMedColBefore(${idx})">➕插入</button><button class="delete-btn" onclick="deleteMedCol('${key}')">🗑️</button></div></div></th>`;
-            });
-            html += '<th>操作</th>';
-            medHeader.innerHTML = html;
+            Object.keys(CONFIG_MED).forEach((key, idx) => { html += `<th><div class="col-header-content"><div>${CONFIG_MED[key].name}</div><div class="col-actions"><button class="insert-col-btn" onclick="insertMedColBefore(${idx})">➕插入</button><button class="delete-btn" onclick="deleteMedCol('${key}')">🗑️</button></div></div></th>`; });
+            html += '<th>操作</th>'; medHeader.innerHTML = html;
         }
     }
 
     function renderTables() {
-        const indBody = document.getElementById('indTableBody');
-        const medBody = document.getElementById('medTableBody');
+        const indBody = document.getElementById('indTableBody'), medBody = document.getElementById('medTableBody');
         if (!indBody || !medBody) return;
-        indBody.innerHTML = '';
-        medBody.innerHTML = '';
-
+        indBody.innerHTML = ''; medBody.innerHTML = '';
         data.forEach((row, idx) => {
-            // 指标表行
             let indRow = '<tr>';
-            indRow += `<td><input type="date" value="${row.date}" onchange="updateCell(${idx}, 'date', this.value)"></td>`;
-            indRow += `<td><input type="text" value="${row.week || ''}" placeholder="周次" onchange="updateCell(${idx}, 'week', this.value)"></td>`;
-            CONFIG_IND.forEach(cfg => {
-                const val = row[cfg.id] !== undefined && row[cfg.id] !== null ? row[cfg.id] : '';
-                const isOut = val !== '' && (val < cfg.range[0] || val > cfg.range[1]);
-                indRow += `<td><input type="number" step="0.01" value="${val}" style="${isOut ? 'background:#fee2e2;' : ''}" onchange="updateCell(${idx}, '${cfg.id}', this.value)"></td>`;
-            });
-            indRow += `<td class="action-buttons"><button class="insert-btn" onclick="insertRowAfter(${idx})">➕插入行</button><button class="delete-btn" onclick="deleteRow(${idx})">🗑️</button></td>`;
-            indRow += '</tr>';
+            indRow += `<td><input type="date" value="${row.date}" onchange="updateCell(${idx},'date',this.value)"></td>`;
+            indRow += `<td><input type="text" value="${row.week||''}" placeholder="周次" onchange="updateCell(${idx},'week',this.value)"></td>`;
+            CONFIG_IND.forEach(cfg => { const val = row[cfg.id]!==undefined&&row[cfg.id]!==null?row[cfg.id]:''; const isOut=val!==''&&(val<cfg.range[0]||val>cfg.range[1]); indRow+=`<td><input type="number" step="0.01" value="${val}" style="${isOut?'background:#fee2e2;':''}" onchange="updateCell(${idx},'${cfg.id}',this.value)"></td>`; });
+            indRow += `<td class="action-buttons"><button class="insert-btn" onclick="insertRowAfter(${idx})">➕插入行</button><button class="delete-btn" onclick="deleteRow(${idx})">🗑️</button></td></tr>`;
             indBody.innerHTML += indRow;
-
-            // 用药表行
-            let medRow = '<tr>';
-            medRow += `<td>${row.date}</td>`;
-            medRow += `<td>${row.week || '-'}</td>`;
-            Object.keys(CONFIG_MED).forEach(k => {
-                const val = row.meds?.[k] || '';
-                const isStopped = val === '停用';
-                medRow += `<td><input type="text" class="med-input ${isStopped ? 'stopped' : ''}" value="${val}" onchange="updateMed(${idx}, '${k}', this.value)"></td>`;
-            });
-            medRow += `<td class="action-buttons"><button class="insert-btn" onclick="insertMedRowAfter(${idx})">➕插入行</button><button class="delete-btn" onclick="deleteMedRow(${idx})">🗑️</button></td>`;
-            medRow += '</tr>';
+            let medRow = `<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;
+            Object.keys(CONFIG_MED).forEach(k => { const val=row.meds?.[k]||''; const isStopped=val==='停用'; medRow+=`<td><input type="text" class="med-input ${isStopped?'stopped':''}" value="${val}" onchange="updateMed(${idx},'${k}',this.value)"></td>`; });
+            medRow += `<td class="action-buttons"><button class="insert-btn" onclick="insertMedRowAfter(${idx})">➕插入行</button><button class="delete-btn" onclick="deleteMedRow(${idx})">🗑️</button></td></tr>`;
             medBody.innerHTML += medRow;
         });
     }
 
     window.insertIndColBefore = (index) => {
-        const newId = `ind_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-        const newName = prompt('请输入新指标名称：', '新指标');
-        if (!newName) return;
-        const newUnit = prompt('请输入单位：', '');
-        if (newUnit === null) return;
-        const minRange = parseFloat(prompt('请输入参考范围下限：', '0'));
-        if (isNaN(minRange)) return;
-        const maxRange = parseFloat(prompt('请输入参考范围上限：', '100'));
-        if (isNaN(maxRange)) return;
-        const colors = ['#2563eb', '#059669', '#d97706', '#dc2626', '#7c3aed', '#4f46e5', '#6366f1', '#0ea5e9', '#e11d48', '#0284c7'];
-        const newColor = colors[CONFIG_IND.length % colors.length];
-        const newConfig = { id: newId, name: newName, unit: newUnit, range: [minRange, maxRange], color: newColor };
-        CONFIG_IND.splice(index, 0, newConfig);
-        data.forEach(row => { row[newId] = null; });
-        saveData();
-        renderTableHeaders(); renderTables(); if (currentChartType === 'ind') renderChartsByType('ind');
-        showSaved();
+        const newId = `ind_${Date.now()}`; const newName = prompt('请输入新指标名称：','新指标'); if (!newName) return;
+        const newUnit = prompt('请输入单位：',''); if (newUnit===null) return;
+        const minRange = parseFloat(prompt('参考范围下限：','0')); if (isNaN(minRange)) return;
+        const maxRange = parseFloat(prompt('参考范围上限：','100')); if (isNaN(maxRange)) return;
+        const colors=['#2563eb','#059669','#d97706','#dc2626','#7c3aed'];
+        CONFIG_IND.splice(index,0,{id:newId,name:newName,unit:newUnit,range:[minRange,maxRange],color:colors[CONFIG_IND.length%colors.length]});
+        data.forEach(row=>{row[newId]=null;}); saveData(); renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
     };
-
-    window.deleteIndCol = (index) => {
-        if (CONFIG_IND.length <= 1) { alert('至少保留一个指标列'); return; }
-        const cfg = CONFIG_IND[index];
-        if (confirm(`确定删除指标列“${cfg.name}”吗？所有相关数据将丢失。`)) {
-            CONFIG_IND.splice(index, 1);
-            data.forEach(row => { delete row[cfg.id]; });
-            saveData();
-            renderTableHeaders(); renderTables(); if (currentChartType === 'ind') renderChartsByType('ind');
-            showSaved();
-        }
-    };
-
-    window.insertMedColBefore = (index) => {
-        const newKey = `med_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-        const newName = prompt('请输入新药物名称：', '新药物');
-        if (!newName) return;
-        const colors = ['#dc2626', '#7c3aed', '#059669', '#2563eb', '#d97706', '#0891b2', '#b45309', '#be185d', '#6b21a8', '#0d9488'];
-        const newColor = colors[Object.keys(CONFIG_MED).length % colors.length];
-        const newMed = {};
-        newMed[newKey] = { name: newName, color: newColor };
-        const medKeys = Object.keys(CONFIG_MED);
-        const newConfig = {};
-        for (let i = 0; i < medKeys.length; i++) {
-            if (i === index) Object.assign(newConfig, newMed);
-            newConfig[medKeys[i]] = CONFIG_MED[medKeys[i]];
-        }
-        if (index >= medKeys.length) Object.assign(newConfig, newMed);
-        CONFIG_MED = newConfig;
-        data.forEach(row => { if (!row.meds) row.meds = {}; row.meds[newKey] = ''; });
-        saveData();
-        renderTableHeaders(); renderTables(); if (currentChartType === 'med') renderChartsByType('med');
-        showSaved();
-    };
-
-    window.deleteMedCol = (key) => {
-        const medKeys = Object.keys(CONFIG_MED);
-        if (medKeys.length <= 1) { alert('至少保留一个药物列'); return; }
-        if (confirm(`确定删除药物列“${CONFIG_MED[key].name}”吗？所有相关数据将丢失。`)) {
-            delete CONFIG_MED[key];
-            data.forEach(row => { if (row.meds) delete row.meds[key]; });
-            saveData();
-            renderTableHeaders(); renderTables(); if (currentChartType === 'med') renderChartsByType('med');
-            showSaved();
-        }
-    };
-
+    window.deleteIndCol = (index) => { if(CONFIG_IND.length<=1){alert('至少保留一个');return;} const cfg=CONFIG_IND[index]; if(confirm(`确定删除"${cfg.name}"吗？`)){CONFIG_IND.splice(index,1);data.forEach(row=>{delete row[cfg.id];});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);} };
+    window.insertMedColBefore = (index) => { const newKey=`med_${Date.now()}`; const newName=prompt('请输入新药物名称：','新药物'); if(!newName)return; const colors=['#dc2626','#7c3aed','#059669','#2563eb','#d97706']; const newConfig={}; const medKeys=Object.keys(CONFIG_MED); medKeys.forEach((k,i)=>{if(i===index)newConfig[newKey]={name:newName,color:colors[medKeys.length%colors.length]};newConfig[k]=CONFIG_MED[k];}); if(index>=medKeys.length)newConfig[newKey]={name:newName,color:colors[medKeys.length%colors.length]}; CONFIG_MED=newConfig; data.forEach(row=>{if(!row.meds)row.meds={};row.meds[newKey]='';}); saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType); };
+    window.deleteMedCol = (key) => { if(Object.keys(CONFIG_MED).length<=1){alert('至少保留一个');return;} if(confirm(`确定删除"${CONFIG_MED[key].name}"吗？`)){delete CONFIG_MED[key];data.forEach(row=>{if(row.meds)delete row.meds[key];});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);} };
     window.addNewIndCol = () => window.insertIndColBefore(CONFIG_IND.length);
     window.addNewMedCol = () => window.insertMedColBefore(Object.keys(CONFIG_MED).length);
+    window.updateCell = (idx,field,val) => { if(field==='date'||field==='week'){data[idx][field]=val;}else{data[idx][field]=val===''?null:parseFloat(val);} data.sort((a,b)=>new Date(a.date)-new Date(b.date)); saveData(); renderTables(); if(currentChartType==='ind')renderChartsByType('ind'); };
+    window.updateMed = (idx,medKey,val) => { if(!data[idx].meds)data[idx].meds={}; data[idx].meds[medKey]=val; saveData(); renderTables(); if(currentChartType==='med')renderChartsByType('med'); };
+    window.deleteRow = (idx) => { if(confirm('确定删除？')){data.splice(idx,1);saveData();renderTables();renderChartsByType(currentChartType);} };
+    window.deleteMedRow = (idx) => { if(confirm('确定删除？')){if(data[idx])data[idx].meds={};saveData();renderTables();if(currentChartType==='med')renderChartsByType('med');} };
+    function getMiddleDate(d1,d2){const t=(new Date(d1).getTime()+new Date(d2).getTime())/2;return new Date(t).toISOString().split('T')[0];}
+    window.insertRowAfter = (idx) => { let newDate; if(idx===data.length-1){const d=new Date(data[idx].date);d.setDate(d.getDate()+7);newDate=d.toISOString().split('T')[0];}else{newDate=getMiddleDate(data[idx].date,data[idx+1].date);} const newRow={date:newDate,week:'',meds:{}}; CONFIG_IND.forEach(cfg=>newRow[cfg.id]=null); data.splice(idx+1,0,newRow); saveData();renderTables();renderChartsByType(currentChartType); };
+    window.insertMedRowAfter = window.insertRowAfter;
+    window.addNewRowAtEnd = () => { const d=new Date(data[data.length-1]?.date||'2026-03-01'); d.setDate(d.getDate()+7); const newRow={date:d.toISOString().split('T')[0],week:'',meds:{}}; CONFIG_IND.forEach(cfg=>newRow[cfg.id]=null); data.push(newRow); saveData();renderTables();renderChartsByType(currentChartType); };
+    window.addMedRowAtEnd = window.addNewRowAtEnd;
 
-    window.updateCell = (idx, field, val) => {
-        if (field === 'date' || field === 'week') data[idx][field] = val;
-        else data[idx][field] = val === '' ? null : parseFloat(val);
-        data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        saveData(); renderTables(); if (currentChartType === 'ind') renderChartsByType('ind');
-        showSaved();
-    };
+    function generateIndTableHTML(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病指标记录表</h1><p>生成时间：${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${CONFIG_IND.map(i=>`<th>${i.name}(${i.unit})</th>`).join('')}</tr></thead><tbody>${data.map(row=>`<tr><td>${row.date}</td><td>${row.week||'-'}</td>${CONFIG_IND.map(i=>`<td>${row[i.id]!==null&&row[i.id]!==undefined?row[i.id]:'-'}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;}
 
-    window.updateMed = (idx, medKey, val) => {
-        if (!data[idx].meds) data[idx].meds = {};
-        data[idx].meds[medKey] = val;
-        saveData(); renderTables(); if (currentChartType === 'med') renderChartsByType('med');
-        showSaved();
-    };
+```
+function generateMedTableHTML(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}.stopped{background:#fee2e2;color:#b91c1c;text-decoration:line-through;}</style></head><body><h1>王坚·肾病用药记录表</h1><p>生成时间：${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${Object.values(CONFIG_MED).map(m=>`<th>${m.name}</th>`).join('')}</tr></thead><tbody>${data.map(row=>{let r=`<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;Object.keys(CONFIG_MED).forEach(k=>{const v=row.meds?.[k]||'';r+=`<td ${v==='停用'?'class="stopped"':''}>${v||'-'}</td>`;});return r+'</tr>';}).join('')}</tbody></table></body></html>`;}
+window.exportIndToWord=()=>{const b=new Blob([generateIndTableHTML()],{type:'application/msword'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`王坚_肾病指标表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
+window.exportMedToWord=()=>{const b=new Blob([generateMedTableHTML()],{type:'application/msword'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`王坚_肾病用药表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
+window.exportAllToWord=()=>{const combined=`<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;margin-bottom:30px;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}.stopped{background:#fee2e2;color:#b91c1c;text-decoration:line-through;}</style></head><body><h1>王坚·肾病完整监测记录</h1><p>生成时间：${new Date().toLocaleString('zh-CN')}</p><h2>一、指标记录表</h2>${generateIndTableHTML().split('<body>')[1].split('</body>')[0]}<h2>二、用药记录表</h2>${generateMedTableHTML().split('<body>')[1].split('</body>')[0]}</body></html>`;const b=new Blob([combined],{type:'application/msword'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`王坚_肾病完整记录_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
+window.exportCSV=()=>{const headers=['日期','周次',...CONFIG_IND.map(i=>`${i.name}(${i.unit})`),...Object.values(CONFIG_MED).map(m=>m.name)];const rows=data.map(r=>[r.date,r.week||'',...CONFIG_IND.map(i=>r[i.id]!==null&&r[i.id]!==undefined?r[i.id]:''),...Object.keys(CONFIG_MED).map(k=>r.meds?.[k]??'')]);let csv=headers.join(',')+'\n';rows.forEach(row=>{csv+=row.map(cell=>`"${cell}"`).join(',')+'\n';});const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='王坚_肾病监测数据.csv';a.click();};
+window.switchTab=(tab)=>{ document.getElementById('chartsPanel').style.display=tab==='charts'?'block':'none'; document.getElementById('indPanel').style.display=tab==='ind'?'block':'none'; document.getElementById('medPanel').style.display=tab==='med'?'block':'none'; document.querySelectorAll('.tab').forEach((btn,i)=>{btn.classList.toggle('active',(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med'));}); if(tab==='charts')setTimeout(()=>renderChartsByType(currentChartType),50); };
+window.addEventListener('resize',()=>{if(document.getElementById('chartsPanel').style.display!=='none')renderChartsByType(currentChartType);});
 
-    window.deleteRow = (idx) => {
-        if (confirm('确定删除这条指标记录吗？')) {
-            data.splice(idx, 1);
-            saveData(); renderTables(); renderChartsByType(currentChartType);
-            showSaved();
-        }
-    };
+// 初始渲染（等待云端数据）
+renderTableHeaders();
+renderTables();
+renderChartsByType(currentChartType);
+```
 
-    window.deleteMedRow = (idx) => {
-        if (confirm('确定删除这条用药记录吗？')) {
-            if (data[idx]) data[idx].meds = {};
-            saveData(); renderTables(); if (currentChartType === 'med') renderChartsByType('med');
-            showSaved();
-        }
-    };
-
-    function getMiddleDate(date1, date2) {
-        const d1 = new Date(date1), d2 = new Date(date2);
-        return new Date((d1.getTime() + d2.getTime()) / 2).toISOString().split('T')[0];
-    }
-
-    window.insertRowAfter = (idx) => {
-        let newDate = idx === data.length-1 ? new Date(new Date(data[idx].date).setDate(new Date(data[idx].date).getDate()+7)).toISOString().split('T')[0] : getMiddleDate(data[idx].date, data[idx+1].date);
-        const newRow = { date: newDate, week: '', meds: {} };
-        CONFIG_IND.forEach(cfg => newRow[cfg.id] = null);
-        data.splice(idx+1, 0, newRow);
-        saveData(); renderTables(); renderChartsByType(currentChartType);
-        showSaved();
-    };
-
-    window.insertMedRowAfter = (idx) => {
-        let newDate = idx === data.length-1 ? new Date(new Date(data[idx].date).setDate(new Date(data[idx].date).getDate()+7)).toISOString().split('T')[0] : getMiddleDate(data[idx].date, data[idx+1].date);
-        const newRow = { date: newDate, week: '', meds: {} };
-        CONFIG_IND.forEach(cfg => newRow[cfg.id] = null);
-        data.splice(idx+1, 0, newRow);
-        saveData(); renderTables(); renderChartsByType(currentChartType);
-        showSaved();
-    };
-
-    window.addNewRowAtEnd = () => {
-        const lastDate = data.length>0 ? data[data.length-1].date : '2026-03-01';
-        const d = new Date(lastDate); d.setDate(d.getDate()+7);
-        const newRow = { date: d.toISOString().split('T')[0], week: '', meds: {} };
-        CONFIG_IND.forEach(cfg => newRow[cfg.id] = null);
-        data.push(newRow);
-        saveData(); renderTables(); renderChartsByType(currentChartType);
-        showSaved();
-    };
-
-    window.addMedRowAtEnd = () => {
-        const lastDate = data.length>0 ? data[data.length-1].date : '2026-03-01';
-        const d = new Date(lastDate); d.setDate(d.getDate()+7);
-        const newRow = { date: d.toISOString().split('T')[0], week: '', meds: {} };
-        CONFIG_IND.forEach(cfg => newRow[cfg.id] = null);
-        data.push(newRow);
-        saveData(); renderTables(); renderChartsByType(currentChartType);
-        showSaved();
-    };
-
-    // ========== Word导出（最终版）==========
-    function generateIndTableHTML() {
-        return `<!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>指标表</title>
-            <style>
-                body { font-family: 'Microsoft YaHei', '宋体', Arial, sans-serif; padding: 10px; margin: 0; }
-                @page { size: A4 landscape; margin: 1cm; }
-                h1 { color: #2563eb; font-size: 18px; margin-bottom: 5px; }
-                p { font-size: 10px; margin: 5px 0; }
-                table { border-collapse: collapse; width: 100%; table-layout: auto; font-size: 10px; margin-top: 10px; }
-                th, td { border: 1px solid #ccc; padding: 4px 2px; text-align: center; word-break: break-word; }
-                th { background: #f0f0f0; font-weight: bold; }
-                .out-of-range { background: #fee2e2; }
-            </style>
-        </head>
-        <body>
-            <h1>王坚 · 肾病指标记录表</h1>
-            <p>生成时间：${new Date().toLocaleString()}</p>
-            <table>
-                <thead>
-                    <tr><th>日期</th><th>周次</th>${CONFIG_IND.map(i=>`<th>${i.name}<br>(${i.unit})</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row=>`
-                        <tr>
-                            <td>${row.date}</td>
-                            <td>${row.week||'-'}</td>
-                            ${CONFIG_IND.map(i=>`<td class="${row[i.id]!==null && row[i.id]!==undefined && (row[i.id] < i.range[0] || row[i.id] > i.range[1]) ? 'out-of-range' : ''}">${row[i.id]!==null && row[i.id]!==undefined ? row[i.id] : '-'}</td>`).join('')}
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        </body>
-        </html>`;
-    }
-
-    function generateMedTableHTML() {
-        return `<!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>用药表</title>
-            <style>
-                body { font-family: 'Microsoft YaHei', '宋体', Arial, sans-serif; padding: 10px; margin: 0; }
-                @page { size: A4 landscape; margin: 1cm; }
-                h1 { color: #2563eb; font-size: 18px; margin-bottom: 5px; }
-                p { font-size: 10px; margin: 5px 0; }
-                table { border-collapse: collapse; width: 100%; table-layout: auto; font-size: 10px; margin-top: 10px; }
-                th, td { border: 1px solid #ccc; padding: 4px 2px; text-align: center; word-break: break-word; }
-                th { background: #f0f0f0; font-weight: bold; }
-                .stopped { background: #fee2e2; color: #b91c1c; text-decoration: line-through; }
-            </style>
-        </head>
-        <body>
-            <h1>王坚 · 肾病用药记录表</h1>
-            <p>生成时间：${new Date().toLocaleString()}</p>
-            <table>
-                <thead>
-                    <tr><th>日期</th><th>周次</th>${Object.values(CONFIG_MED).map(m=>`<th>${m.name}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row=>`
-                        <tr>
-                            <td>${row.date}</td>
-                            <td>${row.week||'-'}</td>
-                            ${Object.keys(CONFIG_MED).map(k=>{
-                                const v = row.meds?.[k] || '';
-                                const isStop = v === '停用';
-                                return `<td class="${isStop ? 'stopped' : ''}">${v||'-'}</td>`;
-                            }).join('')}
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        </body>
-        </html>`;
-    }
-
-    window.exportIndToWord = () => {
-        const blob = new Blob([generateIndTableHTML()], {type:'application/msword'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download=`王坚_肾病指标表_${new Date().toISOString().slice(0,10)}.doc`; a.click();
-        URL.revokeObjectURL(url);
-    };
-    window.exportMedToWord = () => {
-        const blob = new Blob([generateMedTableHTML()], {type:'application/msword'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download=`王坚_肾病用药表_${new Date().toISOString().slice(0,10)}.doc`; a.click();
-        URL.revokeObjectURL(url);
-    };
-    window.exportAllToWord = () => {
-        const indHtml = generateIndTableHTML();
-        const medHtml = generateMedTableHTML();
-        const combined = `<!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>完整记录</title>
-            <style>
-                body { font-family: 'Microsoft YaHei', '宋体', Arial, sans-serif; padding: 10px; margin: 0; }
-                @page { size: A4 landscape; margin: 1cm; }
-                h1 { color: #2563eb; font-size: 18px; margin-bottom: 5px; }
-                h2 { color: #0f172a; font-size: 16px; margin: 20px 0 10px; }
-                p { font-size: 10px; margin: 5px 0; }
-                table { border-collapse: collapse; width: 100%; table-layout: auto; font-size: 10px; margin-top: 10px; }
-                th, td { border: 1px solid #ccc; padding: 4px 2px; text-align: center; word-break: break-word; }
-                th { background: #f0f0f0; font-weight: bold; }
-                .out-of-range { background: #fee2e2; }
-                .stopped { background: #fee2e2; color: #b91c1c; text-decoration: line-through; }
-            </style>
-        </head>
-        <body>
-            <h1>王坚 · 肾病完整监测记录</h1>
-            <p>生成时间：${new Date().toLocaleString()}</p>
-            <h2>一、指标记录表</h2>
-            ${indHtml.split('<body>')[1].split('</body>')[0].replace('<h1>王坚 · 肾病指标记录表</h1>', '').replace('<p>生成时间：${new Date().toLocaleString()}</p>', '')}
-            <div style="page-break-before: always;"></div>
-            <h2>二、用药记录表</h2>
-            ${medHtml.split('<body>')[1].split('</body>')[0].replace('<h1>王坚 · 肾病用药记录表</h1>', '').replace('<p>生成时间：${new Date().toLocaleString()}</p>', '')}
-        </body>
-        </html>`;
-        const blob = new Blob([combined], {type:'application/msword'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download=`王坚_肾病完整记录_${new Date().toISOString().slice(0,10)}.doc`; a.click();
-        URL.revokeObjectURL(url);
-    };
-    window.exportCSV = () => {
-        const headers = ['日期','周次',...CONFIG_IND.map(i=>`${i.name}(${i.unit})`),...Object.values(CONFIG_MED).map(m=>m.name)];
-        const rows = data.map(r=>[r.date, r.week||'', ...CONFIG_IND.map(i=>r[i.id]!==null&&r[i.id]!==undefined?r[i.id]:''), ...Object.keys(CONFIG_MED).map(k=>r.meds?.[k]??'')]);
-        let csv = headers.join(',')+'\n';
-        rows.forEach(row=>{ csv += row.map(cell=>`"${cell}"`).join(',')+'\n'; });
-        const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download='王坚_肾病监测数据.csv'; a.click();
-        URL.revokeObjectURL(url);
-    };
-
-    window.switchTab = (tab) => {
-        document.getElementById('chartsPanel').style.display = tab === 'charts' ? 'block' : 'none';
-        document.getElementById('indPanel').style.display = tab === 'ind' ? 'block' : 'none';
-        document.getElementById('medPanel').style.display = tab === 'med' ? 'block' : 'none';
-        document.querySelectorAll('.tab').forEach((btn,i)=> btn.classList.toggle('active', (i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med')));
-        if (tab === 'charts') setTimeout(()=>renderChartsByType(currentChartType),50);
-    };
-
-    window.addEventListener('resize', () => { if (document.getElementById('chartsPanel').style.display !== 'none') renderChartsByType(currentChartType); });
-
-    init();
 </script>
 </body>
 </html>
