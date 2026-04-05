@@ -13,10 +13,8 @@
         @media (min-width: 600px) { .header { flex-direction: row; justify-content: space-between; align-items: center; } }
         .title { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #0f172a, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .badge { background: #dbeafe; color: #1e40af; padding: 4px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; margin-left: 8px; display: inline-block; }
-        .save-indicator { color: #10b981; font-size: 11px; margin-top: 4px; }
         .btn { background: #0f172a; color: white; border: none; padding: 10px 20px; border-radius: 40px; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; }
         @media (min-width: 600px) { .btn { width: auto; } }
-        .btn-sm { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 30px; font-size: 13px; cursor: pointer; }
         .tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: 100%; margin: 0 0 16px 0; }
         .tab { flex: 1; padding: 10px 0; border-radius: 40px; font-weight: 700; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #475569; white-space: nowrap; text-align: center; }
         .tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -34,31 +32,17 @@
         table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 1200px; }
         th { background: #f8fafc; padding: 10px 4px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #cbd5e1; text-align: center; position: sticky; top: 0; vertical-align: middle; }
         td { padding: 6px 4px; border-bottom: 1px solid #e2e8f0; text-align: center; vertical-align: middle; }
-        input[type="date"] { width: 130px; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; }
-        input[type="text"], input[type="number"] { width: 60px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center; font-size: 11px; }
-        input[type="text"][placeholder="周次"] { width: 70px; }
-        .med-input { width: 70px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center; font-size: 11px; background: white; }
-        .med-input.stopped { background: #fee2e2; color: #b91c1c; text-decoration: line-through; }
-        .delete-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #94a3b8; padding: 4px 8px; }
-        .download-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 20px; padding: 5px 12px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .footer { text-align: center; margin: 20px 0 10px; color: #64748b; font-size: 11px; }
         .header-buttons { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
         @media (min-width: 600px) { .header-buttons { width: auto; flex-wrap: nowrap; } }
         .header-buttons .btn { flex: 1; white-space: nowrap; }
-        .insert-btn, .insert-col-btn { background: #e0f2fe; color: #0369a1; border: none; border-radius: 20px; padding: 2px 8px; font-size: 10px; cursor: pointer; margin-left: 4px; white-space: nowrap; }
-        .insert-col-btn { background: #cffafe; color: #0891b2; }
-        .action-buttons { display: flex; gap: 4px; justify-content: center; align-items: center; white-space: nowrap; }
-        th:first-child, td:first-child { min-width: 140px; }
-        th:nth-child(2), td:nth-child(2) { min-width: 80px; }
-        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-        .table-header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .word-download-btn { background: #c2410c; color: white; border: none; border-radius: 20px; padding: 6px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
-        .col-actions { display: flex; gap: 4px; justify-content: center; align-items: center; }
-        .col-header-content { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .download-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 20px; padding: 5px 12px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .word-download-btn { background: #c2410c; color: white; border: none; border-radius: 20px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
         .sub-tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: fit-content; margin: 0 0 16px 0; }
         .sub-tab { padding: 6px 16px; border-radius: 30px; font-weight: 600; border: none; background: transparent; cursor: pointer; font-size: 12px; color: #475569; }
         .sub-tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .import-btn { background: #059669; color: white; border: none; border-radius: 40px; padding: 10px 20px; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .table-header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     </style>
 </head>
 <body>
@@ -66,15 +50,11 @@
     <div class="header">
         <div>
             <span class="title">王坚 · 肾病监测系统</span>
-            <span class="badge">💾 本地存储版</span>
-            <div class="save-indicator" id="saveIndicator">💾 已自动保存</div>
+            <span class="badge">📊 数据可视化版</span>
         </div>
         <div class="header-buttons">
             <button class="btn" onclick="exportCSV()">📥 导出CSV</button>
             <button class="btn" onclick="exportAllToWord()">📄 导出Word</button>
-            <button class="import-btn" onclick="document.getElementById('importFile').click()">📤 导入CSV</button>
-            <input type="file" id="importFile" accept=".csv" style="display:none" onchange="importCSV(this)">
-            <button class="btn" onclick="resetToInitial()" style="background:#64748b;">↺ 重置</button>
         </div>
     </div>
     <div class="tab-bar">
@@ -94,14 +74,10 @@
             <div class="table-header">
                 <div class="table-header-left">
                     <h3 style="font-weight:800;font-size:16px;">指标记录矩阵</h3>
-                    <button class="word-download-btn" onclick="exportIndToWord()">📄 下载指标表Word</button>
-                </div>
-                <div>
-                    <button class="btn-sm" onclick="addNewIndCol()">➕ 新增指标列</button>
-                    <button class="btn-sm" onclick="addNewRowAtEnd()" style="margin-left:8px;">➕ 在末尾新增行</button>
+                    <button class="word-download-btn" onclick="exportIndToWord()">📄 下载Word</button>
                 </div>
             </div>
-            <table id="indTable"><thead id="indTableHeader"></thead><tbody id="indTableBody"></tbody></table>
+            <table><thead id="indTableHeader"></thead><tbody id="indTableBody"></tbody></table>
         </div>
     </div>
     <div id="medPanel" style="display:none;">
@@ -109,305 +85,205 @@
             <div class="table-header">
                 <div class="table-header-left">
                     <h3 style="font-weight:800;font-size:16px;">药物剂量矩阵</h3>
-                    <button class="word-download-btn" onclick="exportMedToWord()">📄 下载用药表Word</button>
-                </div>
-                <div>
-                    <button class="btn-sm" onclick="addNewMedCol()">➕ 新增药物列</button>
-                    <button class="btn-sm" onclick="addMedRowAtEnd()" style="margin-left:8px;">➕ 在末尾新增行</button>
+                    <button class="word-download-btn" onclick="exportMedToWord()">📄 下载Word</button>
                 </div>
             </div>
-            <table id="medTable"><thead id="medTableHeader"></thead><tbody id="medTableBody"></tbody></table>
+            <table><thead id="medTableHeader"></thead><tbody id="medTableBody"></tbody></table>
         </div>
     </div>
-    <div class="footer">⚕️ 数据保存在本地 · 导出CSV可在设备间传输</div>
+    <div class="footer">⚕️ 王坚肾病监测系统 · 数据更新至2026-04-04</div>
 </div>
 
 <script>
-    const CONFIG_IND = [
-        { id:'cre', name:'肌酐', unit:'μmol/L', range:[57,97], color:'#2563eb' },
-        { id:'alb', name:'白蛋白', unit:'g/L', range:[40,55], color:'#059669' },
-        { id:'pro', name:'24H尿蛋白', unit:'mg/24h', range:[0,120], color:'#d97706' },
-        { id:'pla', name:'PLA2R', unit:'RU/ml', range:[0,2], color:'#dc2626' },
-        { id:'dim', name:'D-二聚体', unit:'ng/mL', range:[0,243], color:'#7c3aed' },
-        { id:'alt', name:'ALT', unit:'U/L', range:[7,40], color:'#0891b2' },
-        { id:'ldl', name:'LDL-C', unit:'mmol/L', range:[1.8,3.6], color:'#4f46e5' },
-        { id:'cho', name:'总胆固醇', unit:'mmol/L', range:[2.9,5.7], color:'#6366f1' },
-        { id:'tg', name:'甘油三酯', unit:'mmol/L', range:[0.24,2.0], color:'#0ea5e9' },
-        { id:'igg', name:'IgG', unit:'g/L', range:[8,17], color:'#e11d48' },
-        { id:'bcl', name:'B细胞(%)', unit:'%', range:[5.38,18.23], color:'#0284c7' }
-    ];
+const CONFIG_IND = [
+    {id:'cre',name:'肌酐',unit:'μmol/L',range:[57,97],color:'#2563eb'},
+    {id:'alb',name:'白蛋白',unit:'g/L',range:[40,55],color:'#059669'},
+    {id:'pro',name:'24H尿蛋白',unit:'mg/24h',range:[0,120],color:'#d97706'},
+    {id:'pla',name:'PLA2R',unit:'RU/ml',range:[0,2],color:'#dc2626'},
+    {id:'dim',name:'D-二聚体',unit:'ng/mL',range:[0,243],color:'#7c3aed'},
+    {id:'alt',name:'ALT',unit:'U/L',range:[7,40],color:'#0891b2'},
+    {id:'ldl',name:'LDL-C',unit:'mmol/L',range:[1.8,3.6],color:'#4f46e5'},
+    {id:'cho',name:'总胆固醇',unit:'mmol/L',range:[2.9,5.7],color:'#6366f1'},
+    {id:'tg',name:'甘油三酯',unit:'mmol/L',range:[0.24,2.0],color:'#0ea5e9'},
+    {id:'igg',name:'IgG',unit:'g/L',range:[8,17],color:'#e11d48'},
+    {id:'bcl',name:'B细胞(%)',unit:'%',range:[5.38,18.23],color:'#0284c7'}
+];
 
-    let CONFIG_MED = {
-        methyl: { name:'醋酸甲泼尼松', color:'#dc2626' },
-        ritu:   { name:'利妥昔抗体', color:'#7c3aed' },
-        fine:   { name:'菲奈利酮', color:'#059669' },
-        losar:  { name:'氯沙坦钾', color:'#2563eb' },
-        riva:   { name:'利伐沙班', color:'#0891b2' },
-        indo:   { name:'吲哚布芬', color:'#b45309' },
-        nadro:  { name:'那曲', color:'#be185d' },
-        ator:   { name:'阿托伐他汀', color:'#d97706' },
-        pita:   { name:'匹伐他汀', color:'#ca8a04' },
-        ezet:   { name:'依折麦布', color:'#16a34a' }
-    };
+const CONFIG_MED = {
+    methyl:{name:'醋酸甲泼尼松',color:'#dc2626'},
+    ritu:{name:'利妥昔抗体',color:'#7c3aed'},
+    fine:{name:'菲奈利酮',color:'#059669'},
+    losar:{name:'氯沙坦钾',color:'#2563eb'},
+    riva:{name:'利伐沙班',color:'#0891b2'},
+    indo:{name:'吲哚布芬',color:'#b45309'},
+    nadro:{name:'那曲',color:'#be185d'},
+    ator:{name:'阿托伐他汀',color:'#d97706'},
+    pita:{name:'匹伐他汀',color:'#ca8a04'},
+    ezet:{name:'依折麦布',color:'#16a34a'}
+};
 
-    let currentChartType = 'ind';
+const data = [
+    {date:'2025-11-30',week:'',cre:83.8,alb:23.6,pro:null,pla:null,dim:null,alt:null,ldl:5.2,cho:9.55,tg:5.57,igg:null,bcl:null,meds:{}},
+    {date:'2025-12-01',week:'',cre:null,alb:null,pro:8084.1,pla:213.62,dim:933,alt:null,ldl:null,cho:null,tg:null,igg:5.6,bcl:null,meds:{ator:'20mg'}},
+    {date:'2025-12-07',week:'',cre:null,alb:20.7,pro:null,pla:null,dim:251,alt:20,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{fine:'5mg',losar:'50mg'}},
+    {date:'2025-12-10',week:'',cre:null,alb:23.8,pro:null,pla:5.6,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:8.3,bcl:5.6,meds:{}},
+    {date:'2025-12-11',week:'',cre:null,alb:null,pro:12404.6,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'30mg',losar:'100mg'}},
+    {date:'2025-12-12',week:'',cre:null,alb:22.4,pro:null,pla:null,dim:213,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+    {date:'2025-12-17',week:'',cre:94.3,alb:23.4,pro:6824.4,pla:null,dim:183,alt:null,ldl:5.26,cho:8.61,tg:4.42,igg:6.3,bcl:0.04,meds:{losar:'10mg',nadro:'停用'}},
+    {date:'2025-12-19',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+    {date:'2025-12-24',week:'',cre:90,alb:25.1,pro:10066.3,pla:null,dim:204,alt:null,ldl:5.26,cho:8.97,tg:4.13,igg:5.5,bcl:0.01,meds:{methyl:'25mg',fine:'10mg',losar:'50mg'}},
+    {date:'2025-12-26',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+    {date:'2026-01-02',week:'第1周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'20mg',ritu:'500mg'}},
+    {date:'2026-01-03',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'停用'}},
+    {date:'2026-01-07',week:'',cre:94.5,alb:25.4,pro:7159,pla:null,dim:98,alt:null,ldl:5.1,cho:8.82,tg:3.64,igg:null,bcl:null,meds:{riva:'停用'}},
+    {date:'2026-01-09',week:'第2周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{indo:'200mg'}},
+    {date:'2026-01-12',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'25mg'}},
+    {date:'2026-01-13',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'12.5mg'}},
+    {date:'2026-01-14',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'停用'}},
+    {date:'2026-01-16',week:'第3周',cre:93.6,alb:28.2,pro:5117,pla:null,dim:null,alt:null,ldl:4.07,cho:7.8,tg:3.08,igg:6.5,bcl:null,meds:{}},
+    {date:'2026-01-22',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{riva:'10mg',indo:'停用'}},
+    {date:'2026-01-23',week:'第4周',cre:87,alb:26.5,pro:4418,pla:null,dim:634,alt:null,ldl:3.33,cho:6.42,tg:3.3,igg:6.5,bcl:0.01,meds:{}},
+    {date:'2026-01-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'15mg'}},
+    {date:'2026-01-30',week:'第5周',cre:92.1,alb:29.6,pro:5642,pla:null,dim:null,alt:null,ldl:3.55,cho:6.59,tg:2.69,igg:null,bcl:null,meds:{}},
+    {date:'2026-02-06',week:'第6周',cre:91.7,alb:31.1,pro:5765,pla:null,dim:68,alt:null,ldl:3.11,cho:6.11,tg:2.79,igg:6.9,bcl:null,meds:{}},
+    {date:'2026-02-09',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ezet:'10mg'}},
+    {date:'2026-02-12',week:'',cre:87.7,alb:32.4,pro:4652,pla:5.83,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'12.5mg'}},
+    {date:'2026-02-13',week:'第7周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-02-20',week:'第8周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-02-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'10mg'}},
+    {date:'2026-02-26',week:'',cre:88.5,alb:31.5,pro:4291,pla:null,dim:8,alt:65.7,ldl:2.73,cho:5.59,tg:3.07,igg:7.5,bcl:null,meds:{ator:'停用'}},
+    {date:'2026-02-27',week:'第9周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-03-06',week:'第10周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-03-10',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'7.5mg'}},
+    {date:'2026-03-11',week:'',cre:78.2,alb:30.7,pro:4842,pla:null,dim:31,alt:60.6,ldl:5.01,cho:8.49,tg:3.16,igg:null,bcl:null,meds:{pita:'2mg'}},
+    {date:'2026-03-12',week:'',cre:null,alb:null,pro:null,pla:5.1,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:0.01,meds:{}},
+    {date:'2026-03-13',week:'第11周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-03-20',week:'第12周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-03-21',week:'',cre:78.3,alb:30.3,pro:4823,pla:null,dim:22,alt:45.9,ldl:2.61,cho:5.49,tg:2.47,igg:7.9,bcl:null,meds:{riva:'停用'}},
+    {date:'2026-03-27',week:'第13周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-04-03',week:'第14周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+    {date:'2026-04-04',week:'',cre:85.3,alb:32.9,pro:4204,pla:0.02,dim:63,alt:56.5,ldl:2.58,cho:5.55,tg:2.49,igg:null,bcl:null,meds:{methyl:'5mg'}}
+];
 
-    const INITIAL_DATA = [
-        {date:'2025-11-30',week:'',cre:83.8,alb:23.6,pro:null,pla:null,dim:null,alt:null,ldl:5.2,cho:9.55,tg:5.57,igg:null,bcl:null,meds:{}},
-        {date:'2025-12-01',week:'',cre:null,alb:null,pro:8084.1,pla:213.62,dim:933,alt:null,ldl:null,cho:null,tg:null,igg:5.6,bcl:null,meds:{ator:'20mg'}},
-        {date:'2025-12-07',week:'',cre:null,alb:20.7,pro:null,pla:null,dim:251,alt:20,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{fine:'5mg',losar:'50mg'}},
-        {date:'2025-12-10',week:'',cre:null,alb:23.8,pro:null,pla:5.6,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:8.3,bcl:5.6,meds:{}},
-        {date:'2025-12-11',week:'',cre:null,alb:null,pro:12404.6,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'30mg',losar:'100mg'}},
-        {date:'2025-12-12',week:'',cre:null,alb:22.4,pro:null,pla:null,dim:213,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
-        {date:'2025-12-17',week:'',cre:94.3,alb:23.4,pro:6824.4,pla:null,dim:183,alt:null,ldl:5.26,cho:8.61,tg:4.42,igg:6.3,bcl:0.04,meds:{losar:'10mg',nadro:'停用'}},
-        {date:'2025-12-19',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
-        {date:'2025-12-24',week:'',cre:90,alb:25.1,pro:10066.3,pla:null,dim:204,alt:null,ldl:5.26,cho:8.97,tg:4.13,igg:5.5,bcl:0.01,meds:{methyl:'25mg',fine:'10mg',losar:'50mg'}},
-        {date:'2025-12-26',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
-        {date:'2026-01-02',week:'第1周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'20mg',ritu:'500mg'}},
-        {date:'2026-01-03',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'停用'}},
-        {date:'2026-01-07',week:'',cre:94.5,alb:25.4,pro:7159,pla:null,dim:98,alt:null,ldl:5.1,cho:8.82,tg:3.64,igg:null,bcl:null,meds:{riva:'停用'}},
-        {date:'2026-01-09',week:'第2周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{indo:'200mg'}},
-        {date:'2026-01-12',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'25mg'}},
-        {date:'2026-01-13',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'12.5mg'}},
-        {date:'2026-01-14',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'停用'}},
-        {date:'2026-01-16',week:'第3周',cre:93.6,alb:28.2,pro:5117,pla:null,dim:null,alt:null,ldl:4.07,cho:7.8,tg:3.08,igg:6.5,bcl:null,meds:{}},
-        {date:'2026-01-22',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{riva:'10mg',indo:'停用'}},
-        {date:'2026-01-23',week:'第4周',cre:87,alb:26.5,pro:4418,pla:null,dim:634,alt:null,ldl:3.33,cho:6.42,tg:3.3,igg:6.5,bcl:0.01,meds:{}},
-        {date:'2026-01-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'15mg'}},
-        {date:'2026-01-30',week:'第5周',cre:92.1,alb:29.6,pro:5642,pla:null,dim:null,alt:null,ldl:3.55,cho:6.59,tg:2.69,igg:null,bcl:null,meds:{}},
-        {date:'2026-02-06',week:'第6周',cre:91.7,alb:31.1,pro:5765,pla:null,dim:68,alt:null,ldl:3.11,cho:6.11,tg:2.79,igg:6.9,bcl:null,meds:{}},
-        {date:'2026-02-09',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ezet:'10mg'}},
-        {date:'2026-02-12',week:'',cre:87.7,alb:32.4,pro:4652,pla:5.83,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'12.5mg'}},
-        {date:'2026-02-13',week:'第7周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-02-20',week:'第8周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-02-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'10mg'}},
-        {date:'2026-02-26',week:'',cre:88.5,alb:31.5,pro:4291,pla:null,dim:8,alt:65.7,ldl:2.73,cho:5.59,tg:3.07,igg:7.5,bcl:null,meds:{ator:'停用'}},
-        {date:'2026-02-27',week:'第9周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-03-06',week:'第10周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-03-10',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'7.5mg'}},
-        {date:'2026-03-11',week:'',cre:78.2,alb:30.7,pro:4842,pla:null,dim:31,alt:60.6,ldl:5.01,cho:8.49,tg:3.16,igg:null,bcl:null,meds:{pita:'2mg'}},
-        {date:'2026-03-12',week:'',cre:null,alb:null,pro:null,pla:5.1,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:0.01,meds:{}},
-        {date:'2026-03-13',week:'第11周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-03-20',week:'第12周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-03-21',week:'',cre:78.3,alb:30.3,pro:4823,pla:null,dim:22,alt:45.9,ldl:2.61,cho:5.49,tg:2.47,igg:7.9,bcl:null,meds:{riva:'停用'}},
-        {date:'2026-03-27',week:'第13周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-04-03',week:'第14周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-        {date:'2026-04-04',week:'',cre:85.3,alb:32.9,pro:4204,pla:0.02,dim:63,alt:56.5,ldl:2.58,cho:5.55,tg:2.49,igg:null,bcl:null,meds:{methyl:'5mg'}}
-    ];
+const chartCanvases = {};
+let currentChartType = 'ind';
 
-    let data = JSON.parse(JSON.stringify(INITIAL_DATA));
-    const chartCanvases = {};
+function fmt(d){if(!d)return'';const p=d.split('-');return p.length>=3?`${p[1]}-${p[2]}`:d;}
 
-    function saveData() {
-        try {
-            localStorage.setItem('renal_data', JSON.stringify(data));
-            localStorage.setItem('renal_med', JSON.stringify(CONFIG_MED));
-            const el = document.getElementById('saveIndicator');
-            el.textContent = '💾 已保存';
-            setTimeout(() => el.textContent = '💾 已自动保存', 1500);
-        } catch(e) {}
-    }
+function renderChartsByType(type){
+    const grid=document.getElementById('chartsGrid');
+    if(!grid)return;
+    grid.innerHTML='';
+    if(type==='ind')CONFIG_IND.forEach(cfg=>renderIndChart(cfg));
+    else Object.keys(CONFIG_MED).forEach(k=>renderMedChart(k));
+}
 
-    function loadData() {
-        try {
-            const d = localStorage.getItem('renal_data');
-            const m = localStorage.getItem('renal_med');
-            if (d) data = JSON.parse(d);
-            if (m) CONFIG_MED = JSON.parse(m);
-        } catch(e) {}
-    }
+function renderIndChart(cfg){
+    const grid=document.getElementById('chartsGrid');
+    const card=document.createElement('div');card.className='chart-card';
+    const pts=data.filter(d=>d[cfg.id]!==null&&d[cfg.id]!==undefined).map(d=>({date:d.date,value:d[cfg.id]}));
+    const id=`chart-${cfg.id}`;
+    card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${cfg.color}"></span>${cfg.name} (${cfg.unit})<span style="font-size:10px;color:#2563eb;margin-left:4px;">${pts.length}个点</span></div><div class="ref-range">参考: ${cfg.range[0]}-${cfg.range[1]}</div></div><button class="download-btn" onclick="downloadIndChart('${cfg.id}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${pts.map(p=>fmt(p.date)).join(' · ')}</div>`;
+    grid.appendChild(card);
+    setTimeout(()=>drawIndChart(cfg,pts,id),10);
+}
 
-    window.resetToInitial = () => {
-        if (confirm('确定重置为初始数据吗？')) {
-            data = JSON.parse(JSON.stringify(INITIAL_DATA));
-            saveData(); renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
-        }
-    };
+function drawIndChart(cfg,pts,id){
+    const cv=document.getElementById(id);if(!cv)return;
+    chartCanvases[`ind-${cfg.id}`]=cv;
+    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);
+    const P={l:50,r:20,t:30,b:35};
+    if(!pts.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('暂无数据',W/2,H/2);return;}
+    const vals=pts.map(p=>p.value);
+    const yMin=Math.floor(Math.min(...vals,cfg.range[0])*0.9),yMax=Math.ceil(Math.max(...vals,cfg.range[1])*1.1);
+    const yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+    const xS=i=>P.l+(i/(pts.length-1||1))*(W-P.l-P.r);
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#0f172a';ctx.font='bold 14px system-ui';ctx.textAlign='left';ctx.fillText(`${cfg.name} 趋势`,P.l,22);
+    ctx.fillStyle=cfg.color+'20';ctx.fillRect(P.l,yS(cfg.range[1]),W-P.l-P.r,yS(cfg.range[0])-yS(cfg.range[1]));
+    for(let i=0;i<=4;i++){const v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
+    pts.forEach((p,i)=>{const x=xS(i);ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
+    ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
+    ctx.strokeStyle=cfg.color;ctx.lineWidth=2.5;ctx.beginPath();pts.forEach((p,i)=>{const x=xS(i),y=yS(p.value);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+    pts.forEach((p,i)=>{const x=xS(i),y=yS(p.value);ctx.shadowColor=cfg.color;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=cfg.color;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
+}
 
-    // CSV导入功能
-    window.importCSV = (input) => {
-        const file = input.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const text = e.target.result;
-                const lines = text.split('\n').filter(l => l.trim());
-                const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
-                const newData = [];
-                for (let i = 1; i < lines.length; i++) {
-                    const vals = lines[i].split(',').map(v => v.replace(/"/g,'').trim());
-                    if (!vals[0]) continue;
-                    const row = { date: vals[0], week: vals[1] || '', meds: {} };
-                    CONFIG_IND.forEach((cfg, j) => {
-                        const v = vals[j + 2];
-                        row[cfg.id] = v && v !== '' ? parseFloat(v) : null;
-                    });
-                    const medKeys = Object.keys(CONFIG_MED);
-                    medKeys.forEach((k, j) => {
-                        const v = vals[CONFIG_IND.length + 2 + j];
-                        if (v && v !== '') row.meds[k] = v;
-                    });
-                    newData.push(row);
-                }
-                if (newData.length > 0) {
-                    data = newData;
-                    saveData();
-                    renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
-                    alert(`✅ 成功导入 ${newData.length} 条记录！`);
-                }
-            } catch(e) {
-                alert('导入失败，请检查CSV格式');
-            }
-        };
-        reader.readAsText(file, 'utf-8');
-        input.value = '';
-    };
+function renderMedChart(medKey){
+    const grid=document.getElementById('chartsGrid');
+    const card=document.createElement('div');card.className='chart-card';
+    const mn=CONFIG_MED[medKey].name,mc=CONFIG_MED[medKey].color;
+    const allRows=data.map(d=>({date:d.date,value:d.meds?.[medKey]||''}));
+    const sp=[];let lv=null,lr=null,ld=null;
+    allRows.forEach(row=>{const v=row.value;if(v&&v!==''){const m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='停用'){sp.push({date:row.date,value:0,rawValue:'停用',type:'stop'});lv=null;}}});
+    const last=allRows[allRows.length-1];
+    if(lv!==null&&last.value!=='停用')sp.push({date:last.date,value:lv,rawValue:ld===last.date?lr:'↳'+lr,type:ld===last.date?'value':'extension'});
+    const u=[],s=new Set();for(let i=sp.length-1;i>=0;i--){if(!s.has(sp[i].date)){u.unshift(sp[i]);s.add(sp[i].date);}}
+    const id=`med-chart-${medKey}`;
+    card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${mc}"></span>${mn} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${u.length}个点</span></div><div class="ref-range">红色叉=停用·灰色=延续</div></div><button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${u.map(p=>fmt(p.date)).join(' · ')}</div>`;
+    grid.appendChild(card);
+    setTimeout(()=>drawMedChart(mn,mc,u,allRows,id),10);
+}
 
-    window.switchChartType = type => {
-        currentChartType = type;
-        document.querySelectorAll('.sub-tab').forEach((b,i) => b.classList.toggle('active',(i===0&&type==='ind')||(i===1&&type==='med')));
-        renderChartsByType(type);
-    };
+function drawMedChart(mn,mc,sp,allRows,id){
+    const cv=document.getElementById(id);if(!cv)return;
+    chartCanvases[id]=cv;
+    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);
+    const P={l:50,r:20,t:30,b:35};
+    if(!sp.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('暂无数据',W/2,H/2);return;}
+    const vals=sp.map(p=>p.value);
+    const yMin=Math.max(0,Math.floor(Math.min(...vals)*0.8)),yMax=Math.ceil(Math.max(...vals)*1.2)||10;
+    const yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+    const xPos={};allRows.forEach((r,i)=>{xPos[r.date]=P.l+(i/(allRows.length-1||1))*(W-P.l-P.r);});
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#0f172a';ctx.font='bold 14px system-ui';ctx.textAlign='left';ctx.fillText(`${mn} 用量趋势`,P.l,22);
+    for(let i=0;i<=4;i++){const v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
+    sp.forEach(p=>{const x=xPos[p.date];ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
+    ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
+    if(sp.length>1){for(let i=0;i<sp.length-1;i++){const p1=sp[i],p2=sp[i+1],x1=xPos[p1.date],y1=yS(p1.value),x2=xPos[p2.date],y2=yS(p2.value);ctx.beginPath();if(p1.type==='stop'||p2.type==='stop'){ctx.setLineDash([5,3]);ctx.lineWidth=2;}else{ctx.setLineDash([]);ctx.lineWidth=2.5;}ctx.strokeStyle=mc;ctx.moveTo(x1,y1);ctx.lineTo(x2,y1);ctx.lineTo(x2,y2);ctx.stroke();}ctx.setLineDash([]);}
+    sp.forEach(p=>{const x=xPos[p.date],y=yS(p.value);if(p.type==='stop'){ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.strokeStyle='white';ctx.moveTo(x-3,y-3);ctx.lineTo(x+3,y+3);ctx.moveTo(x+3,y-3);ctx.lineTo(x-3,y+3);ctx.stroke();}else if(p.type==='extension'){ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}else{ctx.shadowColor=mc;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=mc;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}ctx.fillStyle=p.type==='extension'?'#64748b':(p.type==='stop'?'#b91c1c':'#1e293b');ctx.font=p.type==='extension'?'7px system-ui':'bold 7px system-ui';ctx.textAlign='center';ctx.fillText(p.rawValue,x,y-12);});
+}
 
-    function renderChartsByType(type) {
-        const grid = document.getElementById('chartsGrid');
-        if (!grid) return;
-        grid.innerHTML = '';
-        if (type==='ind') CONFIG_IND.forEach(cfg => renderIndChart(cfg));
-        else Object.keys(CONFIG_MED).forEach(k => renderMedChart(k));
-    }
+window.downloadIndChart=id=>{const c=chartCanvases[`ind-${id}`];if(!c)return;const cfg=CONFIG_IND.find(c=>c.id===id);const a=document.createElement('a');a.download=`王坚_${cfg.name}_趋势图.png`;a.href=c.toDataURL('image/png');a.click();};
+window.downloadMedChart=k=>{const c=chartCanvases[`med-chart-${k}`];if(!c)return;const a=document.createElement('a');a.download=`王坚_${CONFIG_MED[k].name}_趋势.png`;a.href=c.toDataURL('image/png');a.click();};
 
-    function fmt(d) { if(!d)return''; const p=d.split('-'); return p.length>=3?`${p[1]}-${p[2]}`:d; }
+function renderTableHeaders(){
+    const ih=document.getElementById('indTableHeader');
+    if(ih){let h='<th>日期</th><th>周次</th>';CONFIG_IND.forEach(c=>{h+=`<th>${c.name}<br><small>${c.unit}</small></th>`;});ih.innerHTML=h;}
+    const mh=document.getElementById('medTableHeader');
+    if(mh){let h='<th>日期</th><th>周次</th>';Object.values(CONFIG_MED).forEach(m=>{h+=`<th>${m.name}</th>`;});mh.innerHTML=h;}
+}
 
-    function renderIndChart(cfg) {
-        const grid = document.getElementById('chartsGrid');
-        const card = document.createElement('div'); card.className='chart-card';
-        const pts = data.filter(d=>d[cfg.id]!==null&&d[cfg.id]!==undefined).map(d=>({date:d.date,value:d[cfg.id]}));
-        const id = `chart-${cfg.id}`;
-        card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${cfg.color}"></span>${cfg.name} (${cfg.unit})<span style="font-size:10px;color:#2563eb;margin-left:4px;">${pts.length}个点</span></div><div class="ref-range">参考: ${cfg.range[0]}-${cfg.range[1]}</div></div><button class="download-btn" onclick="downloadIndChart('${cfg.id}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${pts.map(p=>fmt(p.date)).join(' · ')}</div>`;
-        grid.appendChild(card);
-        drawIndChart(cfg, pts, id);
-    }
+function renderTables(){
+    const ib=document.getElementById('indTableBody'),mb=document.getElementById('medTableBody');
+    if(!ib||!mb)return;
+    ib.innerHTML='';mb.innerHTML='';
+    data.forEach(row=>{
+        let ir=`<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;
+        CONFIG_IND.forEach(c=>{const v=row[c.id];const out=v!==null&&v!==undefined&&(v<c.range[0]||v>c.range[1]);ir+=`<td style="${out?'background:#fee2e2;':''}">${v!==null&&v!==undefined?v:'-'}</td>`;});
+        ib.innerHTML+=ir+'</tr>';
+        let mr=`<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;
+        Object.keys(CONFIG_MED).forEach(k=>{const v=row.meds?.[k]||'';mr+=`<td style="${v==='停用'?'background:#fee2e2;color:#b91c1c;':''}">${v||'-'}</td>`;});
+        mb.innerHTML+=mr+'</tr>';
+    });
+}
 
-    function drawIndChart(cfg, pts, id) {
-        const cv=document.getElementById(id); if(!cv)return;
-        chartCanvases[`ind-${cfg.id}`]=cv;
-        const ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
-        ctx.clearRect(0,0,W,H);
-        const P={l:50,r:20,t:30,b:35};
-        if(!pts.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('暂无数据',W/2,H/2);return;}
-        const vals=pts.map(p=>p.value);
-        const yMin=Math.floor(Math.min(...vals,cfg.range[0])*0.9), yMax=Math.ceil(Math.max(...vals,cfg.range[1])*1.1);
-        const yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
-        const xS=i=>P.l+(i/(pts.length-1||1))*(W-P.l-P.r);
-        ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-        ctx.fillStyle='#0f172a';ctx.font='bold 14px system-ui';ctx.textAlign='left';ctx.fillText(`${cfg.name} 趋势`,P.l,22);
-        ctx.fillStyle=cfg.color+'20';ctx.fillRect(P.l,yS(cfg.range[1]),W-P.l-P.r,yS(cfg.range[0])-yS(cfg.range[1]));
-        for(let i=0;i<=4;i++){const v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
-        pts.forEach((p,i)=>{const x=xS(i);ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
-        ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
-        ctx.strokeStyle=cfg.color;ctx.lineWidth=2.5;ctx.beginPath();pts.forEach((p,i)=>{const x=xS(i),y=yS(p.value);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
-        pts.forEach((p,i)=>{const x=xS(i),y=yS(p.value);ctx.shadowColor=cfg.color;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=cfg.color;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
-    }
+function gI(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病指标记录表</h1><p>${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${CONFIG_IND.map(i=>`<th>${i.name}(${i.unit})</th>`).join('')}</tr></thead><tbody>${data.map(r=>`<tr><td>${r.date}</td><td>${r.week||'-'}</td>${CONFIG_IND.map(i=>`<td>${r[i.id]!==null&&r[i.id]!==undefined?r[i.id]:'-'}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;}
 
-    function renderMedChart(medKey) {
-        const grid=document.getElementById('chartsGrid');
-        const card=document.createElement('div');card.className='chart-card';
-        const mn=CONFIG_MED[medKey].name, mc=CONFIG_MED[medKey].color;
-        const allRows=data.map(d=>({date:d.date,value:d.meds?.[medKey]||''}));
-        const sp=[];let lv=null,lr=null,ld=null;
-        allRows.forEach(row=>{const v=row.value;if(v&&v!==''){const m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='停用'){sp.push({date:row.date,value:0,rawValue:'停用',type:'stop'});lv=null;}}});
-        const last=allRows[allRows.length-1];
-        if(lv!==null&&last.value!=='停用')sp.push({date:last.date,value:lv,rawValue:ld===last.date?lr:'↳'+lr,type:ld===last.date?'value':'extension'});
-        const u=[],s=new Set();for(let i=sp.length-1;i>=0;i--){if(!s.has(sp[i].date)){u.unshift(sp[i]);s.add(sp[i].date);}}
-        const id=`med-chart-${medKey}`;
-        card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${mc}"></span>${mn} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${u.length}个点</span></div><div class="ref-range">红色叉=停用·灰色=延续</div></div><button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${u.map(p=>fmt(p.date)).join(' · ')}</div>`;
-        grid.appendChild(card);
-        drawMedChart(mn,mc,u,allRows,id);
-    }
+function gM(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病用药记录表</h1><p>${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${Object.values(CONFIG_MED).map(m=>`<th>${m.name}</th>`).join('')}</tr></thead><tbody>${data.map(r=>{let s=`<tr><td>${r.date}</td><td>${r.week||’-’}</td>`;Object.keys(CONFIG_MED).forEach(k=>{const v=r.meds?.[k]||'';s+=`<td>${v||’-’}</td>`;});return s+'</tr>';}).join('')}</tbody></table></body></html>`;}
+window.exportIndToWord=()=>{const b=new Blob([gI()],{type:‘application/msword’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=`王坚_肾病指标表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
+window.exportMedToWord=()=>{const b=new Blob([gM()],{type:‘application/msword’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=`王坚_肾病用药表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
+window.exportAllToWord=()=>{const c=`<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;margin-bottom:30px;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病完整监测记录</h1><p>${new Date().toLocaleString('zh-CN')}</p><h2>一、指标记录表</h2>${gI().split('<body>')[1].split('</body>')[0]}<h2>二、用药记录表</h2>${gM().split('<body>')[1].split('</body>')[0]}</body></html>`;const b=new Blob([c],{type:‘application/msword’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=`王坚_肾病完整记录_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
+window.exportCSV=()=>{const h=[‘日期’,‘周次’,…CONFIG_IND.map(i=>`${i.name}(${i.unit})`),…Object.values(CONFIG_MED).map(m=>m.name)];const r=data.map(d=>[d.date,d.week||’’,…CONFIG_IND.map(i=>d[i.id]!==null&&d[i.id]!==undefined?d[i.id]:’’),…Object.keys(CONFIG_MED).map(k=>d.meds?.[k]??’’)]);let c=h.join(’,’)+’\n’;r.forEach(row=>{c+=row.map(v=>`"${v}"`).join(’,’)+’\n’;});const b=new Blob([’\uFEFF’+c],{type:‘text/csv;charset=utf-8;’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=‘王坚_肾病监测数据.csv’;a.click();};
+window.switchTab=tab=>{[‘chartsPanel’,‘indPanel’,‘medPanel’].forEach((id,i)=>{document.getElementById(id).style.display=(i===0&&tab===‘charts’)||(i===1&&tab===‘ind’)||(i===2&&tab===‘med’)?‘block’:‘none’;});document.querySelectorAll(’.tab’).forEach((btn,i)=>{btn.classList.toggle(‘active’,(i===0&&tab===‘charts’)||(i===1&&tab===‘ind’)||(i===2&&tab===‘med’));});if(tab===‘charts’)setTimeout(()=>renderChartsByType(currentChartType),50);};
+window.switchChartType=type=>{currentChartType=type;document.querySelectorAll(’.sub-tab’).forEach((b,i)=>b.classList.toggle(‘active’,(i===0&&type===‘ind’)||(i===1&&type===‘med’)));renderChartsByType(type);};
+window.addEventListener(‘resize’,()=>{if(document.getElementById(‘chartsPanel’).style.display!==‘none’)renderChartsByType(currentChartType);});
 
-    function drawMedChart(mn,mc,sp,allRows,id) {
-        const cv=document.getElementById(id);if(!cv)return;
-        chartCanvases[`med-${id}`]=cv;
-        const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-        ctx.clearRect(0,0,W,H);
-        const P={l:50,r:20,t:30,b:35};
-        if(!sp.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('暂无数据',W/2,H/2);return;}
-        const vals=sp.map(p=>p.value);
-        const yMin=Math.max(0,Math.floor(Math.min(...vals)*0.8)),yMax=Math.ceil(Math.max(...vals)*1.2)||10;
-        const yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
-        const xPos={};allRows.forEach((r,i)=>{xPos[r.date]=P.l+(i/(allRows.length-1||1))*(W-P.l-P.r);});
-        ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-        ctx.fillStyle='#0f172a';ctx.font='bold 14px system-ui';ctx.textAlign='left';ctx.fillText(`${mn} 用量趋势`,P.l,22);
-        for(let i=0;i<=4;i++){const v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
-        sp.forEach(p=>{const x=xPos[p.date];ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
-        ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
-        if(sp.length>1){for(let i=0;i<sp.length-1;i++){const p1=sp[i],p2=sp[i+1],x1=xPos[p1.date],y1=yS(p1.value),x2=xPos[p2.date],y2=yS(p2.value);ctx.beginPath();if(p1.type==='stop'||p2.type==='stop'){ctx.setLineDash([5,3]);ctx.lineWidth=2;}else{ctx.setLineDash([]);ctx.lineWidth=2.5;}ctx.strokeStyle=mc;ctx.moveTo(x1,y1);ctx.lineTo(x2,y1);ctx.lineTo(x2,y2);ctx.stroke();}ctx.setLineDash([]);}
-        sp.forEach(p=>{const x=xPos[p.date],y=yS(p.value);if(p.type==='stop'){ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.strokeStyle='white';ctx.moveTo(x-3,y-3);ctx.lineTo(x+3,y+3);ctx.moveTo(x+3,y-3);ctx.lineTo(x-3,y+3);ctx.stroke();}else if(p.type==='extension'){ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}else{ctx.shadowColor=mc;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=mc;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}ctx.fillStyle=p.type==='extension'?'#64748b':(p.type==='stop'?'#b91c1c':'#1e293b');ctx.font=p.type==='extension'?'7px system-ui':'bold 7px system-ui';ctx.textAlign='center';ctx.fillText(p.rawValue,x,y-12);});
-    }
-
-    window.downloadIndChart=id=>{const c=chartCanvases[`ind-${id}`];if(!c)return;const cfg=CONFIG_IND.find(c=>c.id===id);const a=document.createElement('a');a.download=`王坚_${cfg.name}_趋势图.png`;a.href=c.toDataURL('image/png');a.click();};
-    window.downloadMedChart=k=>{const c=chartCanvases[`med-med-chart-${k}`]||chartCanvases[`med-${k}`];if(!c)return;const a=document.createElement('a');a.download=`王坚_${CONFIG_MED[k].name}_趋势.png`;a.href=c.toDataURL('image/png');a.click();};
-
-    function renderTableHeaders() {
-        const ih=document.getElementById('indTableHeader');
-        if(ih){let h='<th>日期</th><th>周次</th>';CONFIG_IND.forEach((c,i)=>{h+=`<th><div class="col-header-content"><div>${c.name}<br><small>${c.unit}</small></div><div class="col-actions"><button class="insert-col-btn" onclick="insertIndColBefore(${i})">➕</button><button class="delete-btn" onclick="deleteIndCol(${i})">🗑️</button></div></div></th>`;});h+='<th>操作</th>';ih.innerHTML=h;}
-        const mh=document.getElementById('medTableHeader');
-        if(mh){let h='<th>日期</th><th>周次</th>';Object.keys(CONFIG_MED).forEach((k,i)=>{h+=`<th><div class="col-header-content"><div>${CONFIG_MED[k].name}</div><div class="col-actions"><button class="insert-col-btn" onclick="insertMedColBefore(${i})">➕</button><button class="delete-btn" onclick="deleteMedCol('${k}')">🗑️</button></div></div></th>`;});h+='<th>操作</th>';mh.innerHTML=h;}
-    }
-
-    function renderTables() {
-        const ib=document.getElementById('indTableBody'),mb=document.getElementById('medTableBody');
-        if(!ib||!mb)return;
-        ib.innerHTML='';mb.innerHTML='';
-        data.forEach((row,idx)=>{
-            let ir='<tr>';
-            ir+=`<td><input type="date" value="${row.date}" onchange="updateCell(${idx},'date',this.value)"></td>`;
-            ir+=`<td><input type="text" value="${row.week||''}" placeholder="周次" onchange="updateCell(${idx},'week',this.value)"></td>`;
-            CONFIG_IND.forEach(c=>{const v=row[c.id]!==undefined&&row[c.id]!==null?row[c.id]:'';const out=v!==''&&(v<c.range[0]||v>c.range[1]);ir+=`<td><input type="number" step="0.01" value="${v}" style="${out?'background:#fee2e2;':''}" onchange="updateCell(${idx},'${c.id}',this.value)"></td>`;});
-            ir+=`<td class="action-buttons"><button class="insert-btn" onclick="insertRowAfter(${idx})">➕</button><button class="delete-btn" onclick="deleteRow(${idx})">🗑️</button></td></tr>`;
-            ib.innerHTML+=ir;
-            let mr=`<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;
-            Object.keys(CONFIG_MED).forEach(k=>{const v=row.meds?.[k]||'';mr+=`<td><input type="text" class="med-input ${v==='停用'?'stopped':''}" value="${v}" onchange="updateMed(${idx},'${k}',this.value)"></td>`;});
-            mr+=`<td class="action-buttons"><button class="insert-btn" onclick="insertRowAfter(${idx})">➕</button><button class="delete-btn" onclick="deleteMedRow(${idx})">🗑️</button></td></tr>`;
-            mb.innerHTML+=mr;
-        });
-    }
-
-    window.insertIndColBefore=i=>{const id=`ind_${Date.now()}`;const n=prompt('新指标名称：');if(!n)return;const u=prompt('单位：','');if(u===null)return;const mn=parseFloat(prompt('参考下限：','0'));if(isNaN(mn))return;const mx=parseFloat(prompt('参考上限：','100'));if(isNaN(mx))return;CONFIG_IND.splice(i,0,{id,name:n,unit:u,range:[mn,mx],color:'#2563eb'});data.forEach(r=>{r[id]=null;});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);};
-    window.deleteIndCol=i=>{if(CONFIG_IND.length<=1){alert('至少保留一个');return;}const c=CONFIG_IND[i];if(confirm(`删除"${c.name}"？`)){CONFIG_IND.splice(i,1);data.forEach(r=>{delete r[c.id];});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);}};
-    window.insertMedColBefore=i=>{const key=`med_${Date.now()}`;const n=prompt('新药物名称：');if(!n)return;const nc={};const ks=Object.keys(CONFIG_MED);ks.forEach((k,j)=>{if(j===i)nc[key]={name:n,color:'#2563eb'};nc[k]=CONFIG_MED[k];});if(i>=ks.length)nc[key]={name:n,color:'#2563eb'};CONFIG_MED=nc;data.forEach(r=>{if(!r.meds)r.meds={};r.meds[key]='';});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);};
-    window.deleteMedCol=key=>{if(Object.keys(CONFIG_MED).length<=1){alert('至少保留一个');return;}if(confirm(`删除"${CONFIG_MED[key].name}"？`)){delete CONFIG_MED[key];data.forEach(r=>{if(r.meds)delete r.meds[key];});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);}};
-    window.addNewIndCol=()=>window.insertIndColBefore(CONFIG_IND.length);
-    window.addNewMedCol=()=>window.insertMedColBefore(Object.keys(CONFIG_MED).length);
-    window.updateCell=(idx,f,v)=>{if(f==='date'||f==='week'){data[idx][f]=v;}else{data[idx][f]=v===''?null:parseFloat(v);}data.sort((a,b)=>new Date(a.date)-new Date(b.date));saveData();renderTables();if(currentChartType==='ind')renderChartsByType('ind');};
-    window.updateMed=(idx,k,v)=>{if(!data[idx].meds)data[idx].meds={};data[idx].meds[k]=v;saveData();renderTables();if(currentChartType==='med')renderChartsByType('med');};
-    window.deleteRow=idx=>{if(confirm('确定删除？')){data.splice(idx,1);saveData();renderTables();renderChartsByType(currentChartType);}};
-    window.deleteMedRow=idx=>{if(confirm('确定删除？')){if(data[idx])data[idx].meds={};saveData();renderTables();if(currentChartType==='med')renderChartsByType('med');}};
-    function getMid(d1,d2){return new Date((new Date(d1).getTime()+new Date(d2).getTime())/2).toISOString().split('T')[0];}
-    window.insertRowAfter=idx=>{let nd;if(idx===data.length-1){const d=new Date(data[idx].date);d.setDate(d.getDate()+7);nd=d.toISOString().split('T')[0];}else{nd=getMid(data[idx].date,data[idx+1].date);}const nr={date:nd,week:'',meds:{}};CONFIG_IND.forEach(c=>nr[c.id]=null);data.splice(idx+1,0,nr);saveData();renderTables();renderChartsByType(currentChartType);};
-    window.addNewRowAtEnd=()=>{const d=new Date(data[data.length-1]?.date||'2026-04-04');d.setDate(d.getDate()+7);const nr={date:d.toISOString().split('T')[0],week:'',meds:{}};CONFIG_IND.forEach(c=>nr[c.id]=null);data.push(nr);saveData();renderTables();renderChartsByType(currentChartType);};
-    window.addMedRowAtEnd=window.addNewRowAtEnd;
-
-    function gI(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病指标记录表</h1><p>${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${CONFIG_IND.map(i=>`<th>${i.name}(${i.unit})</th>`).join('')}</tr></thead><tbody>${data.map(r=>`<tr><td>${r.date}</td><td>${r.week||'-'}</td>${CONFIG_IND.map(i=>`<td>${r[i.id]!==null&&r[i.id]!==undefined?r[i.id]:'-'}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;}
-
-```
-function gM(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}.s{background:#fee2e2;color:#b91c1c;text-decoration:line-through;}</style></head><body><h1>王坚·肾病用药记录表</h1><p>${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${Object.values(CONFIG_MED).map(m=>`<th>${m.name}</th>`).join('')}</tr></thead><tbody>${data.map(r=>{let s=`<tr><td>${r.date}</td><td>${r.week||'-'}</td>`;Object.keys(CONFIG_MED).forEach(k=>{const v=r.meds?.[k]||'';s+=`<td ${v==='停用'?'class="s"':''}>${v||'-'}</td>`;});return s+'</tr>';}).join('')}</tbody></table></body></html>`;}
-window.exportIndToWord=()=>{const b=new Blob([gI()],{type:'application/msword'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`王坚_肾病指标表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
-window.exportMedToWord=()=>{const b=new Blob([gM()],{type:'application/msword'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`王坚_肾病用药表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
-window.exportAllToWord=()=>{const c=`<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;margin-bottom:30px;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}.s{background:#fee2e2;color:#b91c1c;text-decoration:line-through;}</style></head><body><h1>王坚·肾病完整监测记录</h1><p>${new Date().toLocaleString('zh-CN')}</p><h2>一、指标记录表</h2>${gI().split('<body>')[1].split('</body>')[0]}<h2>二、用药记录表</h2>${gM().split('<body>')[1].split('</body>')[0]}</body></html>`;const b=new Blob([c],{type:'application/msword'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`王坚_肾病完整记录_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
-window.exportCSV=()=>{const h=['日期','周次',...CONFIG_IND.map(i=>`${i.name}(${i.unit})`),...Object.values(CONFIG_MED).map(m=>m.name)];const r=data.map(d=>[d.date,d.week||'',...CONFIG_IND.map(i=>d[i.id]!==null&&d[i.id]!==undefined?d[i.id]:''),...Object.keys(CONFIG_MED).map(k=>d.meds?.[k]??'')]);let c=h.join(',')+'\n';r.forEach(row=>{c+=row.map(v=>`"${v}"`).join(',')+'\n';});const b=new Blob(['\uFEFF'+c],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='王坚_肾病监测数据.csv';a.click();};
-window.switchTab=tab=>{['chartsPanel','indPanel','medPanel'].forEach((id,i)=>{document.getElementById(id).style.display=(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med')?'block':'none';});document.querySelectorAll('.tab').forEach((btn,i)=>{btn.classList.toggle('active',(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med'));});if(tab==='charts')setTimeout(()=>renderChartsByType(currentChartType),50);};
-window.addEventListener('resize',()=>{if(document.getElementById('chartsPanel').style.display!=='none')renderChartsByType(currentChartType);});
-
-// 启动
-loadData();
 renderTableHeaders();
 renderTables();
-renderChartsByType(currentChartType);
-```
-
+renderChartsByType(‘ind’);
 </script>
+
 </body>
 </html>
