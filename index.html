@@ -122,57 +122,90 @@
     <div class="footer">⚕️ 云同步版 · 数据实时同步到所有设备</div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    const firebaseConfig = {
-        apiKey: "AIzaSyDmfqE29qZFB9g126tWxomltJHEZhoEBDI",
-        authDomain: "renal-monitor-bee0f.firebaseapp.com",
-        projectId: "renal-monitor-bee0f",
-        storageBucket: "renal-monitor-bee0f.firebasestorage.app",
-        messagingSenderId: "827066206331",
-        appId: "1:827066206331:web:062a352a8fb567f9c8bade"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const docRef = doc(db, "renal", "wangjian");
-    window._docRef = docRef;
-    window._setDoc = setDoc;
-
-    onSnapshot(docRef, (snapshot) => {
-        const statusEl = document.getElementById('syncStatus');
-        if (snapshot.exists()) {
-            const cloudData = snapshot.data();
-            if (cloudData.data) data = cloudData.data;
-            if (cloudData.CONFIG_MED) CONFIG_MED = cloudData.CONFIG_MED;
-            renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
-            statusEl.className = 'sync-status synced'; statusEl.textContent = '☁️ 已同步';
-        } else {
-            saveToCloud();
-            statusEl.className = 'sync-status synced'; statusEl.textContent = '☁️ 初始化完成';
-        }
-    }, (error) => {
-        const statusEl = document.getElementById('syncStatus');
-        statusEl.className = 'sync-status error'; statusEl.textContent = '❌ 同步失败';
-    });
-
-    window.saveToCloud = async function() {
-        const statusEl = document.getElementById('syncStatus');
-        statusEl.className = 'sync-status syncing'; statusEl.textContent = '⏳ 同步中...';
-        try {
-            await setDoc(docRef, {
-                data: data, CONFIG_MED: CONFIG_MED,
-                CONFIG_IND: CONFIG_IND.map(c => ({id:c.id,name:c.name,unit:c.unit,range:c.range,color:c.color})),
-                updatedAt: new Date().toISOString()
-            });
-            statusEl.className = 'sync-status synced'; statusEl.textContent = '☁️ 已同步';
-        } catch(e) {
-            statusEl.className = 'sync-status error'; statusEl.textContent = '❌ 同步失败';
-        }
-    };
-</script>
-
 <script>
+    // ===== JSONBin 配置 =====
+    const JSONBIN_API_KEY = '$2a$10$uAnl0IQflPWqT.aShqJ9Tu7jiF6ERwkB.AW3kkR4oa3uE9TPC6Z7S';
+    const JSONBIN_BIN_ID_KEY = 'renal_monitor_bin_id';
+    let binId = localStorage.getItem(JSONBIN_BIN_ID_KEY) || null;
+    let saveTimer = null;
+
+    async function loadFromCloud() {
+        const statusEl = document.getElementById('syncStatus');
+        statusEl.className = 'sync-status syncing';
+        statusEl.textContent = '⏳ 加载中...';
+        try {
+            if (!binId) {
+                // 创建新的 bin
+                const res = await fetch('https://api.jsonbin.io/v3/b', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY,
+                        'X-Bin-Name': 'renal-monitor',
+                        'X-Bin-Private': 'true'
+                    },
+                    body: JSON.stringify({ data, CONFIG_MED })
+                });
+                const json = await res.json();
+                binId = json.metadata.id;
+                localStorage.setItem(JSONBIN_BIN_ID_KEY, binId);
+                statusEl.className = 'sync-status synced';
+                statusEl.textContent = '☁️ 已初始化';
+            } else {
+                // 读取已有数据
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                });
+                const json = await res.json();
+                if (json.record) {
+                    if (json.record.data) data = json.record.data;
+                    if (json.record.CONFIG_MED) CONFIG_MED = json.record.CONFIG_MED;
+                }
+                statusEl.className = 'sync-status synced';
+                statusEl.textContent = '☁️ 已同步';
+            }
+            renderTableHeaders();
+            renderTables();
+            renderChartsByType(currentChartType);
+        } catch(e) {
+            statusEl.className = 'sync-status error';
+            statusEl.textContent = '❌ 同步失败';
+            // 离线模式，使用本地数据
+            renderTableHeaders();
+            renderTables();
+            renderChartsByType(currentChartType);
+        }
+    }
+
+    async function saveToCloud() {
+        if (!binId) return;
+        const statusEl = document.getElementById('syncStatus');
+        statusEl.className = 'sync-status syncing';
+        statusEl.textContent = '⏳ 保存中...';
+        try {
+            await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_API_KEY
+                },
+                body: JSON.stringify({ data, CONFIG_MED })
+            });
+            statusEl.className = 'sync-status synced';
+            statusEl.textContent = '☁️ 已同步';
+        } catch(e) {
+            statusEl.className = 'sync-status error';
+            statusEl.textContent = '❌ 保存失败';
+        }
+    }
+
+    function saveData() {
+        // 防抖：2秒后保存，避免频繁请求
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveToCloud, 2000);
+    }
+
+    // ===== 指标配置 =====
     const CONFIG_IND = [
         { id:'cre', name:'肌酐', unit:'μmol/L', range:[57,97], color:'#2563eb' },
         { id:'alb', name:'白蛋白', unit:'g/L', range:[40,55], color:'#059669' },
@@ -248,18 +281,19 @@
     let data = JSON.parse(JSON.stringify(INITIAL_DATA));
     const chartCanvases = {};
 
-    function saveData() { if (window.saveToCloud) window.saveToCloud(); }
-
     window.resetToInitial = () => {
-        if (confirm('确定重置为初始数据吗？云端数据也会被重置！')) {
+        if (confirm('确定重置为初始数据吗？')) {
             data = JSON.parse(JSON.stringify(INITIAL_DATA));
-            saveData(); renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
+            localStorage.removeItem(JSONBIN_BIN_ID_KEY);
+            binId = null;
+            saveToCloud();
+            renderTableHeaders(); renderTables(); renderChartsByType(currentChartType);
         }
     };
 
-    window.switchChartType = (type) => {
+    window.switchChartType = type => {
         currentChartType = type;
-        document.querySelectorAll('.sub-tab').forEach((btn,i) => btn.classList.toggle('active',(i===0&&type==='ind')||(i===1&&type==='med')));
+        document.querySelectorAll('.sub-tab').forEach((b,i) => b.classList.toggle('active',(i===0&&type==='ind')||(i===1&&type==='med')));
         renderChartsByType(type);
     };
 
@@ -308,14 +342,14 @@
         const grid=document.getElementById('chartsGrid');
         const card=document.createElement('div');card.className='chart-card';
         const mn=CONFIG_MED[medKey].name, mc=CONFIG_MED[medKey].color;
-        const allRows=data.map((d,i)=>({date:d.date,index:i,value:d.meds?.[medKey]||''}));
+        const allRows=data.map((d,i)=>({date:d.date,value:d.meds?.[medKey]||''}));
         const sp=[];let lv=null,lr=null,ld=null;
-        allRows.forEach(row=>{const v=row.value;if(v&&v!==''){const m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='停用'){sp.push({date:row.date,value:0,rawValue:'停用',type:'stop'});lv=null;lr=null;ld=null;}}});
+        allRows.forEach(row=>{const v=row.value;if(v&&v!==''){const m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='停用'){sp.push({date:row.date,value:0,rawValue:'停用',type:'stop'});lv=null;}}});
         const last=allRows[allRows.length-1];
         if(lv!==null&&last.value!=='停用')sp.push({date:last.date,value:lv,rawValue:ld===last.date?lr:'↳'+lr,type:ld===last.date?'value':'extension'});
         const u=[],s=new Set();for(let i=sp.length-1;i>=0;i--){if(!s.has(sp[i].date)){u.unshift(sp[i]);s.add(sp[i].date);}}
         const id=`med-chart-${medKey}`;
-        card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${mc}"></span>${mn} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${u.length}个点</span></div><div class="ref-range">红色叉=停用 · 灰色点=延续</div></div><button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${u.map(p=>fmt(p.date)).join(' · ')}</div>`;
+        card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${mc}"></span>${mn} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${u.length}个点</span></div><div class="ref-range">红色叉=停用·灰色=延续</div></div><button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${u.map(p=>fmt(p.date)).join(' · ')}</div>`;
         grid.appendChild(card);
         drawMedChart(medKey,mn,mc,u,allRows,id);
     }
@@ -337,7 +371,7 @@
         sp.forEach(p=>{const x=xPos[p.date];ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
         ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
         if(sp.length>1){for(let i=0;i<sp.length-1;i++){const p1=sp[i],p2=sp[i+1],x1=xPos[p1.date],y1=yS(p1.value),x2=xPos[p2.date],y2=yS(p2.value);ctx.beginPath();if(p1.type==='stop'||p2.type==='stop'){ctx.setLineDash([5,3]);ctx.lineWidth=2;}else{ctx.setLineDash([]);ctx.lineWidth=2.5;}ctx.strokeStyle=mc;ctx.moveTo(x1,y1);ctx.lineTo(x2,y1);ctx.lineTo(x2,y2);ctx.stroke();}ctx.setLineDash([]);}
-        sp.forEach(p=>{const x=xPos[p.date],y=yS(p.value);if(p.type==='stop'){ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.moveTo(x-3,y-3);ctx.lineTo(x+3,y+3);ctx.moveTo(x+3,y-3);ctx.lineTo(x-3,y+3);ctx.stroke();}else if(p.type==='extension'){ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}else{ctx.shadowColor=mc;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=mc;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}ctx.fillStyle=p.type==='extension'?'#64748b':(p.type==='stop'?'#b91c1c':'#1e293b');ctx.font=p.type==='extension'?'7px system-ui':'bold 7px system-ui';ctx.textAlign='center';ctx.fillText(p.rawValue,x,y-12);});
+        sp.forEach(p=>{const x=xPos[p.date],y=yS(p.value);if(p.type==='stop'){ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.strokeStyle='white';ctx.moveTo(x-3,y-3);ctx.lineTo(x+3,y+3);ctx.moveTo(x+3,y-3);ctx.lineTo(x-3,y+3);ctx.stroke();}else if(p.type==='extension'){ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}else{ctx.shadowColor=mc;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=mc;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}ctx.fillStyle=p.type==='extension'?'#64748b':(p.type==='stop'?'#b91c1c':'#1e293b');ctx.font=p.type==='extension'?'7px system-ui':'bold 7px system-ui';ctx.textAlign='center';ctx.fillText(p.rawValue,x,y-12);});
     }
 
     window.downloadIndChart=id=>{const c=chartCanvases[`ind-${id}`];if(!c)return;const cfg=CONFIG_IND.find(c=>c.id===id);const a=document.createElement('a');a.download=`王坚_${cfg.name}_趋势图.png`;a.href=c.toDataURL('image/png');a.click();};
@@ -368,9 +402,9 @@
         });
     }
 
-    window.insertIndColBefore=i=>{const id=`ind_${Date.now()}`;const n=prompt('新指标名称：','新指标');if(!n)return;const u=prompt('单位：','');if(u===null)return;const mn=parseFloat(prompt('参考下限：','0'));if(isNaN(mn))return;const mx=parseFloat(prompt('参考上限：','100'));if(isNaN(mx))return;CONFIG_IND.splice(i,0,{id,name:n,unit:u,range:[mn,mx],color:'#2563eb'});data.forEach(r=>{r[id]=null;});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);};
+    window.insertIndColBefore=i=>{const id=`ind_${Date.now()}`;const n=prompt('新指标名称：');if(!n)return;const u=prompt('单位：','');if(u===null)return;const mn=parseFloat(prompt('参考下限：','0'));if(isNaN(mn))return;const mx=parseFloat(prompt('参考上限：','100'));if(isNaN(mx))return;CONFIG_IND.splice(i,0,{id,name:n,unit:u,range:[mn,mx],color:'#2563eb'});data.forEach(r=>{r[id]=null;});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);};
     window.deleteIndCol=i=>{if(CONFIG_IND.length<=1){alert('至少保留一个');return;}const c=CONFIG_IND[i];if(confirm(`删除"${c.name}"？`)){CONFIG_IND.splice(i,1);data.forEach(r=>{delete r[c.id];});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);}};
-    window.insertMedColBefore=i=>{const key=`med_${Date.now()}`;const n=prompt('新药物名称：','新药物');if(!n)return;const nc={};const ks=Object.keys(CONFIG_MED);ks.forEach((k,j)=>{if(j===i)nc[key]={name:n,color:'#2563eb'};nc[k]=CONFIG_MED[k];});if(i>=ks.length)nc[key]={name:n,color:'#2563eb'};CONFIG_MED=nc;data.forEach(r=>{if(!r.meds)r.meds={};r.meds[key]='';});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);};
+    window.insertMedColBefore=i=>{const key=`med_${Date.now()}`;const n=prompt('新药物名称：');if(!n)return;const nc={};const ks=Object.keys(CONFIG_MED);ks.forEach((k,j)=>{if(j===i)nc[key]={name:n,color:'#2563eb'};nc[k]=CONFIG_MED[k];});if(i>=ks.length)nc[key]={name:n,color:'#2563eb'};CONFIG_MED=nc;data.forEach(r=>{if(!r.meds)r.meds={};r.meds[key]='';});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);};
     window.deleteMedCol=key=>{if(Object.keys(CONFIG_MED).length<=1){alert('至少保留一个');return;}if(confirm(`删除"${CONFIG_MED[key].name}"？`)){delete CONFIG_MED[key];data.forEach(r=>{if(r.meds)delete r.meds[key];});saveData();renderTableHeaders();renderTables();renderChartsByType(currentChartType);}};
     window.addNewIndCol=()=>window.insertIndColBefore(CONFIG_IND.length);
     window.addNewMedCol=()=>window.insertMedColBefore(Object.keys(CONFIG_MED).length);
@@ -394,9 +428,11 @@ window.exportCSV=()=>{const h=['日期','周次',...CONFIG_IND.map(i=>`${i.name}
 window.switchTab=tab=>{['chartsPanel','indPanel','medPanel'].forEach((id,i)=>{document.getElementById(id).style.display=(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med')?'block':'none';});document.querySelectorAll('.tab').forEach((btn,i)=>{btn.classList.toggle('active',(i===0&&tab==='charts')||(i===1&&tab==='ind')||(i===2&&tab==='med'));});if(tab==='charts')setTimeout(()=>renderChartsByType(currentChartType),50);};
 window.addEventListener('resize',()=>{if(document.getElementById('chartsPanel').style.display!=='none')renderChartsByType(currentChartType);});
 
+// 启动：先显示本地数据，再从云端加载
 renderTableHeaders();
 renderTables();
 renderChartsByType(currentChartType);
+loadFromCloud();
 ```
 
 </script>
