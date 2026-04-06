@@ -2,287 +2,298 @@
 
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>王坚 · 肾病监测系统</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-        body { background: #f1f5f9; padding: 10px; }
-        .container { max-width: 100%; margin: 0 auto; }
-        .header { background: white; padding: 12px 16px; border-radius: 24px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; border: 1px solid #e2e8f0; }
-        @media (min-width: 600px) { .header { flex-direction: row; justify-content: space-between; align-items: center; } }
-        .title { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #0f172a, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .badge { background: #dbeafe; color: #1e40af; padding: 4px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; margin-left: 8px; display: inline-block; }
-        .btn { background: #0f172a; color: white; border: none; padding: 10px 20px; border-radius: 40px; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; }
-        @media (min-width: 600px) { .btn { width: auto; } }
-        .tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: 100%; margin: 0 0 16px 0; }
-        .tab { flex: 1; padding: 10px 0; border-radius: 40px; font-weight: 700; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #475569; white-space: nowrap; text-align: center; }
-        .tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .charts-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
-        @media (min-width: 1000px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
-        .chart-card { background: white; border-radius: 20px; padding: 16px; border: 1px solid #e2e8f0; }
-        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-        .chart-title { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-        .color-dot { width: 10px; height: 10px; border-radius: 10px; display: inline-block; }
-        .ref-range { color: #64748b; font-size: 11px; }
-        .chart-container { height: 220px; position: relative; margin-bottom: 8px; background: #ffffff; border-radius: 12px; padding: 5px; overflow-x: auto; overflow-y: hidden; }
-        canvas { width: 100%; height: 100%; min-width: 400px; display: block; }
-        .date-list { font-size: 10px; color: #2563eb; margin-top: 8px; padding: 6px 10px; background: #f8fafc; border-radius: 16px; max-height: 50px; overflow-y: auto; word-break: break-all; }
-        .table-wrapper { background: white; border-radius: 20px; padding: 16px; border: 1px solid #e2e8f0; overflow-x: auto; min-height: 300px; }
-        table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 1200px; }
-        th { background: #f8fafc; padding: 10px 4px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #cbd5e1; text-align: center; position: sticky; top: 0; vertical-align: middle; }
-        td { padding: 6px 4px; border-bottom: 1px solid #e2e8f0; text-align: center; vertical-align: middle; }
-        .footer { text-align: center; margin: 20px 0 10px; color: #64748b; font-size: 11px; }
-        .header-buttons { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
-        @media (min-width: 600px) { .header-buttons { width: auto; flex-wrap: nowrap; } }
-        .header-buttons .btn { flex: 1; white-space: nowrap; }
-        .download-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 20px; padding: 5px 12px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
-        .word-download-btn { background: #c2410c; color: white; border: none; border-radius: 20px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
-        .sub-tab-bar { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 40px; width: fit-content; margin: 0 0 16px 0; }
-        .sub-tab { padding: 6px 16px; border-radius: 30px; font-weight: 600; border: none; background: transparent; cursor: pointer; font-size: 12px; color: #475569; }
-        .sub-tab.active { background: white; color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-        .table-header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wang Jian Renal Monitor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+body{background:#f1f5f9;padding:10px}
+.hdr{background:white;padding:12px 16px;border-radius:24px;margin-bottom:16px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:12px}
+.ttl{font-size:18px;font-weight:800;background:linear-gradient(135deg,#0f172a,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bdg{background:#dbeafe;color:#1e40af;padding:4px 10px;border-radius:40px;font-size:11px;font-weight:600;margin-left:8px}
+.btn{background:#0f172a;color:white;border:none;padding:10px 20px;border-radius:40px;font-weight:600;font-size:14px;cursor:pointer}
+.hbtns{display:flex;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:#e2e8f0;padding:4px;border-radius:40px;margin-bottom:16px}
+.tab{flex:1;padding:10px 0;border-radius:40px;font-weight:700;border:none;background:transparent;cursor:pointer;font-size:13px;color:#475569;text-align:center}
+.tab.on{background:white;color:#2563eb;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px}
+@media(min-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+.card{background:white;border-radius:20px;padding:16px;border:1px solid #e2e8f0}
+.chtit{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.ref{color:#64748b;font-size:11px}
+.chbox{height:220px;overflow-x:auto;overflow-y:hidden;margin-bottom:8px}
+canvas{min-width:400px;display:block}
+.dlist{font-size:10px;color:#2563eb;padding:6px 10px;background:#f8fafc;border-radius:16px;max-height:50px;overflow-y:auto;word-break:break-all}
+.twrap{background:white;border-radius:20px;padding:16px;border:1px solid #e2e8f0;overflow-x:auto}
+table{border-collapse:collapse;font-size:11px;min-width:1200px;width:100%}
+th{background:#f8fafc;padding:10px 4px;font-weight:700;color:#1e293b;border-bottom:2px solid #cbd5e1;text-align:center}
+td{padding:6px 4px;border-bottom:1px solid #e2e8f0;text-align:center}
+.dlbtn{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer}
+.wbtn{background:#c2410c;color:white;border:none;border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer}
+.stabs{display:flex;gap:4px;background:#e2e8f0;padding:4px;border-radius:40px;width:fit-content;margin-bottom:16px}
+.stab{padding:6px 16px;border-radius:30px;font-weight:600;border:none;background:transparent;cursor:pointer;font-size:12px;color:#475569}
+.stab.on{background:white;color:#2563eb}
+.thdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.ftr{text-align:center;margin:20px 0 10px;color:#64748b;font-size:11px}
+</style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div>
-            <span class="title">王坚 · 肾病监测系统</span>
-            <span class="badge">📊 数据可视化版</span>
-        </div>
-        <div class="header-buttons">
-            <button class="btn" onclick="exportCSV()">📥 导出CSV</button>
-            <button class="btn" onclick="exportAllToWord()">📄 导出Word</button>
-        </div>
+<div style="max-width:100%;margin:0 auto">
+<div class="hdr">
+  <div>
+    <span class="ttl" id="sysTitle"></span>
+    <span class="bdg" id="sysBadge"></span>
+  </div>
+  <div class="hbtns">
+    <button class="btn" onclick="exportCSV()" id="btnCSV"></button>
+    <button class="btn" onclick="exportAllToWord()" id="btnWord"></button>
+  </div>
+</div>
+<div class="tabs">
+  <button class="tab on" onclick="switchTab('charts')" id="tab0"></button>
+  <button class="tab" onclick="switchTab('ind')" id="tab1"></button>
+  <button class="tab" onclick="switchTab('med')" id="tab2"></button>
+</div>
+<div id="chartsPanel">
+  <div class="stabs">
+    <button class="stab on" onclick="switchChartType('ind')" id="stab0"></button>
+    <button class="stab" onclick="switchChartType('med')" id="stab1"></button>
+  </div>
+  <div class="grid" id="chartsGrid"></div>
+</div>
+<div id="indPanel" style="display:none">
+  <div class="twrap">
+    <div class="thdr">
+      <div style="display:flex;align-items:center;gap:8px">
+        <h3 style="font-weight:800;font-size:16px" id="indTitle"></h3>
+        <button class="wbtn" onclick="exportIndToWord()" id="indWbtn"></button>
+      </div>
     </div>
-    <div class="tab-bar">
-        <button class="tab active" onclick="switchTab('charts')">📈 趋势图谱</button>
-        <button class="tab" onclick="switchTab('ind')">📋 指标表</button>
-        <button class="tab" onclick="switchTab('med')">💊 用药表</button>
+    <table><thead id="indTH"></thead><tbody id="indTB"></tbody></table>
+  </div>
+</div>
+<div id="medPanel" style="display:none">
+  <div class="twrap">
+    <div class="thdr">
+      <div style="display:flex;align-items:center;gap:8px">
+        <h3 style="font-weight:800;font-size:16px" id="medTitle"></h3>
+        <button class="wbtn" onclick="exportMedToWord()" id="medWbtn"></button>
+      </div>
     </div>
-    <div id="chartsPanel">
-        <div class="sub-tab-bar">
-            <button class="sub-tab active" onclick="switchChartType('ind')">📊 指标趋势</button>
-            <button class="sub-tab" onclick="switchChartType('med')">💊 药物趋势</button>
-        </div>
-        <div class="charts-grid" id="chartsGrid"></div>
-    </div>
-    <div id="indPanel" style="display:none;">
-        <div class="table-wrapper">
-            <div class="table-header">
-                <div class="table-header-left">
-                    <h3 style="font-weight:800;font-size:16px;">指标记录矩阵</h3>
-                    <button class="word-download-btn" onclick="exportIndToWord()">📄 下载Word</button>
-                </div>
-            </div>
-            <table><thead id="indTableHeader"></thead><tbody id="indTableBody"></tbody></table>
-        </div>
-    </div>
-    <div id="medPanel" style="display:none;">
-        <div class="table-wrapper">
-            <div class="table-header">
-                <div class="table-header-left">
-                    <h3 style="font-weight:800;font-size:16px;">药物剂量矩阵</h3>
-                    <button class="word-download-btn" onclick="exportMedToWord()">📄 下载Word</button>
-                </div>
-            </div>
-            <table><thead id="medTableHeader"></thead><tbody id="medTableBody"></tbody></table>
-        </div>
-    </div>
-    <div class="footer">⚕️ 王坚肾病监测系统 · 数据更新至2026-04-04</div>
+    <table><thead id="medTH"></thead><tbody id="medTB"></tbody></table>
+  </div>
+</div>
+<div class="ftr" id="ftrText"></div>
 </div>
 
 <script>
-const CONFIG_IND = [
-    {id:'cre',name:'肌酐',unit:'μmol/L',range:[57,97],color:'#2563eb'},
-    {id:'alb',name:'白蛋白',unit:'g/L',range:[40,55],color:'#059669'},
-    {id:'pro',name:'24H尿蛋白',unit:'mg/24h',range:[0,120],color:'#d97706'},
-    {id:'pla',name:'PLA2R',unit:'RU/ml',range:[0,2],color:'#dc2626'},
-    {id:'dim',name:'D-二聚体',unit:'ng/mL',range:[0,243],color:'#7c3aed'},
-    {id:'alt',name:'ALT',unit:'U/L',range:[7,40],color:'#0891b2'},
-    {id:'ldl',name:'LDL-C',unit:'mmol/L',range:[1.8,3.6],color:'#4f46e5'},
-    {id:'cho',name:'总胆固醇',unit:'mmol/L',range:[2.9,5.7],color:'#6366f1'},
-    {id:'tg',name:'甘油三酯',unit:'mmol/L',range:[0.24,2.0],color:'#0ea5e9'},
-    {id:'igg',name:'IgG',unit:'g/L',range:[8,17],color:'#e11d48'},
-    {id:'bcl',name:'B细胞(%)',unit:'%',range:[5.38,18.23],color:'#0284c7'}
+// Set Chinese text via JS to avoid encoding issues
+document.getElementById('sysTitle').textContent = '\u738b\u575a \u00b7 \u80be\u75c5\u76d1\u6d4b\u7cfb\u7edf';
+document.getElementById('sysBadge').textContent = '\ud83d\udcca \u6570\u636e\u53ef\u89c6\u5316\u7248';
+document.getElementById('btnCSV').textContent = '\ud83d\udce5 \u5bfc\u51faCSV';
+document.getElementById('btnWord').textContent = '\ud83d\udcc4 \u5bfc\u51faWord';
+document.getElementById('tab0').textContent = '\ud83d\udcc8 \u8d8b\u52bf\u56fe\u8c31';
+document.getElementById('tab1').textContent = '\ud83d\udccb \u6307\u6807\u8868';
+document.getElementById('tab2').textContent = '\ud83d\udc8a \u7528\u836f\u8868';
+document.getElementById('stab0').textContent = '\ud83d\udcca \u6307\u6807\u8d8b\u52bf';
+document.getElementById('stab1').textContent = '\ud83d\udc8a \u836f\u7269\u8d8b\u52bf';
+document.getElementById('indTitle').textContent = '\u6307\u6807\u8bb0\u5f55\u77e9\u9635';
+document.getElementById('indWbtn').textContent = '\ud83d\udcc4 \u4e0b\u8f7dWord';
+document.getElementById('medTitle').textContent = '\u836f\u7269\u5242\u91cf\u77e9\u9635';
+document.getElementById('medWbtn').textContent = '\ud83d\udcc4 \u4e0b\u8f7dWord';
+document.getElementById('ftrText').textContent = '\u26a5\ufe0f \u738b\u575a\u80be\u75c5\u76d1\u6d4b\u7cfb\u7edf \u00b7 \u6570\u636e\u66f4\u65b0\u81f32026-04-04';
+
+var IND = [
+  {id:'cre',name:'\u808c\u9150',unit:'\u03bcmol/L',range:[57,97],color:'#2563eb'},
+  {id:'alb',name:'\u767d\u86cb\u767d',unit:'g/L',range:[40,55],color:'#059669'},
+  {id:'pro',name:'24H\u5c3f\u86cb\u767d',unit:'mg/24h',range:[0,120],color:'#d97706'},
+  {id:'pla',name:'PLA2R',unit:'RU/ml',range:[0,2],color:'#dc2626'},
+  {id:'dim',name:'D-\u4e8c\u804a\u4f53',unit:'ng/mL',range:[0,243],color:'#7c3aed'},
+  {id:'alt',name:'ALT',unit:'U/L',range:[7,40],color:'#0891b2'},
+  {id:'ldl',name:'LDL-C',unit:'mmol/L',range:[1.8,3.6],color:'#4f46e5'},
+  {id:'cho',name:'\u603b\u80c6\u56fa\u9187',unit:'mmol/L',range:[2.9,5.7],color:'#6366f1'},
+  {id:'tg',name:'\u7518\u6cb9\u4e09\u916f',unit:'mmol/L',range:[0.24,2.0],color:'#0ea5e9'},
+  {id:'igg',name:'IgG',unit:'g/L',range:[8,17],color:'#e11d48'},
+  {id:'bcl',name:'B\u7ec6\u80de(%)',unit:'%',range:[5.38,18.23],color:'#0284c7'}
 ];
 
-const CONFIG_MED = {
-    methyl:{name:'醋酸甲泼尼松',color:'#dc2626'},
-    ritu:{name:'利妥昔抗体',color:'#7c3aed'},
-    fine:{name:'菲奈利酮',color:'#059669'},
-    losar:{name:'氯沙坦钾',color:'#2563eb'},
-    riva:{name:'利伐沙班',color:'#0891b2'},
-    indo:{name:'吲哚布芬',color:'#b45309'},
-    nadro:{name:'那曲',color:'#be185d'},
-    ator:{name:'阿托伐他汀',color:'#d97706'},
-    pita:{name:'匹伐他汀',color:'#ca8a04'},
-    ezet:{name:'依折麦布',color:'#16a34a'}
+var MED = {
+  methyl:{name:'\u9192\u9178\u7532\u6cfc\u5c3c\u677e',color:'#dc2626'},
+  ritu:{name:'\u5229\u59a5\u6614\u6297\u4f53',color:'#7c3aed'},
+  fine:{name:'\u83f2\u5948\u5229\u916e',color:'#059669'},
+  losar:{name:'\u6c2f\u6c99\u5766\u9492',color:'#2563eb'},
+  riva:{name:'\u5229\u4f10\u6c99\u73ed',color:'#0891b2'},
+  indo:{name:'\u5435\u54da\u5e03\u82ac',color:'#b45309'},
+  nadro:{name:'\u90a3\u66f2',color:'#be185d'},
+  ator:{name:'\u963f\u6258\u4f10\u4ed6\u6c40',color:'#d97706'},
+  pita:{name:'\u5339\u4f10\u4ed6\u6c40',color:'#ca8a04'},
+  ezet:{name:'\u4f9d\u6298\u9ea6\u5e03',color:'#16a34a'}
 };
 
-const data = [
-    {date:'2025-11-30',week:'',cre:83.8,alb:23.6,pro:null,pla:null,dim:null,alt:null,ldl:5.2,cho:9.55,tg:5.57,igg:null,bcl:null,meds:{}},
-    {date:'2025-12-01',week:'',cre:null,alb:null,pro:8084.1,pla:213.62,dim:933,alt:null,ldl:null,cho:null,tg:null,igg:5.6,bcl:null,meds:{ator:'20mg'}},
-    {date:'2025-12-07',week:'',cre:null,alb:20.7,pro:null,pla:null,dim:251,alt:20,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{fine:'5mg',losar:'50mg'}},
-    {date:'2025-12-10',week:'',cre:null,alb:23.8,pro:null,pla:5.6,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:8.3,bcl:5.6,meds:{}},
-    {date:'2025-12-11',week:'',cre:null,alb:null,pro:12404.6,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'30mg',losar:'100mg'}},
-    {date:'2025-12-12',week:'',cre:null,alb:22.4,pro:null,pla:null,dim:213,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
-    {date:'2025-12-17',week:'',cre:94.3,alb:23.4,pro:6824.4,pla:null,dim:183,alt:null,ldl:5.26,cho:8.61,tg:4.42,igg:6.3,bcl:0.04,meds:{losar:'10mg',nadro:'停用'}},
-    {date:'2025-12-19',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
-    {date:'2025-12-24',week:'',cre:90,alb:25.1,pro:10066.3,pla:null,dim:204,alt:null,ldl:5.26,cho:8.97,tg:4.13,igg:5.5,bcl:0.01,meds:{methyl:'25mg',fine:'10mg',losar:'50mg'}},
-    {date:'2025-12-26',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
-    {date:'2026-01-02',week:'第1周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'20mg',ritu:'500mg'}},
-    {date:'2026-01-03',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'停用'}},
-    {date:'2026-01-07',week:'',cre:94.5,alb:25.4,pro:7159,pla:null,dim:98,alt:null,ldl:5.1,cho:8.82,tg:3.64,igg:null,bcl:null,meds:{riva:'停用'}},
-    {date:'2026-01-09',week:'第2周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{indo:'200mg'}},
-    {date:'2026-01-12',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'25mg'}},
-    {date:'2026-01-13',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'12.5mg'}},
-    {date:'2026-01-14',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'停用'}},
-    {date:'2026-01-16',week:'第3周',cre:93.6,alb:28.2,pro:5117,pla:null,dim:null,alt:null,ldl:4.07,cho:7.8,tg:3.08,igg:6.5,bcl:null,meds:{}},
-    {date:'2026-01-22',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{riva:'10mg',indo:'停用'}},
-    {date:'2026-01-23',week:'第4周',cre:87,alb:26.5,pro:4418,pla:null,dim:634,alt:null,ldl:3.33,cho:6.42,tg:3.3,igg:6.5,bcl:0.01,meds:{}},
-    {date:'2026-01-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'15mg'}},
-    {date:'2026-01-30',week:'第5周',cre:92.1,alb:29.6,pro:5642,pla:null,dim:null,alt:null,ldl:3.55,cho:6.59,tg:2.69,igg:null,bcl:null,meds:{}},
-    {date:'2026-02-06',week:'第6周',cre:91.7,alb:31.1,pro:5765,pla:null,dim:68,alt:null,ldl:3.11,cho:6.11,tg:2.79,igg:6.9,bcl:null,meds:{}},
-    {date:'2026-02-09',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ezet:'10mg'}},
-    {date:'2026-02-12',week:'',cre:87.7,alb:32.4,pro:4652,pla:5.83,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'12.5mg'}},
-    {date:'2026-02-13',week:'第7周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-02-20',week:'第8周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-02-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'10mg'}},
-    {date:'2026-02-26',week:'',cre:88.5,alb:31.5,pro:4291,pla:null,dim:8,alt:65.7,ldl:2.73,cho:5.59,tg:3.07,igg:7.5,bcl:null,meds:{ator:'停用'}},
-    {date:'2026-02-27',week:'第9周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-03-06',week:'第10周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-03-10',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'7.5mg'}},
-    {date:'2026-03-11',week:'',cre:78.2,alb:30.7,pro:4842,pla:null,dim:31,alt:60.6,ldl:5.01,cho:8.49,tg:3.16,igg:null,bcl:null,meds:{pita:'2mg'}},
-    {date:'2026-03-12',week:'',cre:null,alb:null,pro:null,pla:5.1,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:0.01,meds:{}},
-    {date:'2026-03-13',week:'第11周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-03-20',week:'第12周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-03-21',week:'',cre:78.3,alb:30.3,pro:4823,pla:null,dim:22,alt:45.9,ldl:2.61,cho:5.49,tg:2.47,igg:7.9,bcl:null,meds:{riva:'停用'}},
-    {date:'2026-03-27',week:'第13周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-04-03',week:'第14周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
-    {date:'2026-04-04',week:'',cre:85.3,alb:32.9,pro:4204,pla:0.02,dim:63,alt:56.5,ldl:2.58,cho:5.55,tg:2.49,igg:null,bcl:null,meds:{methyl:'5mg'}}
+var D = [
+  {date:'2025-11-30',week:'',cre:83.8,alb:23.6,pro:null,pla:null,dim:null,alt:null,ldl:5.2,cho:9.55,tg:5.57,igg:null,bcl:null,meds:{}},
+  {date:'2025-12-01',week:'',cre:null,alb:null,pro:8084.1,pla:213.62,dim:933,alt:null,ldl:null,cho:null,tg:null,igg:5.6,bcl:null,meds:{ator:'20mg'}},
+  {date:'2025-12-07',week:'',cre:null,alb:20.7,pro:null,pla:null,dim:251,alt:20,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{fine:'5mg',losar:'50mg'}},
+  {date:'2025-12-10',week:'',cre:null,alb:23.8,pro:null,pla:5.6,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:8.3,bcl:5.6,meds:{}},
+  {date:'2025-12-11',week:'',cre:null,alb:null,pro:12404.6,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'30mg',losar:'100mg'}},
+  {date:'2025-12-12',week:'',cre:null,alb:22.4,pro:null,pla:null,dim:213,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+  {date:'2025-12-17',week:'',cre:94.3,alb:23.4,pro:6824.4,pla:null,dim:183,alt:null,ldl:5.26,cho:8.61,tg:4.42,igg:6.3,bcl:0.04,meds:{losar:'10mg'}},
+  {date:'2025-12-19',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+  {date:'2025-12-24',week:'',cre:90,alb:25.1,pro:10066.3,pla:null,dim:204,alt:null,ldl:5.26,cho:8.97,tg:4.13,igg:5.5,bcl:0.01,meds:{methyl:'25mg',fine:'10mg',losar:'50mg'}},
+  {date:'2025-12-26',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+  {date:'2026-01-02',week:'\u7b2c1\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'20mg',ritu:'500mg'}},
+  {date:'2026-01-03',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'\u505c\u7528'}},
+  {date:'2026-01-07',week:'',cre:94.5,alb:25.4,pro:7159,pla:null,dim:98,alt:null,ldl:5.1,cho:8.82,tg:3.64,igg:null,bcl:null,meds:{riva:'\u505c\u7528'}},
+  {date:'2026-01-09',week:'\u7b2c2\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{indo:'200mg'}},
+  {date:'2026-01-12',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'25mg'}},
+  {date:'2026-01-13',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'12.5mg'}},
+  {date:'2026-01-14',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'\u505c\u7528'}},
+  {date:'2026-01-16',week:'\u7b2c3\u5468',cre:93.6,alb:28.2,pro:5117,pla:null,dim:null,alt:null,ldl:4.07,cho:7.8,tg:3.08,igg:6.5,bcl:null,meds:{}},
+  {date:'2026-01-22',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{riva:'10mg',indo:'\u505c\u7528'}},
+  {date:'2026-01-23',week:'\u7b2c4\u5468',cre:87,alb:26.5,pro:4418,pla:null,dim:634,alt:null,ldl:3.33,cho:6.42,tg:3.3,igg:6.5,bcl:0.01,meds:{}},
+  {date:'2026-01-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'15mg'}},
+  {date:'2026-01-30',week:'\u7b2c5\u5468',cre:92.1,alb:29.6,pro:5642,pla:null,dim:null,alt:null,ldl:3.55,cho:6.59,tg:2.69,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-06',week:'\u7b2c6\u5468',cre:91.7,alb:31.1,pro:5765,pla:null,dim:68,alt:null,ldl:3.11,cho:6.11,tg:2.79,igg:6.9,bcl:null,meds:{}},
+  {date:'2026-02-09',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ezet:'10mg'}},
+  {date:'2026-02-12',week:'',cre:87.7,alb:32.4,pro:4652,pla:5.83,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'12.5mg'}},
+  {date:'2026-02-13',week:'\u7b2c7\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-20',week:'\u7b2c8\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'10mg'}},
+  {date:'2026-02-26',week:'',cre:88.5,alb:31.5,pro:4291,pla:null,dim:8,alt:65.7,ldl:2.73,cho:5.59,tg:3.07,igg:7.5,bcl:null,meds:{ator:'\u505c\u7528'}},
+  {date:'2026-02-27',week:'\u7b2c9\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-06',week:'\u7b2c10\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-10',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'7.5mg'}},
+  {date:'2026-03-11',week:'',cre:78.2,alb:30.7,pro:4842,pla:null,dim:31,alt:60.6,ldl:5.01,cho:8.49,tg:3.16,igg:null,bcl:null,meds:{pita:'2mg'}},
+  {date:'2026-03-12',week:'',cre:null,alb:null,pro:null,pla:5.1,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:0.01,meds:{}},
+  {date:'2026-03-13',week:'\u7b2c11\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-20',week:'\u7b2c12\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-21',week:'',cre:78.3,alb:30.3,pro:4823,pla:null,dim:22,alt:45.9,ldl:2.61,cho:5.49,tg:2.47,igg:7.9,bcl:null,meds:{riva:'\u505c\u7528'}},
+  {date:'2026-03-27',week:'\u7b2c13\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-04-03',week:'\u7b2c14\u5468',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-04-04',week:'',cre:85.3,alb:32.9,pro:4204,pla:0.02,dim:63,alt:56.5,ldl:2.58,cho:5.55,tg:2.49,igg:null,bcl:null,meds:{methyl:'5mg'}}
 ];
 
-const chartCanvases = {};
-let currentChartType = 'ind';
+var cvs={},ctype='ind';
 
-function fmt(d){if(!d)return'';const p=d.split('-');return p.length>=3?`${p[1]}-${p[2]}`:d;}
+function fmt(d){if(!d)return'';var p=d.split('-');return p.length>=3?p[1]+'-'+p[2]:d;}
 
-function renderChartsByType(type){
-    const grid=document.getElementById('chartsGrid');
-    if(!grid)return;
-    grid.innerHTML='';
-    if(type==='ind')CONFIG_IND.forEach(cfg=>renderIndChart(cfg));
-    else Object.keys(CONFIG_MED).forEach(k=>renderMedChart(k));
+function renderCharts(type){
+  var g=document.getElementById('chartsGrid');
+  g.innerHTML='';
+  if(type==='ind') IND.forEach(function(c){renderInd(c);});
+  else Object.keys(MED).forEach(function(k){renderMed(k);});
 }
 
-function renderIndChart(cfg){
-    const grid=document.getElementById('chartsGrid');
-    const card=document.createElement('div');card.className='chart-card';
-    const pts=data.filter(d=>d[cfg.id]!==null&&d[cfg.id]!==undefined).map(d=>({date:d.date,value:d[cfg.id]}));
-    const id=`chart-${cfg.id}`;
-    card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${cfg.color}"></span>${cfg.name} (${cfg.unit})<span style="font-size:10px;color:#2563eb;margin-left:4px;">${pts.length}个点</span></div><div class="ref-range">参考: ${cfg.range[0]}-${cfg.range[1]}</div></div><button class="download-btn" onclick="downloadIndChart('${cfg.id}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${pts.map(p=>fmt(p.date)).join(' · ')}</div>`;
-    grid.appendChild(card);
-    setTimeout(()=>drawIndChart(cfg,pts,id),10);
+function renderInd(cfg){
+  var g=document.getElementById('chartsGrid');
+  var card=document.createElement('div');card.className='card';
+  var pts=D.filter(function(d){return d[cfg.id]!==null&&d[cfg.id]!==undefined;}).map(function(d){return{date:d.date,value:d[cfg.id]};});
+  var id='c-'+cfg.id;
+  var dstr=pts.map(function(p){return fmt(p.date);}).join(' \u00b7 ');
+  card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div><div class="chtit"><span class="dot" style="background:'+cfg.color+'"></span>'+cfg.name+' ('+cfg.unit+') <span style="font-size:10px;color:#2563eb">'+pts.length+'</span></div><div class="ref">\u53c2\u8003: '+cfg.range[0]+'-'+cfg.range[1]+'</div></div><button class="dlbtn" onclick="dlInd(\''+cfg.id+'\')">\u2b07\ufe0f \u4e0b\u8f7d</button></div><div class="chbox"><canvas id="'+id+'" width="600" height="220"></canvas></div><div class="dlist"><b>\u65e5\u671f:</b> '+dstr+'</div>';
+  g.appendChild(card);
+  setTimeout(function(){drawInd(cfg,pts,id);},10);
 }
 
-function drawIndChart(cfg,pts,id){
-    const cv=document.getElementById(id);if(!cv)return;
-    chartCanvases[`ind-${cfg.id}`]=cv;
-    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-    ctx.clearRect(0,0,W,H);
-    const P={l:50,r:20,t:30,b:35};
-    if(!pts.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('暂无数据',W/2,H/2);return;}
-    const vals=pts.map(p=>p.value);
-    const yMin=Math.floor(Math.min(...vals,cfg.range[0])*0.9),yMax=Math.ceil(Math.max(...vals,cfg.range[1])*1.1);
-    const yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
-    const xS=i=>P.l+(i/(pts.length-1||1))*(W-P.l-P.r);
-    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#0f172a';ctx.font='bold 14px system-ui';ctx.textAlign='left';ctx.fillText(`${cfg.name} 趋势`,P.l,22);
-    ctx.fillStyle=cfg.color+'20';ctx.fillRect(P.l,yS(cfg.range[1]),W-P.l-P.r,yS(cfg.range[0])-yS(cfg.range[1]));
-    for(let i=0;i<=4;i++){const v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
-    pts.forEach((p,i)=>{const x=xS(i);ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
-    ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
-    ctx.strokeStyle=cfg.color;ctx.lineWidth=2.5;ctx.beginPath();pts.forEach((p,i)=>{const x=xS(i),y=yS(p.value);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
-    pts.forEach((p,i)=>{const x=xS(i),y=yS(p.value);ctx.shadowColor=cfg.color;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=cfg.color;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
+function drawInd(cfg,pts,id){
+  var cv=document.getElementById(id);if(!cv)return;
+  cvs['i-'+cfg.id]=cv;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  var P={l:50,r:20,t:30,b:35};
+  if(!pts.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('\u6682\u65e0\u6570\u636e',W/2,H/2);return;}
+  var vals=pts.map(function(p){return p.value;});
+  var yMin=Math.floor(Math.min.apply(null,vals.concat([cfg.range[0]]))*0.9);
+  var yMax=Math.ceil(Math.max.apply(null,vals.concat([cfg.range[1]]))*1.1);
+  function yS(v){return H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);}
+  function xS(i){return P.l+(i/(pts.length-1||1))*(W-P.l-P.r);}
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#0f172a';ctx.font='bold 13px system-ui';ctx.textAlign='left';ctx.fillText(cfg.name,P.l,22);
+  ctx.fillStyle=cfg.color+'20';ctx.fillRect(P.l,yS(cfg.range[1]),W-P.l-P.r,yS(cfg.range[0])-yS(cfg.range[1]));
+  for(var i=0;i<=4;i++){var v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
+  pts.forEach(function(p,i){var x=xS(i);ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
+  ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
+  ctx.strokeStyle=cfg.color;ctx.lineWidth=2.5;ctx.beginPath();pts.forEach(function(p,i){var x=xS(i),y=yS(p.value);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+  pts.forEach(function(p,i){var x=xS(i),y=yS(p.value);ctx.shadowColor=cfg.color;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=cfg.color;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
 }
 
-function renderMedChart(medKey){
-    const grid=document.getElementById('chartsGrid');
-    const card=document.createElement('div');card.className='chart-card';
-    const mn=CONFIG_MED[medKey].name,mc=CONFIG_MED[medKey].color;
-    const allRows=data.map(d=>({date:d.date,value:d.meds?.[medKey]||''}));
-    const sp=[];let lv=null,lr=null,ld=null;
-    allRows.forEach(row=>{const v=row.value;if(v&&v!==''){const m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='停用'){sp.push({date:row.date,value:0,rawValue:'停用',type:'stop'});lv=null;}}});
-    const last=allRows[allRows.length-1];
-    if(lv!==null&&last.value!=='停用')sp.push({date:last.date,value:lv,rawValue:ld===last.date?lr:'↳'+lr,type:ld===last.date?'value':'extension'});
-    const u=[],s=new Set();for(let i=sp.length-1;i>=0;i--){if(!s.has(sp[i].date)){u.unshift(sp[i]);s.add(sp[i].date);}}
-    const id=`med-chart-${medKey}`;
-    card.innerHTML=`<div class="chart-header"><div><div class="chart-title"><span class="color-dot" style="background:${mc}"></span>${mn} 用量趋势<span style="font-size:10px;color:#2563eb;margin-left:4px;">${u.length}个点</span></div><div class="ref-range">红色叉=停用·灰色=延续</div></div><button class="download-btn" onclick="downloadMedChart('${medKey}')">⬇️ 下载</button></div><div class="chart-container"><canvas id="${id}" width="600" height="220"></canvas></div><div class="date-list"><strong>日期:</strong> ${u.map(p=>fmt(p.date)).join(' · ')}</div>`;
-    grid.appendChild(card);
-    setTimeout(()=>drawMedChart(mn,mc,u,allRows,id),10);
+function renderMed(k){
+  var g=document.getElementById('chartsGrid');
+  var card=document.createElement('div');card.className='card';
+  var mn=MED[k].name,mc=MED[k].color;
+  var all=D.map(function(d){return{date:d.date,value:d.meds&&d.meds[k]?d.meds[k]:''}; });
+  var sp=[],lv=null,lr=null,ld=null;
+  all.forEach(function(row){var v=row.value;if(v&&v!==''){var m=v.match(/\d+(\.\d+)?/);if(m){sp.push({date:row.date,value:parseFloat(m[0]),rawValue:v,type:'value'});lv=parseFloat(m[0]);lr=v;ld=row.date;}else if(v==='\u505c\u7528'){sp.push({date:row.date,value:0,rawValue:'\u505c\u7528',type:'stop'});lv=null;}}});
+  var last=all[all.length-1];
+  if(lv!==null&&last.value!=='\u505c\u7528')sp.push({date:last.date,value:lv,rawValue:ld===last.date?lr:lr,type:ld===last.date?'value':'extension'});
+  var u=[],s={};for(var i=sp.length-1;i>=0;i--){if(!s[sp[i].date]){u.unshift(sp[i]);s[sp[i].date]=1;}}
+  var id='m-'+k;
+  var dstr=u.map(function(p){return fmt(p.date);}).join(' \u00b7 ');
+  card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div><div class="chtit"><span class="dot" style="background:'+mc+'"></span>'+mn+' <span style="font-size:10px;color:#2563eb">'+u.length+'</span></div></div><button class="dlbtn" onclick="dlMed(\''+k+'\')">\u2b07\ufe0f \u4e0b\u8f7d</button></div><div class="chbox"><canvas id="'+id+'" width="600" height="220"></canvas></div><div class="dlist"><b>\u65e5\u671f:</b> '+dstr+'</div>';
+  g.appendChild(card);
+  setTimeout(function(){drawMed(mn,mc,u,all,id);},10);
 }
 
-function drawMedChart(mn,mc,sp,allRows,id){
-    const cv=document.getElementById(id);if(!cv)return;
-    chartCanvases[id]=cv;
-    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-    ctx.clearRect(0,0,W,H);
-    const P={l:50,r:20,t:30,b:35};
-    if(!sp.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('暂无数据',W/2,H/2);return;}
-    const vals=sp.map(p=>p.value);
-    const yMin=Math.max(0,Math.floor(Math.min(...vals)*0.8)),yMax=Math.ceil(Math.max(...vals)*1.2)||10;
-    const yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
-    const xPos={};allRows.forEach((r,i)=>{xPos[r.date]=P.l+(i/(allRows.length-1||1))*(W-P.l-P.r);});
-    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#0f172a';ctx.font='bold 14px system-ui';ctx.textAlign='left';ctx.fillText(`${mn} 用量趋势`,P.l,22);
-    for(let i=0;i<=4;i++){const v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
-    sp.forEach(p=>{const x=xPos[p.date];ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
-    ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
-    if(sp.length>1){for(let i=0;i<sp.length-1;i++){const p1=sp[i],p2=sp[i+1],x1=xPos[p1.date],y1=yS(p1.value),x2=xPos[p2.date],y2=yS(p2.value);ctx.beginPath();if(p1.type==='stop'||p2.type==='stop'){ctx.setLineDash([5,3]);ctx.lineWidth=2;}else{ctx.setLineDash([]);ctx.lineWidth=2.5;}ctx.strokeStyle=mc;ctx.moveTo(x1,y1);ctx.lineTo(x2,y1);ctx.lineTo(x2,y2);ctx.stroke();}ctx.setLineDash([]);}
-    sp.forEach(p=>{const x=xPos[p.date],y=yS(p.value);if(p.type==='stop'){ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.strokeStyle='white';ctx.moveTo(x-3,y-3);ctx.lineTo(x+3,y+3);ctx.moveTo(x+3,y-3);ctx.lineTo(x-3,y+3);ctx.stroke();}else if(p.type==='extension'){ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}else{ctx.shadowColor=mc;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=mc;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}ctx.fillStyle=p.type==='extension'?'#64748b':(p.type==='stop'?'#b91c1c':'#1e293b');ctx.font=p.type==='extension'?'7px system-ui':'bold 7px system-ui';ctx.textAlign='center';ctx.fillText(p.rawValue,x,y-12);});
+function drawMed(mn,mc,sp,all,id){
+  var cv=document.getElementById(id);if(!cv)return;
+  cvs[id]=cv;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  var P={l:50,r:20,t:30,b:35};
+  if(!sp.length){ctx.fillStyle='#64748b';ctx.font='14px system-ui';ctx.textAlign='center';ctx.fillText('\u6682\u65e0\u6570\u636e',W/2,H/2);return;}
+  var vals=sp.map(function(p){return p.value;});
+  var yMin=Math.max(0,Math.floor(Math.min.apply(null,vals)*0.8));
+  var yMax=Math.ceil(Math.max.apply(null,vals)*1.2)||10;
+  function yS(v){return H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);}
+  var xp={};all.forEach(function(r,i){xp[r.date]=P.l+(i/(all.length-1||1))*(W-P.l-P.r);});
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#0f172a';ctx.font='bold 13px system-ui';ctx.textAlign='left';ctx.fillText(mn,P.l,22);
+  for(var i=0;i<=4;i++){var v=yMin+(i/4)*(yMax-yMin),y=yS(v);ctx.strokeStyle='#e2e8f0';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(W-P.r,y);ctx.stroke();ctx.fillStyle='#64748b';ctx.font='9px system-ui';ctx.textAlign='right';ctx.fillText(v.toFixed(0),P.l-5,y+3);}
+  sp.forEach(function(p){var x=xp[p.date];ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,H-P.b);ctx.lineTo(x,H-P.b+4);ctx.stroke();ctx.fillStyle='#0f172a';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(fmt(p.date),x,H-P.b+14);});
+  ctx.strokeStyle='#0f172a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,H-P.b);ctx.lineTo(W-P.r,H-P.b);ctx.stroke();ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,H-P.b);ctx.stroke();
+  if(sp.length>1){for(var i=0;i<sp.length-1;i++){var p1=sp[i],p2=sp[i+1],x1=xp[p1.date],y1=yS(p1.value),x2=xp[p2.date],y2=yS(p2.value);ctx.beginPath();if(p1.type==='stop'||p2.type==='stop'){ctx.setLineDash([5,3]);ctx.lineWidth=2;}else{ctx.setLineDash([]);ctx.lineWidth=2.5;}ctx.strokeStyle=mc;ctx.moveTo(x1,y1);ctx.lineTo(x2,y1);ctx.lineTo(x2,y2);ctx.stroke();}ctx.setLineDash([]);}
+  sp.forEach(function(p){var x=xp[p.date],y=yS(p.value);if(p.type==='stop'){ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.strokeStyle='white';ctx.moveTo(x-3,y-3);ctx.lineTo(x+3,y+3);ctx.moveTo(x+3,y-3);ctx.lineTo(x-3,y+3);ctx.stroke();}else if(p.type==='extension'){ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}else{ctx.shadowColor=mc;ctx.shadowBlur=6;ctx.beginPath();ctx.arc(x,y,4,0,2*Math.PI);ctx.fillStyle=mc;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();}ctx.fillStyle=p.type==='extension'?'#64748b':(p.type==='stop'?'#b91c1c':'#1e293b');ctx.font='bold 7px system-ui';ctx.textAlign='center';ctx.fillText(p.rawValue,x,y-12);});
 }
 
-window.downloadIndChart=id=>{const c=chartCanvases[`ind-${id}`];if(!c)return;const cfg=CONFIG_IND.find(c=>c.id===id);const a=document.createElement('a');a.download=`王坚_${cfg.name}_趋势图.png`;a.href=c.toDataURL('image/png');a.click();};
-window.downloadMedChart=k=>{const c=chartCanvases[`med-chart-${k}`];if(!c)return;const a=document.createElement('a');a.download=`王坚_${CONFIG_MED[k].name}_趋势.png`;a.href=c.toDataURL('image/png');a.click();};
-
-function renderTableHeaders(){
-    const ih=document.getElementById('indTableHeader');
-    if(ih){let h='<th>日期</th><th>周次</th>';CONFIG_IND.forEach(c=>{h+=`<th>${c.name}<br><small>${c.unit}</small></th>`;});ih.innerHTML=h;}
-    const mh=document.getElementById('medTableHeader');
-    if(mh){let h='<th>日期</th><th>周次</th>';Object.values(CONFIG_MED).forEach(m=>{h+=`<th>${m.name}</th>`;});mh.innerHTML=h;}
-}
+window.dlInd=function(id){var c=cvs['i-'+id];if(!c)return;var cfg=IND.filter(function(x){return x.id===id;})[0];var a=document.createElement('a');a.download=cfg.name+'.png';a.href=c.toDataURL('image/png');a.click();};
+window.dlMed=function(k){var c=cvs['m-'+k];if(!c)return;var a=document.createElement('a');a.download=MED[k].name+'.png';a.href=c.toDataURL('image/png');a.click();};
 
 function renderTables(){
-    const ib=document.getElementById('indTableBody'),mb=document.getElementById('medTableBody');
-    if(!ib||!mb)return;
-    ib.innerHTML='';mb.innerHTML='';
-    data.forEach(row=>{
-        let ir=`<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;
-        CONFIG_IND.forEach(c=>{const v=row[c.id];const out=v!==null&&v!==undefined&&(v<c.range[0]||v>c.range[1]);ir+=`<td style="${out?'background:#fee2e2;':''}">${v!==null&&v!==undefined?v:'-'}</td>`;});
-        ib.innerHTML+=ir+'</tr>';
-        let mr=`<tr><td>${row.date}</td><td>${row.week||'-'}</td>`;
-        Object.keys(CONFIG_MED).forEach(k=>{const v=row.meds?.[k]||'';mr+=`<td style="${v==='停用'?'background:#fee2e2;color:#b91c1c;':''}">${v||'-'}</td>`;});
-        mb.innerHTML+=mr+'</tr>';
-    });
+  var ih=document.getElementById('indTH');
+  if(ih){var h='<tr><th>\u65e5\u671f</th><th>\u5468\u6b21</th>';IND.forEach(function(c){h+='<th>'+c.name+'<br><small>'+c.unit+'</small></th>';});ih.innerHTML=h+'</tr>';}
+  var ib=document.getElementById('indTB');
+  if(ib){ib.innerHTML='';D.forEach(function(row){var r='<tr><td>'+row.date+'</td><td>'+(row.week||'-')+'</td>';IND.forEach(function(c){var v=row[c.id];var out=v!==null&&v!==undefined&&(v<c.range[0]||v>c.range[1]);r+='<td style="'+(out?'background:#fee2e2;':'')+'">'+( v!==null&&v!==undefined?v:'-')+'</td>';});ib.innerHTML+=r+'</tr>';});}
+  var mh=document.getElementById('medTH');
+  if(mh){var h='<tr><th>\u65e5\u671f</th><th>\u5468\u6b21</th>';Object.keys(MED).forEach(function(k){h+='<th>'+MED[k].name+'</th>';});mh.innerHTML=h+'</tr>';}
+  var mb=document.getElementById('medTB');
+  if(mb){mb.innerHTML='';D.forEach(function(row){var r='<tr><td>'+row.date+'</td><td>'+(row.week||'-')+'</td>';Object.keys(MED).forEach(function(k){var v=row.meds&&row.meds[k]?row.meds[k]:'-';r+='<td>'+v+'</td>';});mb.innerHTML+=r+'</tr>';});}
 }
 
-function gI(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病指标记录表</h1><p>${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${CONFIG_IND.map(i=>`<th>${i.name}(${i.unit})</th>`).join('')}</tr></thead><tbody>${data.map(r=>`<tr><td>${r.date}</td><td>${r.week||'-'}</td>${CONFIG_IND.map(i=>`<td>${r[i.id]!==null&&r[i.id]!==undefined?r[i.id]:'-'}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;}
+function gI(){return '<html><head><meta charset="UTF-8"><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse;width:100%}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px}td{border:1px solid #cbd5e1;padding:6px;text-align:center}</style></head><body><h1>\u738b\u575a\u00b7\u80be\u75c5\u6307\u6807\u8868</h1><p>'+new Date().toLocaleString('zh-CN')+'</p><table><thead><tr><th>\u65e5\u671f</th><th>\u5468\u6b21</th>'+IND.map(function(i){return '<th>'+i.name+'('+i.unit+')</th>';}).join('')+'</tr></thead><tbody>'+D.map(function(r){return '<tr><td>'+r.date+'</td><td>'+(r.week||'-')+'</td>'+IND.map(function(i){return '<td>'+(r[i.id]!==null&&r[i.id]!==undefined?r[i.id]:'-')+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></body></html>';}
 
-function gM(){return `<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病用药记录表</h1><p>${new Date().toLocaleString('zh-CN')}</p><table><thead><tr><th>日期</th><th>周次</th>${Object.values(CONFIG_MED).map(m=>`<th>${m.name}</th>`).join('')}</tr></thead><tbody>${data.map(r=>{let s=`<tr><td>${r.date}</td><td>${r.week||’-’}</td>`;Object.keys(CONFIG_MED).forEach(k=>{const v=r.meds?.[k]||'';s+=`<td>${v||’-’}</td>`;});return s+'</tr>';}).join('')}</tbody></table></body></html>`;}
-window.exportIndToWord=()=>{const b=new Blob([gI()],{type:‘application/msword’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=`王坚_肾病指标表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
-window.exportMedToWord=()=>{const b=new Blob([gM()],{type:‘application/msword’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=`王坚_肾病用药表_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
-window.exportAllToWord=()=>{const c=`<html><head><meta charset="UTF-8"><style>body{font-family:'Microsoft YaHei',sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;margin-bottom:30px;}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px;}td{border:1px solid #cbd5e1;padding:6px;text-align:center;}</style></head><body><h1>王坚·肾病完整监测记录</h1><p>${new Date().toLocaleString('zh-CN')}</p><h2>一、指标记录表</h2>${gI().split('<body>')[1].split('</body>')[0]}<h2>二、用药记录表</h2>${gM().split('<body>')[1].split('</body>')[0]}</body></html>`;const b=new Blob([c],{type:‘application/msword’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=`王坚_肾病完整记录_${new Date().toISOString().slice(0,10)}.doc`;a.click();};
-window.exportCSV=()=>{const h=[‘日期’,‘周次’,…CONFIG_IND.map(i=>`${i.name}(${i.unit})`),…Object.values(CONFIG_MED).map(m=>m.name)];const r=data.map(d=>[d.date,d.week||’’,…CONFIG_IND.map(i=>d[i.id]!==null&&d[i.id]!==undefined?d[i.id]:’’),…Object.keys(CONFIG_MED).map(k=>d.meds?.[k]??’’)]);let c=h.join(’,’)+’\n’;r.forEach(row=>{c+=row.map(v=>`"${v}"`).join(’,’)+’\n’;});const b=new Blob([’\uFEFF’+c],{type:‘text/csv;charset=utf-8;’});const a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=‘王坚_肾病监测数据.csv’;a.click();};
-window.switchTab=tab=>{[‘chartsPanel’,‘indPanel’,‘medPanel’].forEach((id,i)=>{document.getElementById(id).style.display=(i===0&&tab===‘charts’)||(i===1&&tab===‘ind’)||(i===2&&tab===‘med’)?‘block’:‘none’;});document.querySelectorAll(’.tab’).forEach((btn,i)=>{btn.classList.toggle(‘active’,(i===0&&tab===‘charts’)||(i===1&&tab===‘ind’)||(i===2&&tab===‘med’));});if(tab===‘charts’)setTimeout(()=>renderChartsByType(currentChartType),50);};
-window.switchChartType=type=>{currentChartType=type;document.querySelectorAll(’.sub-tab’).forEach((b,i)=>b.classList.toggle(‘active’,(i===0&&type===‘ind’)||(i===1&&type===‘med’)));renderChartsByType(type);};
-window.addEventListener(‘resize’,()=>{if(document.getElementById(‘chartsPanel’).style.display!==‘none’)renderChartsByType(currentChartType);});
+function gM(){return ‘<html><head><meta charset="UTF-8"><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse;width:100%}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px}td{border:1px solid #cbd5e1;padding:6px;text-align:center}</style></head><body><h1>\u738b\u575a\u00b7\u80be\u75c5\u7528\u836f\u8868</h1><p>’+new Date().toLocaleString(‘zh-CN’)+’</p><table><thead><tr><th>\u65e5\u671f</th><th>\u5468\u6b21</th>’+Object.values(MED).map(function(m){return ‘<th>’+m.name+’</th>’;}).join(’’)+’</tr></thead><tbody>’+D.map(function(r){var s=’<tr><td>’+r.date+’</td><td>’+(r.week||’-’)+’</td>’;Object.keys(MED).forEach(function(k){var v=r.meds&&r.meds[k]?r.meds[k]:’-’;s+=’<td>’+v+’</td>’;});return s+’</tr>’;}).join(’’)+’</tbody></table></body></html>’;}
+window.exportIndToWord=function(){var b=new Blob([gI()],{type:‘application/msword’});var a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=’\u738b\u575a_\u80be\u75c5\u6307\u6807\u8868.doc’;a.click();};
+window.exportMedToWord=function(){var b=new Blob([gM()],{type:‘application/msword’});var a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=’\u738b\u575a_\u80be\u75c5\u7528\u836f\u8868.doc’;a.click();};
+window.exportAllToWord=function(){var c=’<html><head><meta charset="UTF-8"><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse;width:100%;margin-bottom:30px}th{background:#f8fafc;border:1px solid #cbd5e1;padding:8px}td{border:1px solid #cbd5e1;padding:6px;text-align:center}</style></head><body><h1>\u738b\u575a\u00b7\u80be\u75c5\u5b8c\u6574\u76d1\u6d4b\u8bb0\u5f55</h1><p>’+new Date().toLocaleString(‘zh-CN’)+’</p><h2>\u4e00\u3001\u6307\u6807\u8bb0\u5f55\u8868</h2>’+gI().split(’<body>’)[1].split(’</body>’)[0]+’<h2>\u4e8c\u3001\u7528\u836f\u8bb0\u5f55\u8868</h2>’+gM().split(’<body>’)[1].split(’</body>’)[0]+’</body></html>’;var b=new Blob([c],{type:‘application/msword’});var a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=’\u738b\u575a_\u80be\u75c5\u5b8c\u6574\u8bb0\u5f55.doc’;a.click();};
+window.exportCSV=function(){var h=[’\u65e5\u671f’,’\u5468\u6b21’].concat(IND.map(function(i){return i.name+’(’+i.unit+’)’;})).concat(Object.values(MED).map(function(m){return m.name;}));var r=D.map(function(d){return [d.date,d.week||’’].concat(IND.map(function(i){return d[i.id]!==null&&d[i.id]!==undefined?d[i.id]:’’})).concat(Object.keys(MED).map(function(k){return d.meds&&d.meds[k]?d.meds[k]:’’}));});var c=h.join(’,’)+’\n’;r.forEach(function(row){c+=row.map(function(v){return ‘”’+v+’”’;}).join(’,’)+’\n’;});var b=new Blob([’\uFEFF’+c],{type:‘text/csv;charset=utf-8;’});var a=document.createElement(‘a’);a.href=URL.createObjectURL(b);a.download=’\u738b\u575a_\u80be\u75c5\u76d1\u6d4b\u6570\u636e.csv’;a.click();};
 
-renderTableHeaders();
+window.switchTab=function(tab){
+document.getElementById(‘chartsPanel’).style.display=tab===‘charts’?‘block’:‘none’;
+document.getElementById(‘indPanel’).style.display=tab===‘ind’?‘block’:‘none’;
+document.getElementById(‘medPanel’).style.display=tab===‘med’?‘block’:‘none’;
+document.querySelectorAll(’.tab’).forEach(function(b,i){b.classList.toggle(‘on’,(i===0&&tab===‘charts’)||(i===1&&tab===‘ind’)||(i===2&&tab===‘med’));});
+if(tab===‘charts’)setTimeout(function(){renderCharts(ctype);},50);
+};
+
+window.switchChartType=function(type){
+ctype=type;
+document.querySelectorAll(’.stab’).forEach(function(b,i){b.classList.toggle(‘on’,(i===0&&type===‘ind’)||(i===1&&type===‘med’));});
+renderCharts(type);
+};
+
 renderTables();
-renderChartsByType(‘ind’);
+renderCharts(‘ind’);
 </script>
 
 </body>
