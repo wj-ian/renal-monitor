@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>王坚·肾病全程监测</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+body{background:#f1f5f9;padding:12px;padding-bottom:40px}
+.hdr{background:white;border-radius:24px;padding:12px 16px;margin-bottom:16px;border:1px solid #e2e8f0}
+.ttl{font-size:20px;font-weight:800;background:linear-gradient(135deg,#0f172a,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sav{color:#10b981;font-size:11px;margin-top:4px}
+.hbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{background:#0f172a;color:white;border:none;padding:8px 16px;border-radius:40px;font-weight:600;font-size:13px}
+.btnH{background:#7c3aed}
+.btnR{background:#64748b}
+.tabs{display:flex;gap:6px;background:#e2e8f0;padding:4px;border-radius:40px;margin-bottom:20px}
+.tab{flex:1;text-align:center;padding:8px 0;border-radius:40px;font-weight:600;border:none;background:transparent;font-size:13px;color:#475569}
+.tab.on{background:white;color:#2563eb;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.stabs{display:flex;gap:6px;background:#e2e8f0;padding:4px;border-radius:40px;width:fit-content;margin-bottom:16px}
+.stab{padding:6px 16px;border-radius:30px;font-weight:600;border:none;background:transparent;font-size:12px;color:#475569}
+.stab.on{background:white;color:#2563eb}
+.grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px}
+@media(min-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+.card{background:white;border-radius:20px;padding:14px;border:1px solid #e2e8f0}
+.chtit{font-weight:700;font-size:15px;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.ref{color:#64748b;font-size:10px;margin-bottom:8px}
+.chbox{width:100%;overflow-x:auto}
+canvas{min-width:500px;width:100%;height:auto;background:white;border-radius:8px}
+.dlist{font-size:9px;color:#2563eb;padding:6px;background:#f8fafc;border-radius:12px;margin-top:8px;max-height:48px;overflow-y:auto;word-break:break-all}
+.dlist span.clickable-date{display:inline-block;background:#e0f2fe;color:#0369a1;border-radius:12px;padding:2px 6px;margin:2px 2px;cursor:pointer;font-size:10px;transition:0.2s}
+.dlist span.clickable-date:hover{background:#7c3aed;color:white}
+.twrap{background:white;border-radius:20px;padding:12px;border:1px solid #e2e8f0;overflow-x:auto}
+table{border-collapse:collapse;font-size:11px;min-width:800px;width:100%}
+th{background:#f8fafc;padding:8px 4px;border-bottom:2px solid #cbd5e1;text-align:center}
+td{padding:6px 4px;border-bottom:1px solid #e2e8f0;text-align:center}
+input[type=date]{width:110px;padding:4px;border:1px solid #cbd5e1;border-radius:6px;font-size:11px}
+input[type=text],input[type=number]{width:65px;padding:4px;border:1px solid #cbd5e1;border-radius:6px;text-align:center;font-size:11px}
+.mi{width:75px}
+.mi.st{background:#fee2e2;color:#b91c1c;text-decoration:line-through}
+.dlbtn{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:20px;padding:4px 10px;font-size:10px;cursor:pointer}
+.wbtn{background:#c2410c;color:white;border:none;border-radius:20px;padding:5px 12px;font-size:11px}
+.thdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.ftr{text-align:center;margin:20px 0 10px;color:#64748b;font-size:10px}
+.abtns{display:flex;gap:4px;justify-content:center}
+.ibtn{background:#e0f2fe;color:#0369a1;border:none;border-radius:20px;padding:2px 8px;font-size:10px;cursor:pointer}
+.dbtn{background:none;border:none;font-size:16px;cursor:pointer;color:#94a3b8;padding:2px 6px}
+.chd{display:flex;flex-direction:column;align-items:center;gap:4px}
+.bsm{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:6px 14px;border-radius:30px;font-size:12px}
+</style>
+</head>
+<body>
+<div style="max-width:100%;margin:0 auto">
+<div class="hdr">
+  <div class="ttl">王坚 · 肾病全程监测</div>
+  <div class="sav" id="saveHint">💾 已自动保存</div>
+  <div class="hbtns">
+    <button class="btn" onclick="exportCSV()">📥 导出CSV</button>
+    <button class="btn" onclick="exportWordFull()">📄 导出Word</button>
+    <button class="btnH" onclick="exportHTML()">🔄 导出完整HTML</button>
+    <button class="btnR" onclick="resetAll()">↺ 重置</button>
+  </div>
+</div>
+<div class="tabs">
+  <button class="tab on" id="tabChart">📈 趋势图</button>
+  <button class="tab" id="tabIndicators">📋 指标表</button>
+  <button class="tab" id="tabMeds">💊 用药表</button>
+  <button class="tab" id="tabVitals">💪 体征表</button>
+</div>
+<div id="panelChart" style="display:block">
+  <div class="stabs">
+    <button class="stab on" id="subIndChart">📊 指标趋势</button>
+    <button class="stab" id="subMedChart">💊 药物趋势</button>
+    <button class="stab" id="subVitChart">❤️ 体征趋势</button>
+  </div>
+  <div class="grid" id="chartGrid"></div>
+</div>
+<div id="panelIndicators" style="display:none">
+  <div class="twrap">
+    <div class="thdr">
+      <h3 style="font-weight:800">指标记录矩阵</h3>
+      <div>
+        <button class="bsm" onclick="exportIndicatorsWord()">📄 下载Word</button>
+        <button class="bsm" onclick="addIndicatorColumn()">➕ 新增指标列</button>
+        <button class="bsm" onclick="addRowEndInd()" style="margin-left:8px">➕ 末尾新增行</button>
+      </div>
+    </div>
+    <table id="indTable"><thead id="indHead"></thead><tbody id="indBody"></tbody></table>
+  </div>
+</div>
+<div id="panelMeds" style="display:none">
+  <div class="twrap">
+    <div class="thdr">
+      <h3 style="font-weight:800">药物剂量矩阵</h3>
+      <div>
+        <button class="bsm" onclick="exportMedsWord()">📄 下载Word</button>
+        <button class="bsm" onclick="addDrugColumn()">➕ 新增药物列</button>
+        <button class="bsm" onclick="addRowEndMed()" style="margin-left:8px">➕ 末尾新增行</button>
+      </div>
+    </div>
+    <table id="medTable"><thead id="medHead"></thead><tbody id="medBody"></tbody></table>
+  </div>
+</div>
+<div id="panelVitals" style="display:none">
+  <div class="twrap">
+    <div class="thdr">
+      <h3 style="font-weight:800">体征记录（体重·血压）</h3>
+      <div>
+        <button class="bsm" onclick="exportVitalsWord()">📄 下载Word</button>
+        <button class="bsm" onclick="addVitalRow()">➕ 末尾新增行</button>
+      </div>
+    </div>
+    <table id="vitalTable"><thead id="vitalHead"></thead><tbody id="vitalBody"></tbody></table>
+  </div>
+</div>
+<div class="ftr">⚕️ 数据自动保存 · 王坚肾病监测系统</div>
+</div>
+
+<script>
+// ----------------------------- 1. 基础定义 ---------------------------------
+const SU = '停用';
+
+let INDICATORS = [
+  {id:'cre', name:'肌酐', unit:'μmol/L', range:[57,97], color:'#2563eb'},
+  {id:'alb', name:'白蛋白', unit:'g/L', range:[40,55], color:'#059669'},
+  {id:'pro', name:'24H尿蛋白', unit:'mg/24h', range:[0,120], color:'#d97706'},
+  {id:'pla', name:'PLA2R', unit:'RU/ml', range:[0,2], color:'#dc2626'},
+  {id:'dim', name:'D-二聚体', unit:'ng/mL', range:[0,243], color:'#7c3aed'},
+  {id:'alt', name:'ALT', unit:'U/L', range:[7,40], color:'#0891b2'},
+  {id:'ldl', name:'LDL-C', unit:'mmol/L', range:[1.8,3.6], color:'#4f46e5'},
+  {id:'cho', name:'总胆固醇', unit:'mmol/L', range:[2.9,5.7], color:'#6366f1'},
+  {id:'tg', name:'甘油三酯', unit:'mmol/L', range:[0.24,2.0], color:'#0ea5e9'},
+  {id:'igg', name:'IgG', unit:'g/L', range:[8,17], color:'#e11d48'},
+  {id:'bcl', name:'B细胞(%)', unit:'%', range:[5.38,18.23], color:'#0284c7'}
+];
+
+let DRUGS = {
+  methyl:{name:'泼尼松片', color:'#dc2626'},
+  ritu:{name:'利妥昔单抗', color:'#7c3aed'},
+  fine:{name:'非奈利酮', color:'#059669'},
+  losar:{name:'氯沙坦钾', color:'#2563eb'},
+  riva:{name:'利伐沙班', color:'#0891b2'},
+  indo:{name:'吲哚布芬', color:'#b45309'},
+  nadro:{name:'那曲', color:'#be185d'},
+  ator:{name:'阿托伐他汀', color:'#d97706'},
+  pita:{name:'匹伐他汀', color:'#ca8a04'},
+  ezet:{name:'依折麦布', color:'#16a34a'}
+};
+
+let INIT_DATA = [
+  {date:'2025-11-30',week:'',cre:83.8,alb:23.6,pro:null,pla:null,dim:null,alt:null,ldl:5.2,cho:9.55,tg:5.57,igg:null,bcl:null,meds:{}},
+  {date:'2025-12-01',week:'',cre:null,alb:null,pro:8084.1,pla:213.62,dim:933,alt:null,ldl:null,cho:null,tg:null,igg:5.6,bcl:null,meds:{nadro:'0.6ml',ator:'20mg'}},
+  {date:'2025-12-07',week:'',cre:null,alb:20.7,pro:null,pla:null,dim:251,alt:20,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{fine:'5mg',losar:'50mg'}},
+  {date:'2025-12-10',week:'',cre:null,alb:23.8,pro:null,pla:5.6,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:8.3,bcl:5.6,meds:{}},
+  {date:'2025-12-11',week:'',cre:null,alb:null,pro:12404.6,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'30mg',losar:'100mg'}},
+  {date:'2025-12-12',week:'',cre:null,alb:22.4,pro:null,pla:null,dim:213,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+  {date:'2025-12-17',week:'',cre:94.3,alb:23.4,pro:6824.4,pla:null,dim:183,alt:null,ldl:5.26,cho:8.61,tg:4.42,igg:6.3,bcl:0.04,meds:{riva:'10mg',nadro:SU}},
+  {date:'2025-12-19',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+  {date:'2025-12-24',week:'',cre:90,alb:25.1,pro:10066.3,pla:null,dim:204,alt:null,ldl:5.26,cho:8.97,tg:4.13,igg:5.5,bcl:0.01,meds:{methyl:'25mg',fine:'10mg',losar:'50mg'}},
+  {date:'2025-12-26',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:'500mg'}},
+  {date:'2025-12-29',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-01-02',week:'第1周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'20mg',ritu:'500mg'}},
+  {date:'2026-01-03',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ritu:SU}},
+  {date:'2026-01-07',week:'',cre:94.5,alb:25.4,pro:7159,pla:null,dim:98,alt:null,ldl:5.1,cho:8.82,tg:3.64,igg:null,bcl:null,meds:{riva:SU}},
+  {date:'2026-01-09',week:'第2周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{indo:'200mg'}},
+  {date:'2026-01-11',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-01-12',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'25mg'}},
+  {date:'2026-01-13',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:'12.5mg'}},
+  {date:'2026-01-14',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{losar:SU}},
+  {date:'2026-01-16',week:'第3周',cre:93.6,alb:28.2,pro:5117,pla:null,dim:null,alt:null,ldl:4.07,cho:7.8,tg:3.08,igg:6.5,bcl:null,meds:{}},
+  {date:'2026-01-22',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{riva:'10mg',indo:SU}},
+  {date:'2026-01-23',week:'第4周',cre:87,alb:26.5,pro:4418,pla:null,dim:634,alt:null,ldl:3.33,cho:6.42,tg:3.3,igg:6.5,bcl:0.01,meds:{}},
+  {date:'2026-01-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'15mg'}},
+  {date:'2026-01-30',week:'第5周',cre:92.1,alb:29.6,pro:5642,pla:null,dim:null,alt:null,ldl:3.55,cho:6.59,tg:2.69,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-06',week:'第6周',cre:91.7,alb:31.1,pro:5765,pla:null,dim:68,alt:null,ldl:3.11,cho:6.11,tg:2.79,igg:6.9,bcl:null,meds:{}},
+  {date:'2026-02-09',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{ezet:'10mg'}},
+  {date:'2026-02-12',week:'',cre:87.7,alb:32.4,pro:4652,pla:5.83,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'12.5mg'}},
+  {date:'2026-02-13',week:'第7周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-20',week:'第8周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-25',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'10mg'}},
+  {date:'2026-02-26',week:'',cre:88.5,alb:31.5,pro:4291,pla:null,dim:8,alt:65.7,ldl:2.73,cho:5.59,tg:3.07,igg:7.5,bcl:null,meds:{ator:SU}},
+  {date:'2026-02-27',week:'第9周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-02-28',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-02',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-06',week:'第10周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-09',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-10',week:'',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{methyl:'7.5mg'}},
+  {date:'2026-03-11',week:'',cre:78.2,alb:30.7,pro:4842,pla:null,dim:31,alt:60.6,ldl:5.01,cho:8.49,tg:3.16,igg:null,bcl:null,meds:{pita:'2mg'}},
+  {date:'2026-03-12',week:'',cre:null,alb:null,pro:null,pla:5.1,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:0.01,meds:{}},
+  {date:'2026-03-13',week:'第11周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-20',week:'第12周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-03-21',week:'',cre:78.3,alb:30.3,pro:4823,pla:null,dim:22,alt:45.9,ldl:2.61,cho:5.49,tg:2.47,igg:7.9,bcl:null,meds:{riva:SU}},
+  {date:'2026-03-27',week:'第13周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-04-03',week:'第14周',cre:null,alb:null,pro:null,pla:null,dim:null,alt:null,ldl:null,cho:null,tg:null,igg:null,bcl:null,meds:{}},
+  {date:'2026-04-04',week:'',cre:85.3,alb:32.9,pro:4204,pla:0.02,dim:63,alt:56.5,ldl:2.58,cho:5.55,tg:2.49,igg:null,bcl:null,meds:{methyl:'5mg'}}
+];
+
+let VITALS = [
+  {date:'2025-12-22',wt:74.7,sbp:124,dbp:76},{date:'2025-12-23',wt:74.7,sbp:116,dbp:66},{date:'2025-12-24',wt:74.3,sbp:116,dbp:67},
+  {date:'2025-12-25',wt:73.7,sbp:113,dbp:69},{date:'2025-12-26',wt:73.9,sbp:112,dbp:66},{date:'2025-12-27',wt:73.6,sbp:116,dbp:67},
+  {date:'2025-12-28',wt:73.6,sbp:115,dbp:67},{date:'2025-12-29',wt:73.7,sbp:115,dbp:70},{date:'2025-12-30',wt:73.8,sbp:115,dbp:70},
+  {date:'2025-12-31',wt:73.5,sbp:113,dbp:72},{date:'2026-01-01',wt:73.3,sbp:115,dbp:72},{date:'2026-01-02',wt:73.0,sbp:114,dbp:67},
+  {date:'2026-01-03',wt:73.0,sbp:117,dbp:70},{date:'2026-01-04',wt:72.6,sbp:114,dbp:72},{date:'2026-01-05',wt:72.5,sbp:114,dbp:69},
+  {date:'2026-01-06',wt:72.2,sbp:117,dbp:71},{date:'2026-01-07',wt:71.5,sbp:109,dbp:67},{date:'2026-01-08',wt:70.6,sbp:114,dbp:64},
+  {date:'2026-01-09',wt:70.8,sbp:109,dbp:64},{date:'2026-01-10',wt:70.5,sbp:111,dbp:79},{date:'2026-01-11',wt:69.6,sbp:104,dbp:60},
+  {date:'2026-01-12',wt:70.1,sbp:114,dbp:68},{date:'2026-01-13',wt:69.8,sbp:105,dbp:65},{date:'2026-01-14',wt:69.9,sbp:114,dbp:66},
+  {date:'2026-01-15',wt:69.4,sbp:110,dbp:64},{date:'2026-01-16',wt:69.4,sbp:103,dbp:70},{date:'2026-01-17',wt:69.5,sbp:118,dbp:70},
+  {date:'2026-01-18',wt:69.2,sbp:105,dbp:64},{date:'2026-01-19',wt:69.0,sbp:112,dbp:65},{date:'2026-01-20',wt:69.0,sbp:114,dbp:65},
+  {date:'2026-01-21',wt:68.9,sbp:113,dbp:68},{date:'2026-01-22',wt:68.5,sbp:113,dbp:66},{date:'2026-01-23',wt:68.5,sbp:109,dbp:66},
+  {date:'2026-01-24',wt:68.5,sbp:107,dbp:66},{date:'2026-01-25',wt:68.5,sbp:110,dbp:65},{date:'2026-01-26',wt:68.6,sbp:112,dbp:69},
+  {date:'2026-01-27',wt:68.4,sbp:117,dbp:66},{date:'2026-01-28',wt:68.5,sbp:108,dbp:66},{date:'2026-01-29',wt:68.4,sbp:107,dbp:65},
+  {date:'2026-01-30',wt:68.2,sbp:113,dbp:64},{date:'2026-02-01',wt:68.5,sbp:110,dbp:60},{date:'2026-02-03',wt:68.3,sbp:110,dbp:64},
+  {date:'2026-02-04',wt:68.5,sbp:110,dbp:64},{date:'2026-02-05',wt:68.5,sbp:110,dbp:65},{date:'2026-02-06',wt:68.8,sbp:102,dbp:60},
+  {date:'2026-02-07',wt:68.8,sbp:105,dbp:60},{date:'2026-02-08',wt:68.5,sbp:107,dbp:60},{date:'2026-02-09',wt:68.9,sbp:108,dbp:65},
+  {date:'2026-02-10',wt:69.1,sbp:112,dbp:66},{date:'2026-02-11',wt:68.7,sbp:110,dbp:64},{date:'2026-02-12',wt:68.4,sbp:107,dbp:62},
+  {date:'2026-02-13',wt:68.3,sbp:105,dbp:63},{date:'2026-02-14',wt:67.9,sbp:103,dbp:66},{date:'2026-02-15',wt:68.0,sbp:109,dbp:63},
+  {date:'2026-02-16',wt:67.5,sbp:106,dbp:60},{date:'2026-02-17',wt:68.0,sbp:108,dbp:63},{date:'2026-02-18',wt:68.3,sbp:103,dbp:60},
+  {date:'2026-02-19',wt:68.2,sbp:104,dbp:61},{date:'2026-02-20',wt:68.1,sbp:108,dbp:60},{date:'2026-02-21',wt:67.8,sbp:100,dbp:62},
+  {date:'2026-02-22',wt:67.5,sbp:105,dbp:62},{date:'2026-02-23',wt:67.7,sbp:101,dbp:60},{date:'2026-02-24',wt:67.7,sbp:100,dbp:58},
+  {date:'2026-02-25',wt:67.9,sbp:107,dbp:65},{date:'2026-02-26',wt:67.9,sbp:102,dbp:59},{date:'2026-02-27',wt:67.7,sbp:99,dbp:60},
+  {date:'2026-02-28',wt:67.4,sbp:105,dbp:63},{date:'2026-03-01',wt:68.0,sbp:98,dbp:60},{date:'2026-03-02',wt:68.0,sbp:98,dbp:60},
+  {date:'2026-03-03',wt:68.1,sbp:107,dbp:60},{date:'2026-03-04',wt:68.3,sbp:104,dbp:60},{date:'2026-03-05',wt:68.2,sbp:106,dbp:61},
+  {date:'2026-03-06',wt:68.6,sbp:106,dbp:66},{date:'2026-03-07',wt:68.5,sbp:103,dbp:61},{date:'2026-03-08',wt:68.1,sbp:102,dbp:60},
+  {date:'2026-03-09',wt:68.5,sbp:110,dbp:63},{date:'2026-03-11',wt:68.7,sbp:107,dbp:63},{date:'2026-03-12',wt:68.1,sbp:103,dbp:58},
+  {date:'2026-03-13',wt:68.2,sbp:106,dbp:64},{date:'2026-03-14',wt:68.0,sbp:104,dbp:60},{date:'2026-03-15',wt:68.1,sbp:100,dbp:60},
+  {date:'2026-03-17',wt:68.5,sbp:101,dbp:60},{date:'2026-03-18',wt:68.6,sbp:105,dbp:63},{date:'2026-03-19',wt:68.4,sbp:104,dbp:60},
+  {date:'2026-03-20',wt:68.6,sbp:103,dbp:60},{date:'2026-03-21',wt:68.3,sbp:97,dbp:59},{date:'2026-03-22',wt:68.5,sbp:103,dbp:63},
+  {date:'2026-03-23',wt:68.5,sbp:103,dbp:63},{date:'2026-03-24',wt:68.4,sbp:104,dbp:62},{date:'2026-03-25',wt:68.2,sbp:103,dbp:63},
+  {date:'2026-03-26',wt:68.6,sbp:102,dbp:61},{date:'2026-03-27',wt:68.7,sbp:102,dbp:59},{date:'2026-03-28',wt:68.5,sbp:103,dbp:61},
+  {date:'2026-03-29',wt:68.4,sbp:103,dbp:60},{date:'2026-03-30',wt:68.1,sbp:102,dbp:60},{date:'2026-03-31',wt:68.3,sbp:101,dbp:60},
+  {date:'2026-04-01',wt:68.7,sbp:102,dbp:61},{date:'2026-04-03',wt:68.7,sbp:105,dbp:66},{date:'2026-04-04',wt:68.3,sbp:102,dbp:61},
+  {date:'2026-04-05',wt:68.3,sbp:105,dbp:65},{date:'2026-04-08',wt:68.0,sbp:106,dbp:64},{date:'2026-04-09',wt:67.9,sbp:103,dbp:62},
+  {date:'2026-04-10',wt:68.1,sbp:108,dbp:68}
+];
+
+let records = JSON.parse(JSON.stringify(INIT_DATA));
+let drugs = JSON.parse(JSON.stringify(DRUGS));
+let indicators = JSON.parse(JSON.stringify(INDICATORS));
+let vitals = JSON.parse(JSON.stringify(VITALS));
+let currentSubTab = 'ind';
+let canvasCache = {};
+
+function fmtDate(d){ if(!d) return ''; let p=d.split('-'); return p.length>=3?p[1]+'-'+p[2]:d; }
+function showSaveHint(){ let el=document.getElementById('saveHint'); el.textContent='💾 已保存'; setTimeout(()=>{ el.textContent='💾 已自动保存'; },1500); }
+function saveAll(){
+  try{
+    localStorage.setItem('kidney_records', JSON.stringify(records));
+    localStorage.setItem('kidney_drugs', JSON.stringify(drugs));
+    localStorage.setItem('kidney_indicators', JSON.stringify(indicators));
+    localStorage.setItem('kidney_vitals', JSON.stringify(vitals));
+    showSaveHint();
+  }catch(e){}
+}
+function loadAll(){
+  try{
+    let r = localStorage.getItem('kidney_records'); if(r) records = JSON.parse(r);
+    let d = localStorage.getItem('kidney_drugs'); if(d) drugs = JSON.parse(d);
+    let i = localStorage.getItem('kidney_indicators'); if(i) indicators = JSON.parse(i);
+    let v = localStorage.getItem('kidney_vitals'); if(v) vitals = JSON.parse(v);
+  }catch(e){}
+}
+window.resetAll = function(){
+  if(confirm('确定重置所有数据为初始状态吗？')){
+    records = JSON.parse(JSON.stringify(INIT_DATA));
+    drugs = JSON.parse(JSON.stringify(DRUGS));
+    indicators = JSON.parse(JSON.stringify(INDICATORS));
+    vitals = JSON.parse(JSON.stringify(VITALS));
+    saveAll();
+    renderAllTables();
+    if(currentSubTab === 'ind') renderIndicatorCharts();
+    else if(currentSubTab === 'med') renderDrugCharts();
+    else if(currentSubTab === 'vit') renderVitalCharts();
+  }
+};
+function daysDiff(date1, date2) {
+  let d1 = new Date(date1), d2 = new Date(date2);
+  return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+}
+
+// ----------------------------- 表格渲染 ---------------------------------
+function renderIndicatorTable(){
+  let thead = document.getElementById('indHead');
+  let tbody = document.getElementById('indBody');
+  if(!thead||!tbody) return;
+  let htmlHead = '<tr><th>日期</th><th>周次</th>';
+  indicators.forEach((ind,idx) => {
+    htmlHead += `<th><div class="chd"><div>${ind.name}<br><small>${ind.unit}</small></div><div><button class="ibtn" onclick="addIndicatorAt(${idx})">+</button><button class="dbtn" onclick="delIndicator(${idx})">🗑️</button></div></div></th>`;
+  });
+  htmlHead += '<th>操作</th></tr>';
+  thead.innerHTML = htmlHead;
+  let bodyHtml = '';
+  records.forEach((row, ridx) => {
+    bodyHtml += `<tr>
+      <td><input type="date" value="${row.date}" onchange="updateRecordField(${ridx},'date',this.value)"></td>
+      <td><input type="text" value="${row.week||''}" onchange="updateRecordField(${ridx},'week',this.value)"></td>`;
+    indicators.forEach(ind => {
+      let val = row[ind.id] !== undefined && row[ind.id] !== null ? row[ind.id] : '';
+      let outOfRange = (val !== '' && (val < ind.range[0] || val > ind.range[1]));
+      bodyHtml += `<td><input type="number" step="0.01" value="${val}" style="${outOfRange?'background:#fee2e2':''}" onchange="updateRecordField(${ridx},'${ind.id}',this.value)"></td>`;
+    });
+    bodyHtml += `<td class="abtns"><button class="ibtn" onclick="addRecordRow(${ridx})">➕</button><button class="dbtn" onclick="delRecordRow(${ridx})">🗑️</button></td>`;
+  });
+  tbody.innerHTML = bodyHtml;
+}
+function renderDrugTable(){
+  let thead = document.getElementById('medHead');
+  let tbody = document.getElementById('medBody');
+  if(!thead||!tbody) return;
+  let drugKeys = Object.keys(drugs);
+  let htmlHead = '<tr><th>日期</th><th>周次</th>';
+  drugKeys.forEach((key,idx) => {
+    htmlHead += `<th><div class="chd"><div>${drugs[key].name}</div><div><button class="ibtn" onclick="addDrugAt(${idx})">+</button><button class="dbtn" onclick="delDrug('${key}')">🗑️</button></div></div></th>`;
+  });
+  htmlHead += '<th>操作</th></tr>';
+  thead.innerHTML = htmlHead;
+  let bodyHtml = '';
+  records.forEach((row, ridx) => {
+    bodyHtml += `<tr><td style="text-align:center">${row.date}</td><td style="text-align:center">${row.week||'-'}</td>`;
+    drugKeys.forEach(key => {
+      let val = (row.meds && row.meds[key]) ? row.meds[key] : '';
+      let cls = (val === SU) ? 'st' : '';
+      bodyHtml += `<td><input type="text" class="mi ${cls}" value="${val}" onchange="updateDrugField(${ridx},'${key}',this.value)"></td>`;
+    });
+    bodyHtml += `<td class="abtns"><button class="ibtn" onclick="addRecordRow(${ridx})">➕</button><button class="dbtn" onclick="delRecordRow(${ridx})">🗑️</button></td>`;
+  });
+  tbody.innerHTML = bodyHtml;
+}
+function renderVitalTable(){
+  let thead = document.getElementById('vitalHead');
+  let tbody = document.getElementById('vitalBody');
+  if(!thead||!tbody) return;
+  thead.innerHTML = '<td><th>日期</th><th>体重(kg)</th><th>收缩压</th><th>舒张压</th><th>血压</th><th>操作</th></tr>';
+  let html = '';
+  vitals.forEach((v, idx) => {
+    let sbpOk = v.sbp>=90 && v.sbp<=140;
+    let dbpOk = v.dbp>=60 && v.dbp<=90;
+    html += `<tr>
+      <td><input type="date" value="${v.date}" onchange="updateVital(${idx},'date',this.value)"></td>
+      <td><input type="number" step="0.1" value="${v.wt}" onchange="updateVital(${idx},'wt',this.value)"></td>
+      <td style="${sbpOk?'':'background:#fee2e2'}"><input type="number" value="${v.sbp}" onchange="updateVital(${idx},'sbp',this.value)"></td>
+      <td style="${dbpOk?'':'background:#fee2e2'}"><input type="number" value="${v.dbp}" onchange="updateVital(${idx},'dbp',this.value)"></td>
+      <td>${v.sbp}/${v.dbp}</td>
+      <td><button class="ibtn" onclick="addVitalRowAt(${idx})">➕</button><button class="dbtn" onclick="delVitalRow(${idx})">🗑️</button></td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+function renderAllTables(){
+  renderIndicatorTable();
+  renderDrugTable();
+  renderVitalTable();
+}
+
+// 记录增删改
+window.updateRecordField = function(idx, field, val){
+  if(field === 'date') records[idx].date = val;
+  else if(field === 'week') records[idx].week = val;
+  else records[idx][field] = (val===''?null:parseFloat(val));
+  records.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  saveAll();
+  renderAllTables();
+  if(currentSubTab === 'ind') renderIndicatorCharts();
+  else if(currentSubTab === 'med') renderDrugCharts();
+};
+window.updateDrugField = function(idx, drugKey, val){
+  if(!records[idx].meds) records[idx].meds = {};
+  records[idx].meds[drugKey] = val;
+  saveAll();
+  renderDrugTable();
+  if(currentSubTab === 'med') renderDrugCharts();
+};
+window.delRecordRow = function(idx){
+  if(confirm('删除此行？')){ records.splice(idx,1); saveAll(); renderAllTables(); if(currentSubTab==='ind') renderIndicatorCharts(); else if(currentSubTab==='med') renderDrugCharts(); }
+};
+window.addRecordRow = function(idx){
+  let newDate;
+  if(idx === records.length-1){
+    let d = new Date(records[idx].date); d.setDate(d.getDate()+7); newDate = d.toISOString().split('T')[0];
+  } else {
+    let d1 = new Date(records[idx].date), d2 = new Date(records[idx+1].date);
+    let mid = new Date((d1.getTime()+d2.getTime())/2); newDate = mid.toISOString().split('T')[0];
+  }
+  let newRow = {date:newDate, week:'', meds:{}};
+  indicators.forEach(ind => { newRow[ind.id] = null; });
+  records.splice(idx+1,0,newRow);
+  saveAll();
+  renderAllTables();
+  if(currentSubTab==='ind') renderIndicatorCharts();
+  else if(currentSubTab==='med') renderDrugCharts();
+};
+window.addRowEndInd = function(){
+  let last = records[records.length-1];
+  let d = new Date(last.date); d.setDate(d.getDate()+7);
+  let newRow = {date:d.toISOString().split('T')[0], week:'', meds:{}};
+  indicators.forEach(ind => { newRow[ind.id] = null; });
+  records.push(newRow);
+  saveAll(); renderAllTables(); if(currentSubTab==='ind') renderIndicatorCharts();
+};
+window.addRowEndMed = window.addRowEndInd;
+
+// 指标列动态增删
+window.addIndicatorAt = function(idx){
+  let newId = 'ind_'+Date.now();
+  let name = prompt('新指标名称','新指标');
+  if(!name) return;
+  let unit = prompt('单位','');
+  if(unit===null) return;
+  let low = parseFloat(prompt('参考下限','0'));
+  if(isNaN(low)) return;
+  let high = parseFloat(prompt('参考上限','100'));
+  if(isNaN(high)) return;
+  let newInd = {id:newId, name:name, unit:unit, range:[low,high], color:'#2563eb'};
+  indicators.splice(idx,0,newInd);
+  records.forEach(r => { r[newId] = null; });
+  saveAll();
+  renderAllTables();
+  if(currentSubTab === 'ind') renderIndicatorCharts();
+};
+window.addIndicatorColumn = function(){ addIndicatorAt(indicators.length); };
+window.delIndicator = function(idx){
+  if(indicators.length<=1){ alert('至少保留一个指标'); return; }
+  let ind = indicators[idx];
+  if(confirm(`删除指标“${ind.name}”？`)){
+    indicators.splice(idx,1);
+    records.forEach(r => { delete r[ind.id]; });
+    saveAll();
+    renderAllTables();
+    if(currentSubTab === 'ind') renderIndicatorCharts();
+  }
+};
+
+// 药物列动态增删
+window.addDrugAt = function(idx){
+  let newKey = 'drug_'+Date.now();
+  let name = prompt('新药物名称','新药物');
+  if(!name) return;
+  let newDrug = {name:name, color:'#2563eb'};
+  let keys = Object.keys(drugs);
+  let newDrugs = {};
+  for(let i=0;i<=keys.length;i++){
+    if(i===idx) newDrugs[newKey] = newDrug;
+    if(i<keys.length) newDrugs[keys[i]] = drugs[keys[i]];
+  }
+  drugs = newDrugs;
+  records.forEach(r => { if(!r.meds) r.meds={}; r.meds[newKey] = ''; });
+  saveAll();
+  renderAllTables();
+  if(currentSubTab === 'med') renderDrugCharts();
+};
+window.addDrugColumn = function(){ addDrugAt(Object.keys(drugs).length); };
+window.delDrug = function(key){
+  if(Object.keys(drugs).length<=1){ alert('至少保留一种药物'); return; }
+  if(confirm(`删除药物“${drugs[key].name}”？`)){
+    delete drugs[key];
+    records.forEach(r => { if(r.meds) delete r.meds[key]; });
+    saveAll();
+    renderAllTables();
+    if(currentSubTab === 'med') renderDrugCharts();
+  }
+};
+
+// 体征增删改
+window.updateVital = function(idx, field, val){
+  if(field === 'date') vitals[idx].date = val;
+  else vitals[idx][field] = parseFloat(val) || 0;
+  vitals.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  saveAll();
+  renderVitalTable();
+  if(currentSubTab === 'vit') renderVitalCharts();
+};
+window.delVitalRow = function(idx){
+  if(confirm('删除此行？')){ vitals.splice(idx,1); saveAll(); renderVitalTable(); if(currentSubTab==='vit') renderVitalCharts(); }
+};
+window.addVitalRowAt = function(idx){
+  let newDate;
+  if(idx === vitals.length-1){
+    let d = new Date(vitals[idx].date); d.setDate(d.getDate()+1); newDate = d.toISOString().split('T')[0];
+  } else {
+    let d1 = new Date(vitals[idx].date), d2 = new Date(vitals[idx+1].date);
+    let mid = new Date((d1.getTime()+d2.getTime())/2); newDate = mid.toISOString().split('T')[0];
+  }
+  vitals.splice(idx+1,0,{date:newDate, wt:68.0, sbp:110, dbp:70});
+  saveAll(); renderVitalTable(); if(currentSubTab==='vit') renderVitalCharts();
+};
+window.addVitalRow = function(){
+  let last = vitals[vitals.length-1];
+  let d = new Date(last.date); d.setDate(d.getDate()+1);
+  vitals.push({date:d.toISOString().split('T')[0], wt:68.0, sbp:110, dbp:70});
+  saveAll(); renderVitalTable(); if(currentSubTab==='vit') renderVitalCharts();
+};
+
+// ----------------------------- 图表绘制 ---------------------------------
+function bindCanvasWithDateLabels(canvas, dates, values, valueUnit, getPointCoords, redrawFunc) {
+  let labelRects = [];
+  let timeout = null;
+  function clearHighlight() {
+    if (timeout) clearTimeout(timeout);
+    if (redrawFunc) redrawFunc();
+  }
+  function highlightPoint(idx) {
+    if (redrawFunc) redrawFunc(idx);
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => { if (redrawFunc) redrawFunc(); }, 2000);
+  }
+  const handler = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    let cx, cy;
+    if (e.touches) {
+      cx = e.touches[0].clientX;
+      cy = e.touches[0].clientY;
+      e.preventDefault();
+    } else {
+      cx = e.clientX;
+      cy = e.clientY;
+    }
+    let canvasX = (cx - rect.left) * scaleX;
+    let canvasY = (cy - rect.top) * scaleY;
+    canvasX = Math.min(Math.max(canvasX, 0), canvas.width);
+    canvasY = Math.min(Math.max(canvasY, 0), canvas.height);
+    for (let r of labelRects) {
+      if (canvasX >= r.x && canvasX <= r.x+r.w && canvasY >= r.y && canvasY <= r.y+r.h) {
+        let idx = r.index;
+        if (idx >= 0 && idx < dates.length) {
+          alert(`${dates[idx]}\n数值: ${values[idx]} ${valueUnit}`);
+          highlightPoint(idx);
+        }
+        return;
+      }
+    }
+    let minDist = Infinity, bestIdx = -1;
+    for (let i = 0; i < dates.length; i++) {
+      let pc = getPointCoords(i);
+      if (pc) {
+        let dx = canvasX - pc.x, dy = canvasY - pc.y;
+        let dist = Math.sqrt(dx*dx+dy*dy);
+        if (dist < minDist) { minDist = dist; bestIdx = i; }
+      }
+    }
+    if (bestIdx !== -1 && minDist < 15) {
+      alert(`${dates[bestIdx]}\n数值: ${values[bestIdx]} ${valueUnit}`);
+      highlightPoint(bestIdx);
+    }
+  };
+  canvas.addEventListener('click', handler);
+  canvas.addEventListener('touchstart', handler);
+  return { setLabelRects: (rects) => { labelRects = rects; }, highlightPoint, clearHighlight };
+}
+
+function drawIndicatorChart(ind, containerId){
+  let pts = records.filter(r => r[ind.id]!==null && r[ind.id]!==undefined).map(r => ({date:r.date, value:r[ind.id]}));
+  if(pts.length === 0) return;
+  let card = document.createElement('div'); card.className = 'card';
+  let cid = 'chart_'+ind.id;
+  let dateListHtml = pts.map((p,i) => `<span class="clickable-date" data-idx="${i}">${fmtDate(p.date)}</span>`).join('');
+  card.innerHTML = `<div class="chtit"><span class="dot" style="background:${ind.color}"></span>${ind.name} (${ind.unit}) <span style="font-size:10px">${pts.length}</span></div><div class="ref">参考: ${ind.range[0]}-${ind.range[1]}</div><div class="chbox"><canvas id="${cid}" width="600" height="200" style="width:100%;height:auto"></canvas></div><div class="dlist"><b>日期:</b> ${dateListHtml}</div><button class="dlbtn" onclick="downloadCanvas('${cid}','${ind.name}')" style="margin-top:6px">⬇️ 保存图片</button>`;
+  document.getElementById(containerId).appendChild(card);
+  let bindHelper = null;
+  function redraw(highlightIdx = -1) {
+    let cv = document.getElementById(cid);
+    if(!cv) return;
+    let ctx = cv.getContext('2d'), W=cv.width, H=cv.height;
+    ctx.clearRect(0,0,W,H);
+    let P = {l:40,r:20,t:30,b:55};
+    let vals = pts.map(p=>p.value);
+    let yMin = Math.floor(Math.min(...vals, ind.range[0])*0.9);
+    let yMax = Math.ceil(Math.max(...vals, ind.range[1])*1.1);
+    let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+    let xS = i => P.l + (i/(pts.length-1||1))*(W-P.l-P.r);
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#0f172a'; ctx.font='bold 12px system-ui'; ctx.fillText(ind.name, P.l, 20);
+    ctx.fillStyle = ind.color+'20';
+    ctx.fillRect(P.l, yS(ind.range[1]), W-P.l-P.r, yS(ind.range[0])-yS(ind.range[1]));
+    for(let i=0;i<=4;i++){ let v=yMin+(i/4)*(yMax-yMin), y=yS(v); ctx.beginPath(); ctx.moveTo(P.l,y); ctx.lineTo(W-P.r,y); ctx.strokeStyle='#e2e8f0'; ctx.stroke(); ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(v.toFixed(0), P.l-5, y+3); }
+    let labelRects = [];
+    pts.forEach((p,i)=>{
+      let x = xS(i);
+      let text = fmtDate(p.date);
+      ctx.save();
+      ctx.translate(x, H-P.b+4);
+      ctx.rotate(-Math.PI/4);
+      ctx.fillStyle='#0f172a'; ctx.font='bold 7px system-ui'; ctx.textAlign='right';
+      ctx.fillText(text, 0, 0);
+      ctx.restore();
+      let metrics = ctx.measureText(text);
+      let w = metrics.width + 4, h = 10;
+      labelRects.push({x: x - w/2, y: H-P.b, w: w, h: h, index: i});
+    });
+    ctx.beginPath(); ctx.moveTo(P.l, H-P.b); ctx.lineTo(W-P.r, H-P.b); ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(P.l, P.t); ctx.lineTo(P.l, H-P.b); ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
+    ctx.strokeStyle = ind.color; ctx.lineWidth=2;
+    ctx.beginPath(); pts.forEach((p,i)=>{ let x=xS(i), y=yS(p.value); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke();
+    pts.forEach((p,i)=>{
+      let x=xS(i), y=yS(p.value);
+      let radius = (i === highlightIdx) ? 6 : 3;
+      ctx.beginPath(); ctx.arc(x,y,radius,0,2*Math.PI); ctx.fillStyle=ind.color; ctx.fill();
+      if(i === highlightIdx) {
+        ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,y,radius+1,0,2*Math.PI); ctx.stroke();
+      }
+      let valStr = (Number.isInteger(p.value)) ? p.value.toString() : parseFloat(p.value.toFixed(2)).toString();
+      ctx.fillStyle='#1e293b'; ctx.font='bold 7px system-ui'; ctx.textAlign='center';
+      ctx.fillText(valStr, x, y-8);
+    });
+    if(bindHelper) bindHelper.setLabelRects(labelRects);
+  }
+  setTimeout(()=>{
+    let cv = document.getElementById(cid);
+    if(!cv) return;
+    canvasCache[cid] = cv;
+    function getPointCoords(i){
+      let W=cv.width, H=cv.height;
+      let P = {l:40,r:20,t:20,b:30};
+      let xS = idx => P.l + (idx/(pts.length-1||1))*(W-P.l-P.r);
+      let vals = pts.map(p=>p.value);
+      let yMin = Math.floor(Math.min(...vals, ind.range[0])*0.9);
+      let yMax = Math.ceil(Math.max(...vals, ind.range[1])*1.1);
+      let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+      return { x: xS(i), y: yS(pts[i].value) };
+    }
+    bindHelper = bindCanvasWithDateLabels(cv, pts.map(p=>p.date), pts.map(p=>p.value), ind.unit, getPointCoords, redraw);
+    redraw();
+    let spans = card.querySelectorAll('.clickable-date');
+    spans.forEach(span => {
+      span.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let idx = parseInt(span.getAttribute('data-idx'));
+        if (!isNaN(idx)) {
+          alert(`${pts[idx].date}\n数值: ${pts[idx].value} ${ind.unit}`);
+          bindHelper.highlightPoint(idx);
+        }
+      });
+    });
+  }, 30);
+}
+function renderIndicatorCharts(){
+  let grid = document.getElementById('chartGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  indicators.forEach(ind => drawIndicatorChart(ind, 'chartGrid'));
+}
+
+// 修改后的 drawDrugChart：对于 losar, riva, indo 只从第一次有效用药开始绘图
+function drawDrugChart(drugKey){
+  let drug = drugs[drugKey];
+  let all = records.map(r => ({date:r.date, value: r.meds && r.meds[drugKey] ? r.meds[drugKey] : ''}));
+  
+  // 针对氯沙坦钾、利伐沙班、吲哚布芬：找到第一次有数值（非空、非停用）的索引，裁剪 all
+  if (drugKey === 'losar' || drugKey === 'riva' || drugKey === 'indo') {
+    let firstIndex = -1;
+    for (let i = 0; i < all.length; i++) {
+      let v = all[i].value;
+      if (v && v !== '' && v !== SU) {
+        let m = v.match(/\d+(\.\d+)?/);
+        if (m) {
+          firstIndex = i;
+          break;
+        }
+      }
+    }
+    if (firstIndex !== -1) {
+      all = all.slice(firstIndex);
+    } else {
+      // 如果没有有效用药记录，则直接返回不绘图
+      return;
+    }
+  }
+  
+  if (drugKey === 'ritu') {
+    // 利妥昔单抗特殊处理：连接输液点，标注500mg，最后下降到停用
+    let infusionPoints = [];
+    for (let row of all) {
+      let v = row.value;
+      if (v && v !== '' && v !== SU) {
+        let m = v.match(/\d+(\.\d+)?/);
+        if (m) {
+          let num = parseFloat(m[0]);
+          infusionPoints.push({date: row.date, value: num, raw: v});
+        }
+      }
+    }
+    let stopPoint = null;
+    for (let row of all) {
+      if (row.value === SU) {
+        stopPoint = {date: row.date, value: 0, raw: SU};
+        break;
+      }
+    }
+    if (infusionPoints.length === 0) return;
+    
+    let card = document.createElement('div'); card.className = 'card';
+    let cid = 'chart_drug_'+drugKey;
+    let dateListHtml = infusionPoints.map((p,i) => `<span class="clickable-date" data-idx="${i}">${fmtDate(p.date)}</span>`).join('');
+    card.innerHTML = `<div class="chtit"><span class="dot" style="background:${drug.color}"></span>${drug.name}</div><div class="chbox"><canvas id="${cid}" width="600" height="200" style="width:100%;height:auto"></canvas></div><div class="dlist"><b>输液日期:</b> ${dateListHtml}</div><button class="dlbtn" onclick="downloadCanvas('${cid}','${drug.name}')" style="margin-top:6px">⬇️ 保存图片</button>`;
+    document.getElementById('chartGrid').appendChild(card);
+    let bindHelper = null;
+    
+    function redraw(highlightIdx = -1) {
+      let cv = document.getElementById(cid);
+      if(!cv) return;
+      let ctx = cv.getContext('2d'), W=cv.width, H=cv.height;
+      ctx.clearRect(0,0,W,H);
+      let P = {l:40,r:20,t:30,b:55};
+      let allVals = infusionPoints.map(p=>p.value);
+      if (stopPoint) allVals.push(0);
+      if (allVals.length === 0) return;
+      let yMin = Math.max(0, Math.floor(Math.min(...allVals)*0.8));
+      let yMax = Math.ceil(Math.max(...allVals)*1.2) || 10;
+      let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+      let allDates = records.map(r=>r.date);
+      let xMap = {};
+      allDates.forEach((d, idx)=>{ xMap[d] = P.l + (idx/(allDates.length-1||1))*(W-P.l-P.r); });
+      
+      ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#0f172a'; ctx.font='bold 12px system-ui'; ctx.fillText(drug.name, P.l, 20);
+      for(let i=0;i<=4;i++){ let v=yMin+(i/4)*(yMax-yMin), y=yS(v); ctx.beginPath(); ctx.moveTo(P.l,y); ctx.lineTo(W-P.r,y); ctx.strokeStyle='#e2e8f0'; ctx.stroke(); ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(v.toFixed(0), P.l-5, y+3); }
+      let labelRects = [];
+      infusionPoints.forEach((p,i)=>{
+        let x = xMap[p.date];
+        let text = fmtDate(p.date);
+        ctx.save();
+        ctx.translate(x, H-P.b+4);
+        ctx.rotate(-Math.PI/4);
+        ctx.fillStyle='#0f172a'; ctx.font='bold 7px system-ui'; ctx.textAlign='right';
+        ctx.fillText(text, 0, 0);
+        ctx.restore();
+        let metrics = ctx.measureText(text);
+        let w = metrics.width + 4, h = 10;
+        labelRects.push({x: x - w/2, y: H-P.b, w: w, h: h, index: i});
+      });
+      ctx.beginPath(); ctx.moveTo(P.l, H-P.b); ctx.lineTo(W-P.r, H-P.b); ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(P.l, P.t); ctx.lineTo(P.l, H-P.b); ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
+      
+      if (infusionPoints.length > 1) {
+        ctx.beginPath();
+        ctx.strokeStyle = drug.color;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+        let first = infusionPoints[0];
+        ctx.moveTo(xMap[first.date], yS(first.value));
+        for (let i = 1; i < infusionPoints.length; i++) {
+          let p = infusionPoints[i];
+          ctx.lineTo(xMap[p.date], yS(p.value));
+        }
+        ctx.stroke();
+      }
+      if (infusionPoints.length >= 2) {
+        let p1 = infusionPoints[0];
+        let p2 = infusionPoints[infusionPoints.length-1];
+        let x1 = xMap[p1.date];
+        let x2 = xMap[p2.date];
+        let midX = (x1 + x2) / 2;
+        let yVal = yS(p1.value);
+        ctx.fillStyle = drug.color;
+        ctx.font = 'bold 11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('500mg', midX, yVal - 12);
+      } else if (infusionPoints.length === 1) {
+        let p = infusionPoints[0];
+        ctx.fillStyle = drug.color;
+        ctx.font = 'bold 11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(p.raw, xMap[p.date], yS(p.value) - 12);
+      }
+      
+      infusionPoints.forEach((p, idx)=>{
+        let x = xMap[p.date];
+        let y = yS(p.value);
+        let radius = (idx === highlightIdx) ? 8 : 5;
+        ctx.beginPath(); ctx.arc(x, y, radius, 0, 2*Math.PI);
+        ctx.fillStyle = drug.color;
+        ctx.fill();
+        if(idx === highlightIdx){
+          ctx.strokeStyle='gold'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x, y, radius+1, 0, 2*Math.PI); ctx.stroke();
+        }
+      });
+      
+      if (stopPoint && infusionPoints.length > 0) {
+        let lastInfusion = infusionPoints[infusionPoints.length-1];
+        let xLast = xMap[lastInfusion.date];
+        let yLast = yS(lastInfusion.value);
+        let xStop = xMap[stopPoint.date];
+        let yStop = yS(0);
+        ctx.beginPath();
+        ctx.strokeStyle = drug.color;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 4]);
+        ctx.moveTo(xLast, yLast);
+        ctx.lineTo(xStop, yLast);
+        ctx.lineTo(xStop, yStop);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#b91c1c';
+        ctx.beginPath(); ctx.arc(xStop, yStop, 5, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(xStop-3, yStop-3); ctx.lineTo(xStop+3, yStop+3);
+        ctx.moveTo(xStop+3, yStop-3); ctx.lineTo(xStop-3, yStop+3);
+        ctx.stroke();
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold 9px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('停用', xStop, yStop - 8);
+      }
+      
+      if(bindHelper) bindHelper.setLabelRects(labelRects);
+    }
+    setTimeout(()=>{
+      let cv = document.getElementById(cid);
+      if(!cv) return;
+      canvasCache[cid] = cv;
+      function getPointCoords(i){
+        let W=cv.width, H=cv.height;
+        let P = {l:40,r:20,t:20,b:30};
+        let allDates = records.map(r=>r.date);
+        let xMap = {};
+        allDates.forEach((d, idx)=>{ xMap[d] = P.l + (idx/(allDates.length-1||1))*(W-P.l-P.r); });
+        let allVals = infusionPoints.map(p=>p.value);
+        if (stopPoint) allVals.push(0);
+        if (allVals.length === 0) return null;
+        let yMin = Math.max(0, Math.floor(Math.min(...allVals)*0.8));
+        let yMax = Math.ceil(Math.max(...allVals)*1.2) || 10;
+        let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+        let pt = infusionPoints[i];
+        if(!pt) return null;
+        return { x: xMap[pt.date], y: yS(pt.value) };
+      }
+      let dates = infusionPoints.map(p=>p.date);
+      let values = infusionPoints.map(p=>p.value);
+      bindHelper = bindCanvasWithDateLabels(cv, dates, values, 'mg', getPointCoords, redraw);
+      redraw();
+      let spans = card.querySelectorAll('.clickable-date');
+      spans.forEach(span => {
+        span.addEventListener('click', (e) => {
+          e.stopPropagation();
+          let idx = parseInt(span.getAttribute('data-idx'));
+          if (!isNaN(idx)) {
+            alert(`${infusionPoints[idx].date}\n剂量: ${infusionPoints[idx].raw}`);
+            bindHelper.highlightPoint(idx);
+          }
+        });
+      });
+    }, 30);
+    return;
+  }
+  
+  // 其他药物（包括裁剪后的 losar, riva, indo）的原有阶梯图逻辑
+  let filled = [];
+  let lastVal = null;
+  for(let row of all){
+    let v = row.value;
+    if(v && v !== ''){
+      let m = v.match(/\d+(\.\d+)?/);
+      if(m){
+        lastVal = parseFloat(m[0]);
+        filled.push({date:row.date, value:lastVal, raw:v});
+      } else if(v === SU){
+        lastVal = 0;
+        filled.push({date:row.date, value:0, raw:SU});
+      } else {
+        filled.push({date:row.date, value:lastVal, raw: (lastVal!==null?lastVal+'mg':'')});
+      }
+    } else {
+      filled.push({date:row.date, value:lastVal, raw: (lastVal!==null?lastVal+'mg':'')});
+    }
+  }
+  let changePoints = [];
+  let lastNum = null, lastRaw = null;
+  for(let row of all){
+    let v = row.value;
+    if(v && v !== ''){
+      let m = v.match(/\d+(\.\d+)?/);
+      if(m){
+        let num = parseFloat(m[0]);
+        if(changePoints.length===0 || num !== lastNum){
+          changePoints.push({date:row.date, value:num, raw:v, type:'value'});
+          lastNum = num; lastRaw = v;
+        }
+      } else if(v === SU){
+        if(changePoints.length===0 || (lastNum!==0 && lastRaw!==SU)){
+          changePoints.push({date:row.date, value:0, raw:SU, type:'stop'});
+          lastNum = 0; lastRaw = SU;
+        }
+      }
+    }
+  }
+  if(filled.length === 0) return;
+  let card = document.createElement('div'); card.className = 'card';
+  let cid = 'chart_drug_'+drugKey;
+  let dateListHtml = filled.map((p,i) => `<span class="clickable-date" data-idx="${i}">${fmtDate(p.date)}</span>`).join('');
+  card.innerHTML = `<div class="chtit"><span class="dot" style="background:${drug.color}"></span>${drug.name}</div><div class="chbox"><canvas id="${cid}" width="600" height="200" style="width:100%;height:auto"></canvas></div><div class="dlist"><b>日期:</b> ${dateListHtml}</div><button class="dlbtn" onclick="downloadCanvas('${cid}','${drug.name}')" style="margin-top:6px">⬇️ 保存图片</button>`;
+  document.getElementById('chartGrid').appendChild(card);
+  let bindHelper = null;
+  function redraw(highlightIdx = -1) {
+    let cv = document.getElementById(cid);
+    if(!cv) return;
+    let ctx = cv.getContext('2d'), W=cv.width, H=cv.height;
+    ctx.clearRect(0,0,W,H);
+    let P = {l:40,r:20,t:30,b:55};
+    let vals = filled.map(p=>p.value).filter(v=>v!==null);
+    if(vals.length===0) vals = [0];
+    let yMin = Math.max(0, Math.floor(Math.min(...vals)*0.8));
+    let yMax = Math.ceil(Math.max(...vals)*1.2) || 10;
+    let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+    let xMap = {};
+    all.forEach((r,i)=>{ xMap[r.date] = P.l + (i/(all.length-1||1))*(W-P.l-P.r); });
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#0f172a'; ctx.font='bold 12px system-ui'; ctx.fillText(drug.name, P.l, 20);
+    for(let i=0;i<=4;i++){ let v=yMin+(i/4)*(yMax-yMin), y=yS(v); ctx.beginPath(); ctx.moveTo(P.l,y); ctx.lineTo(W-P.r,y); ctx.strokeStyle='#e2e8f0'; ctx.stroke(); ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(v.toFixed(0), P.l-5, y+3); }
+    let labelRects = [];
+    let cpDates = new Set(changePoints.map(p=>p.date));
+    let lastAllDate = all[all.length-1].date;
+    cpDates.add(lastAllDate);
+    all.forEach((r,i)=>{
+      if(cpDates.has(r.date)){
+        let x = xMap[r.date];
+        let text = fmtDate(r.date);
+        ctx.save();
+        ctx.translate(x, H-P.b+4);
+        ctx.rotate(-Math.PI/4);
+        ctx.fillStyle='#0f172a'; ctx.font='bold 7px system-ui'; ctx.textAlign='right';
+        ctx.fillText(text, 0, 0);
+        ctx.restore();
+        let metrics = ctx.measureText(text);
+        let w = metrics.width + 4, h = 10;
+        labelRects.push({x: x - w/2, y: H-P.b, w: w, h: h, index: i});
+      }
+    });
+    ctx.beginPath(); ctx.moveTo(P.l, H-P.b); ctx.lineTo(W-P.r, H-P.b); ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(P.l, P.t); ctx.lineTo(P.l, H-P.b); ctx.strokeStyle = '#e2e8f0'; ctx.stroke();
+    for(let i=0;i<changePoints.length-1;i++){
+      let p1=changePoints[i], p2=changePoints[i+1];
+      let x1=xMap[p1.date], y1=yS(p1.value);
+      let x2=xMap[p2.date], y2=yS(p2.value);
+      ctx.beginPath();
+      if(p1.type==='stop' || p2.type==='stop'){ ctx.setLineDash([5,3]); ctx.lineWidth=1.5; } else { ctx.setLineDash([]); ctx.lineWidth=2; }
+      ctx.strokeStyle = drug.color;
+      ctx.moveTo(x1,y1); ctx.lineTo(x2,y1); ctx.lineTo(x2,y2);
+      ctx.stroke();
+      if(p1.type !== 'stop'){
+        let midX = (x1 + x2) / 2;
+        ctx.fillStyle = drug.color; ctx.font='bold 8px system-ui'; ctx.textAlign='center';
+        ctx.fillText(p1.raw, midX, y1-6);
+      }
+    }
+    ctx.setLineDash([]);
+    if(changePoints.length > 0){
+      let lastPt = changePoints[changePoints.length-1];
+      let xLast = xMap[lastAllDate], xLastPt = xMap[lastPt.date], yLast = yS(lastPt.value);
+      ctx.beginPath();
+      if(lastPt.type === 'stop') ctx.setLineDash([5,3]); else ctx.setLineDash([]);
+      ctx.strokeStyle = drug.color;
+      ctx.moveTo(xLastPt, yLast); ctx.lineTo(xLast, yLast);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if(lastPt.type !== 'stop'){
+        let midX = (xLastPt + xLast) / 2;
+        ctx.fillStyle = drug.color; ctx.font='bold 8px system-ui'; ctx.textAlign='center';
+        ctx.fillText(lastPt.raw, midX, yLast-6);
+      }
+    }
+    filled.forEach((p, idx)=>{
+      let x = xMap[p.date], y = yS(p.value);
+      let radius = (idx === highlightIdx) ? 6 : 2.5;
+      ctx.beginPath(); ctx.arc(x,y,radius,0,2*Math.PI); ctx.fillStyle=drug.color; ctx.fill();
+      if(idx === highlightIdx){
+        ctx.strokeStyle='gold'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,y,radius+1,0,2*Math.PI); ctx.stroke();
+      }
+    });
+    let stopPoints = [];
+    for(let row of all){
+      let v = row.value;
+      if(v === SU) stopPoints.push({date:row.date, value:0, raw:SU});
+    }
+    stopPoints.forEach(p=>{
+      let x = xMap[p.date], y = yS(0);
+      ctx.fillStyle='#b91c1c'; ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x-3,y-3); ctx.lineTo(x+3,y+3); ctx.moveTo(x+3,y-3); ctx.lineTo(x-3,y+3); ctx.stroke();
+      ctx.fillStyle='#1e293b'; ctx.font='bold 7px system-ui'; ctx.fillText(SU, x, y-10);
+    });
+    if(bindHelper) bindHelper.setLabelRects(labelRects);
+  }
+  setTimeout(()=>{
+    let cv = document.getElementById(cid);
+    if(!cv) return;
+    canvasCache[cid] = cv;
+    function getPointCoords(i){
+      let W=cv.width, H=cv.height;
+      let P = {l:40,r:20,t:20,b:30};
+      let xMap = {};
+      all.forEach((r,idx)=>{ xMap[r.date] = P.l + (idx/(all.length-1||1))*(W-P.l-P.r); });
+      let vals = filled.map(p=>p.value).filter(v=>v!==null);
+      if(vals.length===0) vals=[0];
+      let yMin = Math.max(0, Math.floor(Math.min(...vals)*0.8));
+      let yMax = Math.ceil(Math.max(...vals)*1.2) || 10;
+      let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+      let pt = filled[i];
+      if(!pt) return null;
+      return { x: xMap[pt.date], y: yS(pt.value) };
+    }
+    let dates = filled.map(p=>p.date);
+    let values = filled.map(p=>p.value!==null?p.value:'无数据');
+    bindHelper = bindCanvasWithDateLabels(cv, dates, values, 'mg', getPointCoords, redraw);
+    redraw();
+    let spans = card.querySelectorAll('.clickable-date');
+    spans.forEach(span => {
+      span.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let idx = parseInt(span.getAttribute('data-idx'));
+        if (!isNaN(idx)) {
+          let val = filled[idx].value;
+          alert(`${filled[idx].date}\n数值: ${val} mg`);
+          bindHelper.highlightPoint(idx);
+        }
+      });
+    });
+  }, 30);
+}
+function renderDrugCharts(){
+  let grid = document.getElementById('chartGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  Object.keys(drugs).forEach(key => drawDrugChart(key));
+}
+function renderVitalCharts(){
+  let grid = document.getElementById('chartGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  let weightPts = vitals.map(v=>({date:v.date, value:v.wt}));
+  let weightCard = document.createElement('div'); weightCard.className='card';
+  let wcid = 'chart_weight';
+  let weightDateList = weightPts.map((p,i) => `<span class="clickable-date" data-idx="${i}">${fmtDate(p.date)}</span>`).join('');
+  weightCard.innerHTML = `<div class="chtit"><span class="dot" style="background:#0891b2"></span>体重 (kg)</div><div class="chbox"><canvas id="${wcid}" width="600" height="200" style="width:100%;height:auto"></canvas></div><div class="dlist"><b>日期:</b> ${weightDateList}</div><button class="dlbtn" onclick="downloadCanvas('${wcid}','体重')">⬇️ 保存图片</button>`;
+  grid.appendChild(weightCard);
+  let bpCard = document.createElement('div'); bpCard.className='card';
+  let bpcid = 'chart_bp';
+  let bpDateList = vitals.map((p,i) => `<span class="clickable-date" data-idx="${i}">${fmtDate(p.date)}</span>`).join('');
+  bpCard.innerHTML = `<div class="chtit"><span class="dot" style="background:#dc2626"></span>血压 (mmHg) <span style="font-size:11px">—收缩压 —舒张压</span></div><div class="chbox"><canvas id="${bpcid}" width="600" height="200" style="width:100%;height:auto"></canvas></div><div class="dlist"><b>日期:</b> ${bpDateList}</div><button class="dlbtn" onclick="downloadCanvas('${bpcid}','血压')">⬇️ 保存图片</button>`;
+  grid.appendChild(bpCard);
+  setTimeout(()=>{
+    let cvW = document.getElementById(wcid);
+    if(cvW){
+      function redrawWeight(highlightIdx=-1){
+        let ctx = cvW.getContext('2d'), W=cvW.width, H=cvW.height;
+        ctx.clearRect(0,0,W,H);
+        let P = {l:40,r:20,t:20,b:30};
+        let vals = weightPts.map(p=>p.value);
+        let yMin = Math.floor(Math.min(...vals)*0.98);
+        let yMax = Math.ceil(Math.max(...vals)*1.02);
+        let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+        let xS = i => P.l + (i/(weightPts.length-1||1))*(W-P.l-P.r);
+        ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='#0f172a'; ctx.font='bold 12px system-ui'; ctx.fillText('体重(kg)', P.l, 20);
+        for(let i=0;i<=4;i++){ let v=yMin+(i/4)*(yMax-yMin), y=yS(v); ctx.beginPath(); ctx.moveTo(P.l,y); ctx.lineTo(W-P.r,y); ctx.strokeStyle='#e2e8f0'; ctx.stroke(); ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(v.toFixed(1), P.l-5, y+3); }
+        let firstDate = weightPts[0].date;
+        let labelRects = [];
+        weightPts.forEach((p,i)=>{
+          let diff = daysDiff(firstDate, p.date);
+          if(diff % 10 === 0 || i === weightPts.length-1){
+            let x = xS(i);
+            let text = fmtDate(p.date);
+            ctx.fillStyle='#0f172a'; ctx.font='bold 7px system-ui'; ctx.textAlign='center';
+            let metrics = ctx.measureText(text);
+            let w = metrics.width+4, h=10, y = H-P.b+12;
+            labelRects.push({x: x-w/2, y: y-5, w: w, h: h, index: i});
+            ctx.fillText(text, x, y);
+          }
+        });
+        ctx.beginPath(); ctx.moveTo(P.l, H-P.b); ctx.lineTo(W-P.r, H-P.b); ctx.strokeStyle='#e2e8f0'; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(P.l, P.t); ctx.lineTo(P.l, H-P.b); ctx.strokeStyle='#e2e8f0'; ctx.stroke();
+        ctx.strokeStyle='#0891b2'; ctx.lineWidth=2; ctx.beginPath(); weightPts.forEach((p,i)=>{ let x=xS(i), y=yS(p.value); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke();
+        weightPts.forEach((p,i)=>{
+          let x=xS(i), y=yS(p.value);
+          let radius = (i===highlightIdx) ? 6 : 2.5;
+          ctx.beginPath(); ctx.arc(x,y,radius,0,2*Math.PI); ctx.fillStyle='#0891b2'; ctx.fill();
+          if(i===highlightIdx){ ctx.strokeStyle='gold'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,y,radius+1,0,2*Math.PI); ctx.stroke(); }
+        });
+        if(weightBind) weightBind.setLabelRects(labelRects);
+      }
+      let weightBind = bindCanvasWithDateLabels(cvW, weightPts.map(p=>p.date), weightPts.map(p=>p.value), 'kg',
+        (i)=>{ let W=cvW.width, H=cvW.height, P={l:40,r:20,t:20,b:30}, xS = idx => P.l + (idx/(weightPts.length-1||1))*(W-P.l-P.r), vals=weightPts.map(p=>p.value), yMin=Math.floor(Math.min(...vals)*0.98), yMax=Math.ceil(Math.max(...vals)*1.02), yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b); return {x:xS(i), y:yS(weightPts[i].value)}; }, redrawWeight);
+      redrawWeight();
+      let spans = weightCard.querySelectorAll('.clickable-date');
+      spans.forEach(span => {
+        span.addEventListener('click', (e) => {
+          e.stopPropagation();
+          let idx = parseInt(span.getAttribute('data-idx'));
+          if (!isNaN(idx)) {
+            alert(`${weightPts[idx].date}\n体重: ${weightPts[idx].value} kg`);
+            weightBind.highlightPoint(idx);
+          }
+        });
+      });
+    }
+    let cvBp = document.getElementById(bpcid);
+    if(cvBp){
+      function redrawBP(highlightIdx=-1){
+        let ctx = cvBp.getContext('2d'), W=cvBp.width, H=cvBp.height;
+        ctx.clearRect(0,0,W,H);
+        let P = {l:40,r:20,t:20,b:30};
+        let allVals = vitals.flatMap(v=>[v.sbp, v.dbp]);
+        let yMin = Math.floor(Math.min(...allVals)*0.93);
+        let yMax = Math.ceil(Math.max(...allVals)*1.05);
+        let yS = v => H-P.b - ((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
+        let xS = i => P.l + (i/(vitals.length-1||1))*(W-P.l-P.r);
+        ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='#0f172a'; ctx.font='bold 12px system-ui'; ctx.fillText('血压趋势', P.l, 20);
+        for(let i=0;i<=4;i++){ let v=yMin+(i/4)*(yMax-yMin), y=yS(v); ctx.beginPath(); ctx.moveTo(P.l,y); ctx.lineTo(W-P.r,y); ctx.strokeStyle='#e2e8f0'; ctx.stroke(); ctx.fillStyle='#64748b'; ctx.font='9px system-ui'; ctx.textAlign='right'; ctx.fillText(v.toFixed(0), P.l-5, y+3); }
+        let firstDate = vitals[0].date;
+        let labelRects = [];
+        vitals.forEach((p,i)=>{
+          let diff = daysDiff(firstDate, p.date);
+          if(diff % 10 === 0 || i === vitals.length-1){
+            let x = xS(i);
+            let text = fmtDate(p.date);
+            ctx.fillStyle='#0f172a'; ctx.font='bold 7px system-ui'; ctx.textAlign='center';
+            let metrics = ctx.measureText(text);
+            let w = metrics.width+4, h=10, y = H-P.b+12;
+            labelRects.push({x: x-w/2, y: y-5, w: w, h: h, index: i});
+            ctx.fillText(text, x, y);
+          }
+        });
+        ctx.beginPath(); ctx.moveTo(P.l, H-P.b); ctx.lineTo(W-P.r, H-P.b); ctx.strokeStyle='#e2e8f0'; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(P.l, P.t); ctx.lineTo(P.l, H-P.b); ctx.strokeStyle='#e2e8f0'; ctx.stroke();
+        ctx.strokeStyle='#dc2626'; ctx.lineWidth=2; ctx.beginPath(); vitals.forEach((p,i)=>{ let x=xS(i), y=yS(p.sbp); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke();
+        ctx.strokeStyle='#059669'; ctx.lineWidth=2; ctx.beginPath(); vitals.forEach((p,i)=>{ let x=xS(i), y=yS(p.dbp); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke();
+        vitals.forEach((p,i)=>{
+          let x = xS(i);
+          let r1 = (i===highlightIdx) ? 5 : 2.5;
+          ctx.beginPath(); ctx.arc(x, yS(p.sbp), r1, 0, 2*Math.PI); ctx.fillStyle='#dc2626'; ctx.fill();
+          ctx.beginPath(); ctx.arc(x, yS(p.dbp), r1, 0, 2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+          if(i===highlightIdx){
+            ctx.strokeStyle='gold'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x, yS(p.sbp), r1+1, 0, 2*Math.PI); ctx.stroke();
+            ctx.beginPath(); ctx.arc(x, yS(p.dbp), r1+1, 0, 2*Math.PI); ctx.stroke();
+          }
+        });
+        if(bpBind) bpBind.setLabelRects(labelRects);
+      }
+      let bpBind = bindCanvasWithDateLabels(cvBp, vitals.map(v=>v.date), vitals.map(v=>`${v.sbp}/${v.dbp}`), 'mmHg',
+        (i)=>{ let W=cvBp.width, H=cvBp.height, P={l:40,r:20,t:20,b:30}, xS = idx => P.l + (idx/(vitals.length-1||1))*(W-P.l-P.r), allVals=vitals.flatMap(v=>[v.sbp,v.dbp]), yMin=Math.floor(Math.min(...allVals)*0.93), yMax=Math.ceil(Math.max(...allVals)*1.05), yS=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b); return {x:xS(i), y:yS(vitals[i].sbp)}; }, redrawBP);
+      redrawBP();
+      let spans = bpCard.querySelectorAll('.clickable-date');
+      spans.forEach(span => {
+        span.addEventListener('click', (e) => {
+          e.stopPropagation();
+          let idx = parseInt(span.getAttribute('data-idx'));
+          if (!isNaN(idx)) {
+            alert(`${vitals[idx].date}\n收缩压: ${vitals[idx].sbp} mmHg\n舒张压: ${vitals[idx].dbp} mmHg`);
+            bpBind.highlightPoint(idx);
+          }
+        });
+      });
+    }
+  }, 50);
+}
+window.downloadCanvas = function(canvasId, name){
+  let cv = document.getElementById(canvasId);
+  if(!cv) return;
+  let link = document.createElement('a');
+  link.download = `王坚_${name}.png`;
+  link.href = cv.toDataURL('image/png');
+  link.click();
+};
+
+function switchSubTab(type){
+  currentSubTab = type;
+  document.querySelectorAll('.stab').forEach(btn => btn.classList.remove('on'));
+  if(type==='ind') document.getElementById('subIndChart').classList.add('on');
+  else if(type==='med') document.getElementById('subMedChart').classList.add('on');
+  else document.getElementById('subVitChart').classList.add('on');
+  if(type==='ind') renderIndicatorCharts();
+  else if(type==='med') renderDrugCharts();
+  else renderVitalCharts();
+}
+function switchMainTab(tab){
+  document.getElementById('panelChart').style.display = (tab==='chart')?'block':'none';
+  document.getElementById('panelIndicators').style.display = (tab==='indicators')?'block':'none';
+  document.getElementById('panelMeds').style.display = (tab==='meds')?'block':'none';
+  document.getElementById('panelVitals').style.display = (tab==='vitals')?'block':'none';
+  document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('on'));
+  if(tab==='chart') document.getElementById('tabChart').classList.add('on');
+  else if(tab==='indicators') document.getElementById('tabIndicators').classList.add('on');
+  else if(tab==='meds') document.getElementById('tabMeds').classList.add('on');
+  else document.getElementById('tabVitals').classList.add('on');
+  if(tab==='chart') switchSubTab(currentSubTab);
+  if(tab==='vitals') renderVitalTable();
+}
+
+// *************** 优化的 Word 导出函数 ***************
+window.exportIndicatorsWord = function(){
+  let html = generateIndicatorTableHTML();
+  let blob = new Blob([html], {type:'application/msword'});
+  let a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='王坚_指标记录表.doc'; a.click(); URL.revokeObjectURL(a.href);
+};
+window.exportMedsWord = function(){
+  let html = generateDrugTableHTML();
+  let blob = new Blob([html], {type:'application/msword'});
+  let a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='王坚_用药记录表.doc'; a.click(); URL.revokeObjectURL(a.href);
+};
+window.exportVitalsWord = function(){
+  let html = generateVitalTableHTML();
+  let blob = new Blob([html], {type:'application/msword'});
+  let a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='王坚_体征记录表.doc'; a.click(); URL.revokeObjectURL(a.href);
+};
+
+function generateIndicatorTableHTML() {
+  let html = `<!DOCTYPE html>
+  <html>
+  <head><meta charset="UTF-8"><title>指标记录表</title>
+  <style>
+    body { font-family: '宋体', 'Segoe UI', Arial, sans-serif; margin: 20px; }
+    h1 { color: #0f172a; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #9ca3af; padding: 8px 6px; text-align: center; vertical-align: top; }
+    th { background-color: #f1f5f9; font-weight: bold; }
+    td { background-color: #ffffff; }
+  </style>
+
+  </head>
+  <body>
+  <h1>王坚 · 肾病指标记录表</h1>
+  <p>生成时间：${new Date().toLocaleString()}</p>
+  <table>
+    <thead><tr><th>日期</th><th>周次</th>`;
+  indicators.forEach(ind => { html += `<th>${ind.name}<br><span style="font-weight:normal">(${ind.unit})</span></th>`; });
+  html += `</thead><tbody>`;
+  records.forEach(r => {
+    html += `<tr><td>${r.date}</td><td>${r.week || '-'}</td>`;
+    indicators.forEach(ind => {
+      let val = (r[ind.id] !== undefined && r[ind.id] !== null) ? r[ind.id] : '-';
+      html += `<td>${val}</td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table></body></html>`;
+  return html;
+}
+
+function generateDrugTableHTML() {
+let drugKeys = Object.keys(drugs);
+let html = `<!DOCTYPE html>
+
+  <html>
+  <head><meta charset="UTF-8"><title>用药记录表</title>
+  <style>
+    body { font-family: '宋体', 'Segoe UI', Arial, sans-serif; margin: 20px; }
+    h1 { color: #0f172a; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #9ca3af; padding: 8px 6px; text-align: center; vertical-align: top; }
+    th { background-color: #f1f5f9; font-weight: bold; }
+    td { background-color: #ffffff; }
+  </style>
+  </head>
+  <body>
+  <h1>王坚 · 肾病用药记录表</h1>
+  <p>生成时间：${new Date().toLocaleString()}</p>
+  <table>
+    <thead><tr><th>日期</th><th>周次</th>`;
+  drugKeys.forEach(key => { html += `<th>${drugs[key].name}</th>`; });
+  html += `</thead><tbody>`;
+  records.forEach(r => {
+    html += `<tr><td>${r.date}</td><td>${r.week || '-'}</td>`;
+    drugKeys.forEach(key => {
+      let val = (r.meds && r.meds[key]) ? r.meds[key] : '';
+      let displayVal = (val === '停用' || val === 'SU') ? '停用' : (val || '-');
+      html += `<td>${displayVal}</td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table></body></html>`;
+  return html;
+}
+
+function generateVitalTableHTML() {
+let html = `<!DOCTYPE html>
+
+  <html>
+  <head><meta charset="UTF-8"><title>体征记录表</title>
+  <style>
+    body { font-family: '宋体', 'Segoe UI', Arial, sans-serif; margin: 20px; }
+    h1 { color: #0f172a; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #9ca3af; padding: 8px 6px; text-align: center; vertical-align: top; }
+    th { background-color: #f1f5f9; font-weight: bold; }
+    td { background-color: #ffffff; }
+  </style>
+  </head>
+  <body>
+  <h1>王坚 · 体征记录表（体重 · 血压）</h1>
+  <p>生成时间：${new Date().toLocaleString()}</p>
+  <table>
+    <thead><tr><th>日期</th><th>体重 (kg)</th><th>收缩压 (mmHg)</th><th>舒张压 (mmHg)</th><th>血压简写</th></tr></thead>
+    <tbody>`;
+  vitals.forEach(v => {
+    html += `<tr><td>${v.date}</td><td>${v.wt}</td><td>${v.sbp}</td><td>${v.dbp}</td><td>${v.sbp}/${v.dbp}</td></tr>`;
+  });
+  html += `</tbody></table></body></html>`;
+  return html;
+}
+
+// 其他导出功能（CSV、完整Word、完整HTML）
+window.exportCSV = function(){
+let headers = ['日期','周次'];
+indicators.forEach(i=>headers.push(`${i.name}(${i.unit})`));
+Object.values(drugs).forEach(d=>headers.push(d.name));
+let rows = records.map(r => {
+let row = [r.date, r.week||''];
+indicators.forEach(i=>row.push(r[i.id]!==null?r[i.id]:''));
+Object.keys(drugs).forEach(k=>row.push(r.meds?.[k]||''));
+return row;
+});
+let csv = headers.join(',')+'\n'+rows.map(row=>row.map(cell=>`"${cell}"`).join(',')).join('\n');
+let blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+let a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='王坚_肾病数据.csv'; a.click(); URL.revokeObjectURL(a.href);
+};
+window.exportWordFull = function(){
+let indHtml = generateIndicatorTableHTML().split('<body>')[1].split('</body>')[0];
+let medHtml = generateDrugTableHTML().split('<body>')[1].split('</body>')[0];
+let vitHtml = generateVitalTableHTML().split('<body>')[1].split('</body>')[0];
+let full = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>肾病完整记录</title><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse;width:100%;margin-bottom:30px}th,td{border:1px solid #aaa;padding:6px;text-align:center}</style></head><body><h1>王坚·肾病完整监测记录</h1><p>${new Date().toLocaleString()}</p><h2>一、指标记录表</h2>${indHtml}<h2>二、用药记录表</h2>${medHtml}<h2>三、体征记录表</h2>${vitHtml}</body></html>`;
+let blob = new Blob([full], {type:'application/msword'});
+let a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='王坚_肾病完整记录.doc'; a.click(); URL.revokeObjectURL(a.href);
+};
+window.exportHTML = function(){
+let html = document.documentElement.outerHTML;
+let blob = new Blob([html], {type:'text/html'});
+let a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`肾病监测_${new Date().toISOString().slice(0,10)}.html`; a.click(); URL.revokeObjectURL(a.href);
+};
+
+// 绑定事件
+document.getElementById('tabChart').addEventListener('click',()=>switchMainTab('chart'));
+document.getElementById('tabIndicators').addEventListener('click',()=>switchMainTab('indicators'));
+document.getElementById('tabMeds').addEventListener('click',()=>switchMainTab('meds'));
+document.getElementById('tabVitals').addEventListener('click',()=>switchMainTab('vitals'));
+document.getElementById('subIndChart').addEventListener('click',()=>switchSubTab('ind'));
+document.getElementById('subMedChart').addEventListener('click',()=>switchSubTab('med'));
+document.getElementById('subVitChart').addEventListener('click',()=>switchSubTab('vit'));
+
+// 启动
+loadAll();
+renderAllTables();
+switchMainTab('chart');
+switchSubTab('ind');
+</script>
+
+</body>
+</html>
